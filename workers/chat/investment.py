@@ -1,3 +1,7 @@
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "desktop"))
+import file_lock as fcntl
 """Private, local investment evidence and deterministic calculations for Gemma.
 
 Knowledge retrieval is not weight training. Reports/news are claims, not labels
@@ -5,7 +9,6 @@ of correctness. Historical chart outcomes are kept separate from as-of features.
 """
 from contextlib import closing
 from datetime import date, datetime, timezone
-import fcntl
 import hashlib
 from html.parser import HTMLParser
 import json
@@ -99,7 +102,7 @@ def dcf(cashflows,discount_rate,terminal_growth,net_debt,shares):
 
 def collect(limit=20):
     DATA.mkdir(parents=True,exist_ok=True,mode=0o700)
-    with (DATA/'collect.lock').open('a') as lock:
+    with (DATA/'collect.lock').open('a+b') as lock:
         try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
         except BlockingIOError:return {'state':'already_running'}
         con=connect();changed={};errors={}
@@ -160,8 +163,8 @@ def collect(limit=20):
                 count+=put(con,'chart:'+case['id'],'chart_case',case['symbol']+' '+case.get('kind','')+' 차트 모멘텀 학습 사례',evidence,case['date'],'local:chart-case/'+case['id'],case['symbol'])
             return count
         def pdfs():
-            paths=list((Path.home()/'기업분석리포트/report').glob('*.pdf'))
-            textbook=Path.home()/'Desktop/추세추종 교과서.pdf'
+            paths=list((ROOT/'report-automation/report').glob('*.pdf'))
+            textbook=ROOT/'data/references/추세추종 교과서.pdf'
             if textbook.exists():paths.insert(0,textbook)
             count=0;processed=0
             for path in paths:
@@ -170,7 +173,7 @@ def collect(limit=20):
                 if processed>=limit:break
                 if stat.st_size>50*1024*1024:continue
                 try:
-                    raw=subprocess.run(['/opt/homebrew/bin/pdftotext','-layout',str(path),'-'],capture_output=True,timeout=60,check=True).stdout.decode()
+                    raw=subprocess.run(['pdftotext','-layout',str(path),'-'],capture_output=True,timeout=60,check=True).stdout.decode()
                     if not raw.strip():raise ValueError('PDF needs OCR')
                 except (OSError,ValueError,subprocess.SubprocessError) as error:
                     errors['pdf:'+path.name]=type(error).__name__;processed+=1;continue
@@ -259,9 +262,9 @@ def answer(question,history=(),symbol=None,model='gemma4:12b'):
     sources=evidence(question,symbol)
     safe_history=[{'role':x['role'],'content':x['content'][:2000]} for x in history[-4:] if x.get('role') in ('user','assistant') and isinstance(x.get('content'),str)]
     messages=[{'role':'system','content':POLICY+'\n질문 처리일: '+date.today().isoformat()},*safe_history,{'role':'user','content':question+'\n참고 자료(JSON):\n'+json.dumps(sources,ensure_ascii=False)}]
-    model_lock=Path.home()/'dev/tm26-code-assistant/data/model.lock'
+    model_lock=DATA/'model.lock'
     model_lock.parent.mkdir(parents=True,exist_ok=True)
-    with model_lock.open('a') as lock:
+    with model_lock.open('a+b') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX)
         result=ollama('chat',{'model':model,'messages':messages,'think':False,'stream':False,'keep_alive':'5m','options':{'num_ctx':12288,'num_predict':1500,'temperature':0.1}})
     text=result.get('message',{}).get('content','').strip();cited=citation_ids(text);allowed={s['id'] for s in sources}

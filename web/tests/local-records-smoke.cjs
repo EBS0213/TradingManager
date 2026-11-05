@@ -21,7 +21,7 @@ async function api(path,body,method=body===undefined?'GET':'POST',extra={}){
  for(const stream of [server.stdout,server.stderr])stream.on('data',d=>{logs=(logs+d).slice(-10000)});
  await ready();
  const account=await api('/api/auth/me');assert.equal(account.local,true);assert.equal(account.signedIn,true);assert.equal(account.admin,true);
- browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});
+ browser=await chromium.launch({...(process.env.TEST_CHROME_PATH?{executablePath:process.env.TEST_CHROME_PATH}:process.platform==='darwin'?{executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'}:{channel:'chrome'}),headless:true});
  const context=await browser.newContext({viewport:{width:1440,height:1080}}),page=await context.newPage();
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto(origin+'/#trading/log');

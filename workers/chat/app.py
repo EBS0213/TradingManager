@@ -13,7 +13,8 @@ def ollama(route, payload):
     with urlopen(req,timeout=600) as r: return json.load(r)
 
 def remote(path):
-    return json.loads(subprocess.check_output(['/usr/bin/curl','--fail','--silent','--show-error','--max-time','90',BASE+path],timeout=95))
+    with urlopen(BASE+path, timeout=90) as response:
+        return json.load(response)
 
 def number(x): return isinstance(x,(int,float)) and not isinstance(x,bool) and math.isfinite(x)
 

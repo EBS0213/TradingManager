@@ -1,0 +1,62 @@
+name: Desktop installers
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    env:
+      PYTHONUTF8: '1'
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unit tests
+        run: |
+          python -m unittest discover -s desktop -p "test_*.py"
+          python -m unittest discover -s workers/chat -p "test_*.py"
+      - name: Fresh installation (real PostgreSQL, npm, build)
+        run: python desktop/windows.py install --no-shortcut
+      - name: Desktop shortcut
+        shell: powershell
+        run: |
+          & ./desktop/windows-shortcut.ps1 -Root (Get-Location).Path
+          $path = Join-Path ([Environment]::GetFolderPath('Desktop')) 'TradingManager.lnk'
+          if (!(Test-Path $path)) { throw 'Shortcut missing' }
+      - name: Browser persistence, chart game, chat queue and native workers
+        run: python desktop/windows.py start --no-browser --smoke
+      - name: Restart and recheck
+        run: python desktop/windows.py start --no-browser --smoke
+      - name: Logs on failure (no environment or database)
+        if: failure()
+        shell: pwsh
+        run: Get-ChildItem logs -Filter *.log | ForEach-Object { Write-Host $_.Name; Get-Content $_.FullName -Tail 50 }
+  macos:
+    runs-on: macos-latest
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 -m unittest discover -s desktop -p 'test_*.py'
+      - run: python3 -m unittest discover -s workers/chat -p 'test_*.py'
+      - run: npm ci
+        working-directory: web
+      - run: npm run build
+        working-directory: web
+      - run: python3 desktop/build_app.py

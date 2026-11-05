@@ -1,3 +1,7 @@
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "desktop"))
+import file_lock as fcntl
 """Outbound-only TM26 public chat worker. No tools/files exposed to visitors."""
 import json, re, time, threading, subprocess, os, signal
 from urllib.request import urlopen
@@ -58,8 +62,7 @@ def answer(job):
 
 def main():
     # One process per Mac; prevents duplicate generation after accidental launches.
-    import fcntl
-    lock=open(ROOT.parents[1]/'data'/'chat-worker.lock','w')
+    lock=open(ROOT.parents[1]/'data'/'chat-worker.lock','a+b')
     try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
     except BlockingIOError:raise SystemExit('Chat worker already running')
     signal.signal(signal.SIGTERM,lambda *_:STOP.set())
