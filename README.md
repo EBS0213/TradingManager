@@ -8,6 +8,8 @@
 - `screener/`: 한국·미국 종목 스크리닝
 - `report-automation/`: 보고서 작성·검토·로컬 게시 자동화 (통합 배포본)
 
+최신 운영체제별 설치 파일: [GitHub Releases](https://github.com/EBS0213/TradingManager/releases/latest). Windows용은 `TradingManager_Windows_v1.1.0.zip`, macOS용은 `TradingManager_macOS_v1.1.0.tar.gz`입니다.
+
 ## 운영체제별 설치
 
 | 배포 | 설치 | 실행 |
@@ -56,6 +58,8 @@ TM26_CHAT_MODEL=설치한_모델명 python3 workers/chat/chat_worker.py
 ```
 
 macOS의 스크리너와 챗봇은 로컬 서비스로 등록됩니다. Windows에서는 실행 창이 두 워커를 함께 시작·종료합니다. 모델을 바꾸려면 실행 중인 챗봇 서비스를 중지하고 위 명령으로 실행하세요.
+
+Windows에서 모델을 지정하려면 PowerShell에서 `$env:TM26_CHAT_MODEL="설치한_모델명"`을 설정한 뒤 `.\Start-Windows.cmd`를 실행하세요.
 
 챗봇 워커는 설치 시 생성한 전용 토큰으로 같은 컴퓨터의 웹에만 연결됩니다. 배포자의 API 키, 로그인 세션, 토큰, DB는 제공하지 않습니다. 모델이 준비되지 않으면 챗봇은 오프라인으로 표시합니다.
 
