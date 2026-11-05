@@ -230,7 +230,10 @@ def run(no_browser=False, smoke=False):
     finally:
         for process in reversed(processes):
             if process.poll() is None:
-                process.terminate()
+                # run-task.py owns another Python process. Terminating only the
+                # wrapper leaves the chatbot lock and screener alive on Windows.
+                subprocess.run(['taskkill.exe', '/PID', str(process.pid), '/T', '/F'],
+                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
                 try:
                     process.wait(timeout=15)
                 except subprocess.TimeoutExpired:
