@@ -1,0 +1,13 @@
+node_modules
+.next
+.git
+.env*
+docs/terminal-redesign-20261021/baseline-*.html
+docs/terminal-redesign-20261021/production-source
+docs/terminal-redesign-20261021/origin-source
+tests/artifacts
+*.tsbuildinfo
+
+_backup*/
+**/*.bak*
+ops/

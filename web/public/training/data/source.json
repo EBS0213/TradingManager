@@ -1,0 +1,22 @@
+{
+  "provider": "Yahoo Finance",
+  "downloaded": "2026-10-13T00:28:56.790819+00:00",
+  "period": "2018–2025",
+  "symbols": {
+    "NVDA": "NVIDIA",
+    "AAPL": "Apple",
+    "MSFT": "Microsoft",
+    "AMD": "AMD",
+    "META": "Meta Platforms",
+    "NFLX": "Netflix",
+    "TSLA": "Tesla",
+    "AMZN": "Amazon",
+    "SHOP": "Shopify",
+    "CRWD": "CrowdStrike",
+    "SPY": "S&P 500 ETF",
+    "SFM": "Sprouts Farmers Market"
+  },
+  "priceBasis": "Yahoo OHLC: split-adjusted; cash dividends excluded from the game return.",
+  "url": "https://finance.yahoo.com/",
+  "adjustmentReference": "https://help.yahoo.com/kb/SLN28256.html"
+}

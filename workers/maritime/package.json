@@ -1,0 +1,1 @@
+{"name":"tm26-ais-collector","private":true,"type":"module","scripts":{"start":"node worker.mjs","test":"node --test collector.test.mjs"},"dependencies":{"ws":"^8.18.3"}}

@@ -1,0 +1,314 @@
+{
+  "type": "object",
+  "properties": {
+    "decision": {
+      "type": "string",
+      "enum": [
+        "approve",
+        "revise",
+        "hold"
+      ]
+    },
+    "reason": {
+      "type": "string"
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "fact": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "fact",
+          "location"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "checks": {
+      "type": "object",
+      "properties": {
+        "facts": {
+          "type": "boolean"
+        },
+        "dates": {
+          "type": "boolean"
+        },
+        "calculations": {
+          "type": "boolean"
+        },
+        "privacy": {
+          "type": "boolean"
+        },
+        "consistency": {
+          "type": "boolean"
+        },
+        "pdf_visual": {
+          "type": "boolean"
+        },
+        "writing": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "facts",
+        "dates",
+        "calculations",
+        "privacy",
+        "consistency",
+        "pdf_visual",
+        "writing"
+      ],
+      "additionalProperties": false
+    },
+    "publication": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "pdf": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "category",
+        "body",
+        "pdf"
+      ],
+      "additionalProperties": false
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "required",
+              "optional"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "open",
+              "resolved",
+              "reopened",
+              "regressed",
+              "disclosed"
+            ]
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "facts",
+              "dates",
+              "calculations",
+              "privacy",
+              "consistency",
+              "pdf_visual",
+              "writing"
+            ]
+          },
+          "location": {
+            "type": "string"
+          },
+          "problem": {
+            "type": "string"
+          },
+          "requested_change": {
+            "type": "string"
+          },
+          "acceptance": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "key",
+          "severity",
+          "status",
+          "category",
+          "location",
+          "problem",
+          "requested_change",
+          "acceptance",
+          "evidence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "properties": {
+        "facts": {
+          "type": "object",
+          "properties": {
+            "completed": {
+              "type": "boolean"
+            },
+            "limitation": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "completed",
+            "limitation"
+          ],
+          "additionalProperties": false
+        },
+        "dates": {
+          "type": "object",
+          "properties": {
+            "completed": {
+              "type": "boolean"
+            },
+            "limitation": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "completed",
+            "limitation"
+          ],
+          "additionalProperties": false
+        },
+        "calculations": {
+          "type": "object",
+          "properties": {
+            "completed": {
+              "type": "boolean"
+            },
+            "limitation": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "completed",
+            "limitation"
+          ],
+          "additionalProperties": false
+        },
+        "privacy": {
+          "type": "object",
+          "properties": {
+            "completed": {
+              "type": "boolean"
+            },
+            "limitation": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "completed",
+            "limitation"
+          ],
+          "additionalProperties": false
+        },
+        "consistency": {
+          "type": "object",
+          "properties": {
+            "completed": {
+              "type": "boolean"
+            },
+            "limitation": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "completed",
+            "limitation"
+          ],
+          "additionalProperties": false
+        },
+        "pdf_visual": {
+          "type": "object",
+          "properties": {
+            "completed": {
+              "type": "boolean"
+            },
+            "limitation": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "completed",
+            "limitation"
+          ],
+          "additionalProperties": false
+        },
+        "writing": {
+          "type": "object",
+          "properties": {
+            "completed": {
+              "type": "boolean"
+            },
+            "limitation": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "completed",
+            "limitation"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "facts",
+        "dates",
+        "calculations",
+        "privacy",
+        "consistency",
+        "pdf_visual",
+        "writing"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "decision",
+    "reason",
+    "findings",
+    "sources",
+    "checks",
+    "publication",
+    "issues",
+    "coverage"
+  ],
+  "additionalProperties": false
+}

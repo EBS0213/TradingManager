@@ -1,0 +1,3 @@
+import {currentUser,db,json,guestId,koreaDay} from '@/lib/training/api'
+export const runtime='nodejs';export const dynamic='force-dynamic'
+export async function GET(req){try{const user=await currentUser();let used=0;if(!user&&guestId(req)){const sql=await db();const rows=await sql`SELECT used FROM tm_training_quota WHERE guest=${guestId(req)} AND day=${koreaDay()}`;used=rows[0]?.used??0}return json({user:user?{userId:String(user.id),nickname:user.nickname??'트레이더',local:user.local===true,profileId:String(user.id)}:null,remaining:user?null:Math.max(0,2-used),signIn:'/login?next=%2Ftraining',signOut:'/training#account'})}catch{return json({error:'계정 상태를 불러오지 못했습니다.'},503)}}

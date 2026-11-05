@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    --font-mono: "Courier New", Courier, monospace;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+/* TM26 workspace: the original terminal lives within a persistent two-area shell. */
+:root { --radius: 0; --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', 'Apple SD Gothic Neo', 'Malgun Gothic', monospace; }
+html, body { min-height:100%; background:#121212; color:#e7e7e7; }
+button, a, input, select, textarea { -webkit-tap-highlight-color:transparent; }
+button:focus-visible, a:focus-visible { outline:2px solid #ff9900; outline-offset:2px; }
+.tm-workspace { min-height:100dvh; background:#121212; color:#e7e7e7; font-family:var(--font-mono); font-size:12px; }
+.tm-workspace-header { display:flex; align-items:center; gap:24px; height:52px; padding:0 16px; background:#080808; border-bottom:1px solid var(--tm-divider-border,rgba(237,161,44,.18)); }
+.tm-workspace-brand { display:flex; align-items:center; gap:12px; text-decoration:none; white-space:nowrap; }
+.tm-workspace-brand strong { color:#f5f5f5; font-size:22px; line-height:1; letter-spacing:-1px; }
+.tm-workspace-brand strong span { color:#ff9900; }
+.tm-workspace-brand small { color:#888; font-size:9px; letter-spacing:1px; max-width:86px; white-space:normal; line-height:1.4; }
+.tm-areas { align-self:stretch; display:flex; gap:4px; }
+.tm-areas button { padding:0 16px; color:#a0a0a0; border-bottom:2px solid transparent; font-size:13px; font-weight:700; }
+.tm-areas button b { color:#666; font-size:10px; margin-right:8px; font-weight:400; }
+.tm-areas button small { font-size:10px; margin-left:8px; font-weight:400; }
+.tm-areas button.active { color:#ffad33; background:#211a0e; border-color:#ff9900; }
+.tm-areas button.active b { color:#ff9900; }
+.tm-workspace-meta { display:flex; align-items:center; gap:16px; margin-left:auto; color:#888; font-size:11px; white-space:nowrap; }
+.tm-workspace-meta a { border:1px solid var(--tm-panel-border,rgba(237,161,44,.28)); padding:4px 9px; color:#ccc; }
+.tm-section-nav { min-height:37px; display:flex; align-items:center; gap:4px; padding:5px 12px; border-bottom:1px solid var(--tm-divider-border,rgba(237,161,44,.18)); background:#161616; overflow-x:auto; white-space:nowrap; }
+.tm-section-code { font-size:10px; letter-spacing:.6px; color:#777; padding-right:10px; }
+.tm-section-nav button { padding:4px 10px; color:#aaa; font-size:11px; border:1px solid transparent; }
+.tm-section-nav button span { color:#666; margin-right:3px; }
+.tm-section-nav button:hover { color:white; background:#252525; }
+.tm-section-nav button.active { background:#303030; color:#f5f5b8; border-color:var(--tm-panel-border,rgba(237,161,44,.28)); }
+.tm-terminal-content { padding:8px 8px 24px; }
+.tm-terminal-content .bloomberg-terminal { min-height:calc(100dvh - 121px); }
+.tm-terminal-content .bloomberg-terminal table { font-variant-numeric:tabular-nums; }
+.tm-terminal-content .bloomberg-terminal button { border-radius:0; }
+.tm-legacy-content { height:calc(100dvh - 89px); background:#121212; }
+.tm-legacy-content[hidden] { display:none; }
+.tm-legacy-content iframe { width:100%; height:100%; border:0; display:block; }
+@media(max-width:760px) {
+  .tm-workspace-header { gap:10px; padding:0 10px; height:48px; }
+  .tm-workspace-brand small,.tm-areas small,.tm-workspace-meta time { display:none; }
+  .tm-areas button { padding:0 10px; font-size:12px; }
+  .tm-areas button b { display:none; }
+  .tm-workspace-meta { gap:0; }
+  .tm-workspace-meta a { padding:4px 6px; }
+  .tm-section-nav { padding:5px 8px; }
+  .tm-section-code { display:none; }
+  .tm-legacy-content { height:calc(100dvh - 85px); }
+  .tm-terminal-content { padding:6px 2px 20px; }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-mono);
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+  }
+
+  body.dark {
+    background-color: #121212;
+    color: white;
+  }
+
+  body.light {
+    background-color: #f0f0f0;
+    color: black;
+  }
+}

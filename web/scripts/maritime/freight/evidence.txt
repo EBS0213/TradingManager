@@ -1,0 +1,15 @@
+WCI 2026-10-22: 4585 USD/FEU, official current publication fetched 2026-10-26.
+https://www.drewry.co.uk/maritime-research-opinion-browser/world-container-index-assessed-by-drewry
+WCI 2026-10-15: 4485 USD/FEU, official announcement indexed by web search and read 2026-10-26.
+https://www.drewry.co.uk/supply-chain-advisors/world-container-index-weekly-update?topics=Supply+Chain+Advisors
+https://www.drewry.co.uk/supply-chain-advisors/supply-chain-expertise/world-container-index-assessed-by-drewry?msdynmkt_trackingcontext=74ea57af-c9f2-416e-87b7-67a22d430000
+Computed change: +100 USD/FEU; +2.2296544%, displayed +2.23%. Official prose rounds to +2%.
+No entire report, table or chart is republished. Only composite facts and publication dates.
+Updater checks the public announcement every 6h; failures retain prior publication values. New values use actual previously saved announcement only if gap <=8 days, otherwise no comparison is fabricated.
+CCFI and SCFI: public currentIndex endpoint used by the official public pages; fetched 2026-10-26, no login or subscription credentials.
+https://en.sse.net.cn/indices/ccfinew.jsp
+https://en.sse.net.cn/indices/scfinew.jsp
+https://en.sse.net.cn/currentIndex?indexName=ccfi
+https://en.sse.net.cn/currentIndex?indexName=scfi
+CCFI 2026-10-23:1876.27 / 2026-10-16:1922.64; SCFI 2026-10-23:3681.3369 / 2026-10-16:3679.579.
+Only aggregate composite index facts, no route tables or subscriber history. Other seven indices remain explicitly unavailable.

@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {addMonths,averages,endIndex,features,scoreRound} from '../public/training/engine.js';
+const cases=JSON.parse(fs.readFileSync(new URL('../public/training/data/cases.json',import.meta.url)));
+const cache=new Map();function rows(symbol){if(!cache.has(symbol))cache.set(symbol,JSON.parse(fs.readFileSync(new URL(`../public/training/data/${symbol}.json`,import.meta.url))).rows);return cache.get(symbol);}
+test('calendar month ends and leap years',()=>{assert.equal(addMonths('2023-11-30',3),'2024-02-29');assert.equal(addMonths('2024-11-30',3),'2025-02-28');assert.equal(addMonths('2024-01-31',3),'2024-04-30');});
+test('moving averages have real warmup and no future input',()=>{const a=averages([[0,0,0,0,2],[0,0,0,0,4],[0,0,0,0,9]],2);assert.deepEqual(a,[null,3,6.5]);});
+test('expanded distinct problems with full 3-month windows and valid OHLCV',()=>{assert.ok(cases.length>1000);assert.equal(new Set(cases.map(c=>c.id)).size,cases.length);for(const c of cases){const r=rows(c.stockKey??c.symbol);assert.equal(c.end,endIndex(r,c.cut));assert.ok(c.cut>=220);assert.ok(c.end-c.cut>=55);assert.ok(r[c.end][0]<=addMonths(c.date,3));assert.ok(r[c.end+1][0]>addMonths(c.date,3));for(const candle of r){assert.ok(candle[2]>=Math.max(candle[1],candle[4])-.001);assert.ok(candle[3]<=Math.min(candle[1],candle[4])+.001);assert.ok(candle[5]>=0);}}});
+test('features are identical with all future data removed',()=>{for(const c of cases){const r=rows(c.stockKey??c.symbol);assert.deepEqual(features(r,c.cut),features(r.slice(0,c.cut+1),c.cut));}});
+test('decision-close baseline, direction-only 2 points, direction scoring',()=>{let sum=0,buy=0,sell=0;for(const c of cases){const r=rows(c.stockKey??c.symbol),correct=r[c.end][4]>r[c.cut][4]?'buy':'sell';const result=scoreRound(r,c.cut,c.end,correct);assert.equal(result.entry,r[c.cut][4]);assert.equal(result.score,2);assert.equal(scoreRound(r,c.cut,c.end,correct==='buy'?'sell':'buy').score,0);sum+=result.score;correct==='buy'?buy++:sell++;}assert.equal(sum,cases.length*2);assert.ok(buy>0&&sell>0);console.log({buyAnswers:buy,sellAnswers:sell});});
+test('flat price is not a correct prediction',()=>{const r=[['2024-01-01',100,101,99,100,1],['2024-04-01',100,101,99,100,1]];for(const side of ['buy','sell']){const result=scoreRound(r,0,1,side);assert.equal(result.score,0);assert.equal(result.flat,true);}});

@@ -1,0 +1,4078 @@
+{
+  "retrievedAt": "2026-10-13T14:22:22.940143+00:00",
+  "membershipAsOf": "As of 12-Oct-2026",
+  "basis": "Current snapshot market capitalization; 150 distinct companies per list; overlapping companies counted once; ordinary/common shares and ADRs only. Not historical index membership.",
+  "sources": {
+    "sp500Membership": "https://www.ssga.com/library-content/products/fund-data/etfs/us/holdings-daily-us-en-spy.xlsx",
+    "marketCaps": "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit=10000&download=true",
+    "nasdaqListings": "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit=10000&exchange=nasdaq&download=true"
+  },
+  "lists": {
+    "sp500": [
+      {
+        "companyKey": "NVDA",
+        "symbol": "NVDA",
+        "name": "NVIDIA Corporation Common Stock",
+        "marketCapUSD": 5454312000000.0
+      },
+      {
+        "companyKey": "AAPL",
+        "symbol": "AAPL",
+        "name": "Apple Inc. Common Stock",
+        "marketCapUSD": 4976177554600.0
+      },
+      {
+        "companyKey": "GOOGL",
+        "symbol": "GOOGL",
+        "name": "Alphabet Inc. Class A Common Stock",
+        "marketCapUSD": 4313765600000.0
+      },
+      {
+        "companyKey": "MSFT",
+        "symbol": "MSFT",
+        "name": "Microsoft Corporation Common Stock",
+        "marketCapUSD": 4018333942455.0
+      },
+      {
+        "companyKey": "AMZN",
+        "symbol": "AMZN",
+        "name": "Amazon.com Inc. Common Stock",
+        "marketCapUSD": 2799371961341.0
+      },
+      {
+        "companyKey": "META",
+        "symbol": "META",
+        "name": "Meta Platforms Inc. Class A Common Stock",
+        "marketCapUSD": 1892695224926.0
+      },
+      {
+        "companyKey": "AVGO",
+        "symbol": "AVGO",
+        "name": "Broadcom Inc. Common Stock",
+        "marketCapUSD": 1693349722011.0
+      },
+      {
+        "companyKey": "TSLA",
+        "symbol": "TSLA",
+        "name": "Tesla Inc. Common Stock",
+        "marketCapUSD": 1493047401354.0
+      },
+      {
+        "companyKey": "BRK/B",
+        "symbol": "BRK-B",
+        "name": "Berkshire Hathaway Inc.",
+        "marketCapUSD": 1141986765630.0
+      },
+      {
+        "companyKey": "MU",
+        "symbol": "MU",
+        "name": "Micron Technology Inc. Common Stock",
+        "marketCapUSD": 1119022813596.0
+      },
+      {
+        "companyKey": "LLY",
+        "symbol": "LLY",
+        "name": "Eli Lilly and Company Common Stock",
+        "marketCapUSD": 1113267692210.0
+      },
+      {
+        "companyKey": "AMD",
+        "symbol": "AMD",
+        "name": "Advanced Micro Devices Inc. Common Stock",
+        "marketCapUSD": 970081968958.0
+      },
+      {
+        "companyKey": "WMT",
+        "symbol": "WMT",
+        "name": "Walmart Inc. Common Stock",
+        "marketCapUSD": 897148024932.0
+      },
+      {
+        "companyKey": "JPM",
+        "symbol": "JPM",
+        "name": "JP Morgan Chase & Co. Common Stock",
+        "marketCapUSD": 888631644989.0
+      },
+      {
+        "companyKey": "XOM",
+        "symbol": "XOM",
+        "name": "ExxonMobil Holdings Corporation Common Stock",
+        "marketCapUSD": 707865643914.0
+      },
+      {
+        "companyKey": "V",
+        "symbol": "V",
+        "name": "Visa Inc.",
+        "marketCapUSD": 695530206436.0
+      },
+      {
+        "companyKey": "JNJ",
+        "symbol": "JNJ",
+        "name": "Johnson & Johnson Common Stock",
+        "marketCapUSD": 635562556987.0
+      },
+      {
+        "companyKey": "INTC",
+        "symbol": "INTC",
+        "name": "Intel Corporation Common Stock",
+        "marketCapUSD": 535641794940.0
+      },
+      {
+        "companyKey": "MA",
+        "symbol": "MA",
+        "name": "Mastercard Incorporated Common Stock",
+        "marketCapUSD": 521304755195.0
+      },
+      {
+        "companyKey": "PLTR",
+        "symbol": "PLTR",
+        "name": "Palantir Technologies Inc. Class A Common Stock",
+        "marketCapUSD": 502029177320.0
+      },
+      {
+        "companyKey": "ABBV",
+        "symbol": "ABBV",
+        "name": "AbbVie Inc. Common Stock",
+        "marketCapUSD": 496772011159.0
+      },
+      {
+        "companyKey": "CSCO",
+        "symbol": "CSCO",
+        "name": "Cisco Systems Inc. Common Stock (DE)",
+        "marketCapUSD": 454737969932.0
+      },
+      {
+        "companyKey": "COST",
+        "symbol": "COST",
+        "name": "Costco Wholesale Corporation Common Stock",
+        "marketCapUSD": 425156022605.0
+      },
+      {
+        "companyKey": "CVX",
+        "symbol": "CVX",
+        "name": "Chevron Corporation Common Stock",
+        "marketCapUSD": 424790823910.0
+      },
+      {
+        "companyKey": "ORCL",
+        "symbol": "ORCL",
+        "name": "Oracle Corporation Common Stock",
+        "marketCapUSD": 416497942861.0
+      },
+      {
+        "companyKey": "AMAT",
+        "symbol": "AMAT",
+        "name": "Applied Materials Inc. Common Stock",
+        "marketCapUSD": 394838535816.0
+      },
+      {
+        "companyKey": "LRCX",
+        "symbol": "LRCX",
+        "name": "Lam Research Corporation Common Stock",
+        "marketCapUSD": 387390925501.0
+      },
+      {
+        "companyKey": "KO",
+        "symbol": "KO",
+        "name": "Coca-Cola Company (The) Common Stock",
+        "marketCapUSD": 386325896529.0
+      },
+      {
+        "companyKey": "BAC",
+        "symbol": "BAC",
+        "name": "Bank of America Corporation Common Stock",
+        "marketCapUSD": 381664205762.0
+      },
+      {
+        "companyKey": "CAT",
+        "symbol": "CAT",
+        "name": "Caterpillar Inc. Common Stock",
+        "marketCapUSD": 367450316020.0
+      },
+      {
+        "companyKey": "DELL",
+        "symbol": "DELL",
+        "name": "Dell Technologies Inc. Class C Common Stock ",
+        "marketCapUSD": 366711361690.0
+      },
+      {
+        "companyKey": "MRK",
+        "symbol": "MRK",
+        "name": "Merck & Company Inc. Common Stock (new)",
+        "marketCapUSD": 358850114747.0
+      },
+      {
+        "companyKey": "PG",
+        "symbol": "PG",
+        "name": "Procter & Gamble Company (The) Common Stock",
+        "marketCapUSD": 356103144792.0
+      },
+      {
+        "companyKey": "UNH",
+        "symbol": "UNH",
+        "name": "UnitedHealth Group Incorporated Common Stock (DE)",
+        "marketCapUSD": 339757601486.0
+      },
+      {
+        "companyKey": "PANW",
+        "symbol": "PANW",
+        "name": "Palo Alto Networks Inc. Common Stock",
+        "marketCapUSD": 330332940000.0
+      },
+      {
+        "companyKey": "GE",
+        "symbol": "GE",
+        "name": "GE Aerospace Common Stock",
+        "marketCapUSD": 320233294012.0
+      },
+      {
+        "companyKey": "PM",
+        "symbol": "PM",
+        "name": "Philip Morris International Inc Common Stock",
+        "marketCapUSD": 314839914678.0
+      },
+      {
+        "companyKey": "MS",
+        "symbol": "MS",
+        "name": "Morgan Stanley Common Stock",
+        "marketCapUSD": 298439006806.0
+      },
+      {
+        "companyKey": "HD",
+        "symbol": "HD",
+        "name": "Home Depot Inc. (The) Common Stock",
+        "marketCapUSD": 289948559108.0
+      },
+      {
+        "companyKey": "CRWD",
+        "symbol": "CRWD",
+        "name": "CrowdStrike Holdings Inc. Class A Common Stock",
+        "marketCapUSD": 269305102794.0
+      },
+      {
+        "companyKey": "ANET",
+        "symbol": "ANET",
+        "name": "Arista Networks Inc. Common Stock",
+        "marketCapUSD": 265967053770.0
+      },
+      {
+        "companyKey": "GEV",
+        "symbol": "GEV",
+        "name": "GE Vernova Inc. Common Stock",
+        "marketCapUSD": 265481313541.0
+      },
+      {
+        "companyKey": "GS",
+        "symbol": "GS",
+        "name": "Goldman Sachs Group Inc. (The) Common Stock",
+        "marketCapUSD": 260292680182.0
+      },
+      {
+        "companyKey": "TXN",
+        "symbol": "TXN",
+        "name": "Texas Instruments Incorporated Common Stock",
+        "marketCapUSD": 257298403054.0
+      },
+      {
+        "companyKey": "WFC",
+        "symbol": "WFC",
+        "name": "Wells Fargo & Company Common Stock",
+        "marketCapUSD": 251959624676.0
+      },
+      {
+        "companyKey": "RTX",
+        "symbol": "RTX",
+        "name": "RTX Corporation Common Stock",
+        "marketCapUSD": 251572535159.0
+      },
+      {
+        "companyKey": "KLAC",
+        "symbol": "KLAC",
+        "name": "KLA Corporation Common Stock",
+        "marketCapUSD": 248107834259.0
+      },
+      {
+        "companyKey": "TMO",
+        "symbol": "TMO",
+        "name": "Thermo Fisher Scientific Inc Common Stock",
+        "marketCapUSD": 244861442681.0
+      },
+      {
+        "companyKey": "MRVL",
+        "symbol": "MRVL",
+        "name": "Marvell Technology Inc. Common Stock",
+        "marketCapUSD": 233132634000.0
+      },
+      {
+        "companyKey": "AMGN",
+        "symbol": "AMGN",
+        "name": "Amgen Inc. Common Stock",
+        "marketCapUSD": 225751706328.0
+      },
+      {
+        "companyKey": "LIN",
+        "symbol": "LIN",
+        "name": "Linde plc Ordinary Shares",
+        "marketCapUSD": 224658682438.0
+      },
+      {
+        "companyKey": "C",
+        "symbol": "C",
+        "name": "Citigroup Inc. Common Stock",
+        "marketCapUSD": 221287460413.0
+      },
+      {
+        "companyKey": "SNDK",
+        "symbol": "SNDK",
+        "name": "Sandisk Corporation Common Stock",
+        "marketCapUSD": 216150221269.0
+      },
+      {
+        "companyKey": "IBM",
+        "symbol": "IBM",
+        "name": "International Business Machines Corporation Common Stock",
+        "marketCapUSD": 213883349218.0
+      },
+      {
+        "companyKey": "APH",
+        "symbol": "APH",
+        "name": "Amphenol Corporation Common Stock",
+        "marketCapUSD": 212541688318.0
+      },
+      {
+        "companyKey": "AXP",
+        "symbol": "AXP",
+        "name": "American Express Company Common Stock",
+        "marketCapUSD": 210379272274.0
+      },
+      {
+        "companyKey": "ADI",
+        "symbol": "ADI",
+        "name": "Analog Devices Inc. Common Stock",
+        "marketCapUSD": 196852297329.0
+      },
+      {
+        "companyKey": "CRM",
+        "symbol": "CRM",
+        "name": "Salesforce Inc. Common Stock",
+        "marketCapUSD": 192516160000.0
+      },
+      {
+        "companyKey": "DIS",
+        "symbol": "DIS",
+        "name": "Walt Disney Company (The) Common Stock",
+        "marketCapUSD": 187328261998.0
+      },
+      {
+        "companyKey": "GILD",
+        "symbol": "GILD",
+        "name": "Gilead Sciences Inc. Common Stock",
+        "marketCapUSD": 186526453967.0
+      },
+      {
+        "companyKey": "QCOM",
+        "symbol": "QCOM",
+        "name": "QUALCOMM Incorporated Common Stock",
+        "marketCapUSD": 183192302840.0
+      },
+      {
+        "companyKey": "VZ",
+        "symbol": "VZ",
+        "name": "Verizon Communications Inc. Common Stock",
+        "marketCapUSD": 177741283142.0
+      },
+      {
+        "companyKey": "ABT",
+        "symbol": "ABT",
+        "name": "Abbott Laboratories Common Stock",
+        "marketCapUSD": 176187627199.0
+      },
+      {
+        "companyKey": "PEP",
+        "symbol": "PEP",
+        "name": "PepsiCo Inc. Common Stock",
+        "marketCapUSD": 172632041535.0
+      },
+      {
+        "companyKey": "STX",
+        "symbol": "STX",
+        "name": "Seagate Technology Holdings PLC Ordinary Shares (Ireland)",
+        "marketCapUSD": 172282248541.0
+      },
+      {
+        "companyKey": "DE",
+        "symbol": "DE",
+        "name": "Deere & Company Common Stock",
+        "marketCapUSD": 170567731885.0
+      },
+      {
+        "companyKey": "BLK",
+        "symbol": "BLK",
+        "name": "BlackRock Inc. Common Stock",
+        "marketCapUSD": 167865887215.0
+      },
+      {
+        "companyKey": "SCHW",
+        "symbol": "SCHW",
+        "name": "Charles Schwab Corporation (The) Common Stock",
+        "marketCapUSD": 167849324401.0
+      },
+      {
+        "companyKey": "UNP",
+        "symbol": "UNP",
+        "name": "Union Pacific Corporation Common Stock",
+        "marketCapUSD": 167273837972.0
+      },
+      {
+        "companyKey": "MCD",
+        "symbol": "MCD",
+        "name": "McDonald's Corporation Common Stock",
+        "marketCapUSD": 166755726780.0
+      },
+      {
+        "companyKey": "WELL",
+        "symbol": "WELL",
+        "name": "Welltower Inc. Common Stock",
+        "marketCapUSD": 165980354766.0
+      },
+      {
+        "companyKey": "ETN",
+        "symbol": "ETN",
+        "name": "Eaton Corporation PLC Ordinary Shares",
+        "marketCapUSD": 165726396000.0
+      },
+      {
+        "companyKey": "COP",
+        "symbol": "COP",
+        "name": "ConocoPhillips Common Stock",
+        "marketCapUSD": 165255983611.0
+      },
+      {
+        "companyKey": "NEE",
+        "symbol": "NEE",
+        "name": "NextEra Energy Inc. Common Stock",
+        "marketCapUSD": 163770149189.0
+      },
+      {
+        "companyKey": "TMUS",
+        "symbol": "TMUS",
+        "name": "T-Mobile US Inc. Common Stock",
+        "marketCapUSD": 162906637866.0
+      },
+      {
+        "companyKey": "PFE",
+        "symbol": "PFE",
+        "name": "Pfizer Inc. Common Stock",
+        "marketCapUSD": 161870729928.0
+      },
+      {
+        "companyKey": "TJX",
+        "symbol": "TJX",
+        "name": "TJX Companies Inc. (The) Common Stock",
+        "marketCapUSD": 156108318737.0
+      },
+      {
+        "companyKey": "DHR",
+        "symbol": "DHR",
+        "name": "Danaher Corporation Common Stock",
+        "marketCapUSD": 155500515145.0
+      },
+      {
+        "companyKey": "T",
+        "symbol": "T",
+        "name": "AT&T Inc.",
+        "marketCapUSD": 154110153269.0
+      },
+      {
+        "companyKey": "ISRG",
+        "symbol": "ISRG",
+        "name": "Intuitive Surgical Inc. Common Stock",
+        "marketCapUSD": 151075820170.0
+      },
+      {
+        "companyKey": "BA",
+        "symbol": "BA",
+        "name": "Boeing Company (The) Common Stock",
+        "marketCapUSD": 149775118790.0
+      },
+      {
+        "companyKey": "UBER",
+        "symbol": "UBER",
+        "name": "Uber Technologies Inc. Common Stock",
+        "marketCapUSD": 146043048652.0
+      },
+      {
+        "companyKey": "NOW",
+        "symbol": "NOW",
+        "name": "ServiceNow Inc. Common Stock",
+        "marketCapUSD": 145090880000.0
+      },
+      {
+        "companyKey": "WDC",
+        "symbol": "WDC",
+        "name": "Western Digital Corporation Common Stock",
+        "marketCapUSD": 144548394181.0
+      },
+      {
+        "companyKey": "ACN",
+        "symbol": "ACN",
+        "name": "Accenture plc Class A Ordinary Shares (Ireland)",
+        "marketCapUSD": 143427918823.0
+      },
+      {
+        "companyKey": "FTNT",
+        "symbol": "FTNT",
+        "name": "Fortinet Inc. Common Stock",
+        "marketCapUSD": 141562712210.0
+      },
+      {
+        "companyKey": "CB",
+        "symbol": "CB",
+        "name": "Chubb Limited  Common Stock",
+        "marketCapUSD": 133124099347.0
+      },
+      {
+        "companyKey": "MPC",
+        "symbol": "MPC",
+        "name": "Marathon Petroleum Corporation Common Stock",
+        "marketCapUSD": 128845209512.0
+      },
+      {
+        "companyKey": "MNST",
+        "symbol": "MNST",
+        "name": "Monster Beverage Corporation",
+        "marketCapUSD": 128592286400.0
+      },
+      {
+        "companyKey": "VRTX",
+        "symbol": "VRTX",
+        "name": "Vertex Pharmaceuticals Incorporated Common Stock",
+        "marketCapUSD": 128504688468.0
+      },
+      {
+        "companyKey": "PGR",
+        "symbol": "PGR",
+        "name": "Progressive Corporation (The) Common Stock",
+        "marketCapUSD": 128064573496.0
+      },
+      {
+        "companyKey": "GLW",
+        "symbol": "GLW",
+        "name": "Corning Incorporated Common Stock",
+        "marketCapUSD": 126865273390.0
+      },
+      {
+        "companyKey": "PLD",
+        "symbol": "PLD",
+        "name": "Prologis Inc. Common Stock",
+        "marketCapUSD": 125591627720.0
+      },
+      {
+        "companyKey": "VLO",
+        "symbol": "VLO",
+        "name": "Valero Energy Corporation Common Stock",
+        "marketCapUSD": 125536372996.0
+      },
+      {
+        "companyKey": "NEM",
+        "symbol": "NEM",
+        "name": "Newmont Corporation",
+        "marketCapUSD": 123440049548.0
+      },
+      {
+        "companyKey": "COF",
+        "symbol": "COF",
+        "name": "Capital One Financial Corporation Common Stock",
+        "marketCapUSD": 123396339913.0
+      },
+      {
+        "companyKey": "SPGI",
+        "symbol": "SPGI",
+        "name": "S&P Global Inc. Common Stock",
+        "marketCapUSD": 121513612000.0
+      },
+      {
+        "companyKey": "PH",
+        "symbol": "PH",
+        "name": "Parker-Hannifin Corporation Common Stock",
+        "marketCapUSD": 120675708789.0
+      },
+      {
+        "companyKey": "MO",
+        "symbol": "MO",
+        "name": "Altria Group Inc.",
+        "marketCapUSD": 119653849737.0
+      },
+      {
+        "companyKey": "BKNG",
+        "symbol": "BKNG",
+        "name": "Booking Holdings Inc. Common Stock",
+        "marketCapUSD": 119041212615.0
+      },
+      {
+        "companyKey": "LMT",
+        "symbol": "LMT",
+        "name": "Lockheed Martin Corporation Common Stock",
+        "marketCapUSD": 118137170646.0
+      },
+      {
+        "companyKey": "BMY",
+        "symbol": "BMY",
+        "name": "Bristol-Myers Squibb Company Common Stock",
+        "marketCapUSD": 117619509892.0
+      },
+      {
+        "companyKey": "MDT",
+        "symbol": "MDT",
+        "name": "Medtronic plc. Ordinary Shares",
+        "marketCapUSD": 117591146228.0
+      },
+      {
+        "companyKey": "PSX",
+        "symbol": "PSX",
+        "name": "Phillips 66 Common Stock",
+        "marketCapUSD": 112312417227.0
+      },
+      {
+        "companyKey": "CVS",
+        "symbol": "CVS",
+        "name": "CVS Health Corporation Common Stock",
+        "marketCapUSD": 112216860176.0
+      },
+      {
+        "companyKey": "MCK",
+        "symbol": "MCK",
+        "name": "McKesson Corporation Common Stock",
+        "marketCapUSD": 111432405341.0
+      },
+      {
+        "companyKey": "ADP",
+        "symbol": "ADP",
+        "name": "Automatic Data Processing Inc. Common Stock",
+        "marketCapUSD": 108497636358.0
+      },
+      {
+        "companyKey": "SYK",
+        "symbol": "SYK",
+        "name": "Stryker Corporation Common Stock",
+        "marketCapUSD": 108397742800.0
+      },
+      {
+        "companyKey": "FCX",
+        "symbol": "FCX",
+        "name": "Freeport-McMoRan Inc. Common Stock",
+        "marketCapUSD": 105245724261.0
+      },
+      {
+        "companyKey": "SBUX",
+        "symbol": "SBUX",
+        "name": "Starbucks Corporation Common Stock",
+        "marketCapUSD": 105204900000.0
+      },
+      {
+        "companyKey": "TT",
+        "symbol": "TT",
+        "name": "Trane Technologies plc",
+        "marketCapUSD": 105072068176.0
+      },
+      {
+        "companyKey": "CEG",
+        "symbol": "CEG",
+        "name": "Constellation Energy Corporation Common Stock ",
+        "marketCapUSD": 104127395614.0
+      },
+      {
+        "companyKey": "LOW",
+        "symbol": "LOW",
+        "name": "Lowe's Companies Inc. Common Stock",
+        "marketCapUSD": 104114794306.0
+      },
+      {
+        "companyKey": "DDOG",
+        "symbol": "DDOG",
+        "name": "Datadog Inc. Class A Common Stock",
+        "marketCapUSD": 103158663645.0
+      },
+      {
+        "companyKey": "PWR",
+        "symbol": "PWR",
+        "name": "Quanta Services Inc. Common Stock",
+        "marketCapUSD": 102363257151.0
+      },
+      {
+        "companyKey": "EQIX",
+        "symbol": "EQIX",
+        "name": "Equinix Inc. Common Stock REIT",
+        "marketCapUSD": 101888382964.0
+      },
+      {
+        "companyKey": "SO",
+        "symbol": "SO",
+        "name": "Southern Company (The) Common Stock",
+        "marketCapUSD": 100127592561.0
+      },
+      {
+        "companyKey": "CME",
+        "symbol": "CME",
+        "name": "CME Group Inc. Class A Common Stock",
+        "marketCapUSD": 99689754874.0
+      },
+      {
+        "companyKey": "HCA",
+        "symbol": "HCA",
+        "name": "HCA Healthcare Inc. Common Stock",
+        "marketCapUSD": 99287587900.0
+      },
+      {
+        "companyKey": "HOOD",
+        "symbol": "HOOD",
+        "name": "Robinhood Markets Inc. Class A Common Stock",
+        "marketCapUSD": 98197765857.0
+      },
+      {
+        "companyKey": "ABNB",
+        "symbol": "ABNB",
+        "name": "Airbnb Inc. Class A Common Stock",
+        "marketCapUSD": 97901459007.0
+      },
+      {
+        "companyKey": "BNY",
+        "symbol": "BNY",
+        "name": "The Bank of New York Mellon Corporation Common Stock",
+        "marketCapUSD": 96924316685.0
+      },
+      {
+        "companyKey": "MAR",
+        "symbol": "MAR",
+        "name": "Marriott International Class A Common Stock",
+        "marketCapUSD": 96300990158.0
+      },
+      {
+        "companyKey": "SNPS",
+        "symbol": "SNPS",
+        "name": "Synopsys Inc. Common Stock",
+        "marketCapUSD": 96299330981.0
+      },
+      {
+        "companyKey": "CDNS",
+        "symbol": "CDNS",
+        "name": "Cadence Design Systems Inc. Common Stock",
+        "marketCapUSD": 95952429060.0
+      },
+      {
+        "companyKey": "JCI",
+        "symbol": "JCI",
+        "name": "Johnson Controls International plc Ordinary Share",
+        "marketCapUSD": 94138281853.0
+      },
+      {
+        "companyKey": "HPE",
+        "symbol": "HPE",
+        "name": "Hewlett Packard Enterprise Company Common Stock",
+        "marketCapUSD": 93360597907.0
+      },
+      {
+        "companyKey": "ADBE",
+        "symbol": "ADBE",
+        "name": "Adobe Inc. Common Stock",
+        "marketCapUSD": 92684088000.0
+      },
+      {
+        "companyKey": "VRT",
+        "symbol": "VRT",
+        "name": "Vertiv Holdings LLC Class A Common Stock",
+        "marketCapUSD": 92150769089.0
+      },
+      {
+        "companyKey": "DUK",
+        "symbol": "DUK",
+        "name": "Duke Energy Corporation (Holding Company) Common Stock",
+        "marketCapUSD": 91763151094.0
+      },
+      {
+        "companyKey": "ELV",
+        "symbol": "ELV",
+        "name": "Elevance Health Inc. Common Stock",
+        "marketCapUSD": 91538358616.0
+      },
+      {
+        "companyKey": "GD",
+        "symbol": "GD",
+        "name": "General Dynamics Corporation Common Stock",
+        "marketCapUSD": 90761116635.0
+      },
+      {
+        "companyKey": "WMB",
+        "symbol": "WMB",
+        "name": "Williams Companies Inc. (The) Common Stock",
+        "marketCapUSD": 90722331398.0
+      },
+      {
+        "companyKey": "APP",
+        "symbol": "APP",
+        "name": "Applovin Corporation Class A Common Stock",
+        "marketCapUSD": 90646916370.0
+      },
+      {
+        "companyKey": "EMR",
+        "symbol": "EMR",
+        "name": "Emerson Electric Company Common Stock",
+        "marketCapUSD": 90620188000.0
+      },
+      {
+        "companyKey": "LITE",
+        "symbol": "LITE",
+        "name": "Lumentum Holdings Inc. Common Stock",
+        "marketCapUSD": 90167080691.0
+      },
+      {
+        "companyKey": "USB",
+        "symbol": "USB",
+        "name": "U.S. Bancorp Common Stock",
+        "marketCapUSD": 89463314029.0
+      },
+      {
+        "companyKey": "CSX",
+        "symbol": "CSX",
+        "name": "CSX Corporation Common Stock",
+        "marketCapUSD": 88455677287.0
+      },
+      {
+        "companyKey": "ICE",
+        "symbol": "ICE",
+        "name": "Intercontinental Exchange Inc. Common Stock",
+        "marketCapUSD": 88374720144.0
+      },
+      {
+        "companyKey": "PNC",
+        "symbol": "PNC",
+        "name": "PNC Financial Services Group Inc. (The) Common Stock",
+        "marketCapUSD": 88270275760.0
+      },
+      {
+        "companyKey": "HWM",
+        "symbol": "HWM",
+        "name": "Howmet Aerospace Inc. Common Stock",
+        "marketCapUSD": 88059336913.0
+      },
+      {
+        "companyKey": "BX",
+        "symbol": "BX",
+        "name": "Blackstone Inc. Common Stock",
+        "marketCapUSD": 86156750585.0
+      },
+      {
+        "companyKey": "MRNA",
+        "symbol": "MRNA",
+        "name": "Moderna Inc. Common Stock",
+        "marketCapUSD": 85332678915.0
+      },
+      {
+        "companyKey": "AMT",
+        "symbol": "AMT",
+        "name": "American Tower Corporation (REIT) Common Stock",
+        "marketCapUSD": 85065666363.0
+      },
+      {
+        "companyKey": "WM",
+        "symbol": "WM",
+        "name": "Waste Management Inc. Common Stock",
+        "marketCapUSD": 84395863950.0
+      },
+      {
+        "companyKey": "MRSH",
+        "symbol": "MRSH",
+        "name": "Marsh Common Stock",
+        "marketCapUSD": 84246877253.0
+      },
+      {
+        "companyKey": "DASH",
+        "symbol": "DASH",
+        "name": "DoorDash Inc. Class A Common Stock",
+        "marketCapUSD": 84163791283.0
+      },
+      {
+        "companyKey": "MMM",
+        "symbol": "MMM",
+        "name": "3M Company Common Stock",
+        "marketCapUSD": 82974579671.0
+      },
+      {
+        "companyKey": "KKR",
+        "symbol": "KKR",
+        "name": "KKR & Co. Inc. Common Stock",
+        "marketCapUSD": 82142633848.0
+      },
+      {
+        "companyKey": "INTU",
+        "symbol": "INTU",
+        "name": "Intuit Inc. Common Stock",
+        "marketCapUSD": 81771543640.0
+      }
+    ],
+    "nasdaq": [
+      {
+        "companyKey": "NVDA",
+        "symbol": "NVDA",
+        "name": "NVIDIA Corporation Common Stock",
+        "marketCapUSD": 5454312000000.0
+      },
+      {
+        "companyKey": "AAPL",
+        "symbol": "AAPL",
+        "name": "Apple Inc. Common Stock",
+        "marketCapUSD": 4976177554600.0
+      },
+      {
+        "companyKey": "GOOGL",
+        "symbol": "GOOGL",
+        "name": "Alphabet Inc. Class A Common Stock",
+        "marketCapUSD": 4313765600000.0
+      },
+      {
+        "companyKey": "MSFT",
+        "symbol": "MSFT",
+        "name": "Microsoft Corporation Common Stock",
+        "marketCapUSD": 4018333942455.0
+      },
+      {
+        "companyKey": "AMZN",
+        "symbol": "AMZN",
+        "name": "Amazon.com Inc. Common Stock",
+        "marketCapUSD": 2799371961341.0
+      },
+      {
+        "companyKey": "SPCX",
+        "symbol": "SPCX",
+        "name": "Space Exploration Technologies Corp. Class A Common Stock",
+        "marketCapUSD": 2218070509958.0
+      },
+      {
+        "companyKey": "META",
+        "symbol": "META",
+        "name": "Meta Platforms Inc. Class A Common Stock",
+        "marketCapUSD": 1892695224926.0
+      },
+      {
+        "companyKey": "AVGO",
+        "symbol": "AVGO",
+        "name": "Broadcom Inc. Common Stock",
+        "marketCapUSD": 1693349722011.0
+      },
+      {
+        "companyKey": "TSLA",
+        "symbol": "TSLA",
+        "name": "Tesla Inc. Common Stock",
+        "marketCapUSD": 1493047401354.0
+      },
+      {
+        "companyKey": "SKHY",
+        "symbol": "SKHY",
+        "name": "SK hynix Inc. American Depositary Shares",
+        "marketCapUSD": 1182438500650.0
+      },
+      {
+        "companyKey": "MU",
+        "symbol": "MU",
+        "name": "Micron Technology Inc. Common Stock",
+        "marketCapUSD": 1119022813596.0
+      },
+      {
+        "companyKey": "AMD",
+        "symbol": "AMD",
+        "name": "Advanced Micro Devices Inc. Common Stock",
+        "marketCapUSD": 970081968958.0
+      },
+      {
+        "companyKey": "WMT",
+        "symbol": "WMT",
+        "name": "Walmart Inc. Common Stock",
+        "marketCapUSD": 897148024932.0
+      },
+      {
+        "companyKey": "ASML",
+        "symbol": "ASML",
+        "name": "ASML Holding N.V. New York Registry Shares",
+        "marketCapUSD": 674573413990.0
+      },
+      {
+        "companyKey": "INTC",
+        "symbol": "INTC",
+        "name": "Intel Corporation Common Stock",
+        "marketCapUSD": 535641794940.0
+      },
+      {
+        "companyKey": "PLTR",
+        "symbol": "PLTR",
+        "name": "Palantir Technologies Inc. Class A Common Stock",
+        "marketCapUSD": 502029177320.0
+      },
+      {
+        "companyKey": "CSCO",
+        "symbol": "CSCO",
+        "name": "Cisco Systems Inc. Common Stock (DE)",
+        "marketCapUSD": 454737969932.0
+      },
+      {
+        "companyKey": "COST",
+        "symbol": "COST",
+        "name": "Costco Wholesale Corporation Common Stock",
+        "marketCapUSD": 425156022605.0
+      },
+      {
+        "companyKey": "AMAT",
+        "symbol": "AMAT",
+        "name": "Applied Materials Inc. Common Stock",
+        "marketCapUSD": 394838535816.0
+      },
+      {
+        "companyKey": "LRCX",
+        "symbol": "LRCX",
+        "name": "Lam Research Corporation Common Stock",
+        "marketCapUSD": 387390925501.0
+      },
+      {
+        "companyKey": "PANW",
+        "symbol": "PANW",
+        "name": "Palo Alto Networks Inc. Common Stock",
+        "marketCapUSD": 330332940000.0
+      },
+      {
+        "companyKey": "ARM",
+        "symbol": "ARM",
+        "name": "Arm Holdings plc American Depositary Shares",
+        "marketCapUSD": 271589462520.0
+      },
+      {
+        "companyKey": "CRWD",
+        "symbol": "CRWD",
+        "name": "CrowdStrike Holdings Inc. Class A Common Stock",
+        "marketCapUSD": 269305102794.0
+      },
+      {
+        "companyKey": "TXN",
+        "symbol": "TXN",
+        "name": "Texas Instruments Incorporated Common Stock",
+        "marketCapUSD": 257298403054.0
+      },
+      {
+        "companyKey": "KLAC",
+        "symbol": "KLAC",
+        "name": "KLA Corporation Common Stock",
+        "marketCapUSD": 248107834259.0
+      },
+      {
+        "companyKey": "MRVL",
+        "symbol": "MRVL",
+        "name": "Marvell Technology Inc. Common Stock",
+        "marketCapUSD": 233132634000.0
+      },
+      {
+        "companyKey": "SHOP",
+        "symbol": "SHOP",
+        "name": "Shopify Inc. Class A Subordinate Voting Shares",
+        "marketCapUSD": 232235251901.0
+      },
+      {
+        "companyKey": "AMGN",
+        "symbol": "AMGN",
+        "name": "Amgen Inc. Common Stock",
+        "marketCapUSD": 225751706328.0
+      },
+      {
+        "companyKey": "LIN",
+        "symbol": "LIN",
+        "name": "Linde plc Ordinary Shares",
+        "marketCapUSD": 224658682438.0
+      },
+      {
+        "companyKey": "SNDK",
+        "symbol": "SNDK",
+        "name": "Sandisk Corporation Common Stock",
+        "marketCapUSD": 216150221269.0
+      },
+      {
+        "companyKey": "ADI",
+        "symbol": "ADI",
+        "name": "Analog Devices Inc. Common Stock",
+        "marketCapUSD": 196852297329.0
+      },
+      {
+        "companyKey": "GILD",
+        "symbol": "GILD",
+        "name": "Gilead Sciences Inc. Common Stock",
+        "marketCapUSD": 186526453967.0
+      },
+      {
+        "companyKey": "QCOM",
+        "symbol": "QCOM",
+        "name": "QUALCOMM Incorporated Common Stock",
+        "marketCapUSD": 183192302840.0
+      },
+      {
+        "companyKey": "PEP",
+        "symbol": "PEP",
+        "name": "PepsiCo Inc. Common Stock",
+        "marketCapUSD": 172632041535.0
+      },
+      {
+        "companyKey": "STX",
+        "symbol": "STX",
+        "name": "Seagate Technology Holdings PLC Ordinary Shares (Ireland)",
+        "marketCapUSD": 172282248541.0
+      },
+      {
+        "companyKey": "TMUS",
+        "symbol": "TMUS",
+        "name": "T-Mobile US Inc. Common Stock",
+        "marketCapUSD": 162906637866.0
+      },
+      {
+        "companyKey": "ISRG",
+        "symbol": "ISRG",
+        "name": "Intuitive Surgical Inc. Common Stock",
+        "marketCapUSD": 151075820170.0
+      },
+      {
+        "companyKey": "WDC",
+        "symbol": "WDC",
+        "name": "Western Digital Corporation Common Stock",
+        "marketCapUSD": 144548394181.0
+      },
+      {
+        "companyKey": "FTNT",
+        "symbol": "FTNT",
+        "name": "Fortinet Inc. Common Stock",
+        "marketCapUSD": 141562712210.0
+      },
+      {
+        "companyKey": "MNST",
+        "symbol": "MNST",
+        "name": "Monster Beverage Corporation",
+        "marketCapUSD": 128592286400.0
+      },
+      {
+        "companyKey": "VRTX",
+        "symbol": "VRTX",
+        "name": "Vertex Pharmaceuticals Incorporated Common Stock",
+        "marketCapUSD": 128504688468.0
+      },
+      {
+        "companyKey": "BKNG",
+        "symbol": "BKNG",
+        "name": "Booking Holdings Inc. Common Stock",
+        "marketCapUSD": 119041212615.0
+      },
+      {
+        "companyKey": "PDD",
+        "symbol": "PDD",
+        "name": "PDD Holdings Inc. American Depositary Shares",
+        "marketCapUSD": 115181241705.0
+      },
+      {
+        "companyKey": "ADP",
+        "symbol": "ADP",
+        "name": "Automatic Data Processing Inc. Common Stock",
+        "marketCapUSD": 108497636358.0
+      },
+      {
+        "companyKey": "SBUX",
+        "symbol": "SBUX",
+        "name": "Starbucks Corporation Common Stock",
+        "marketCapUSD": 105204900000.0
+      },
+      {
+        "companyKey": "CEG",
+        "symbol": "CEG",
+        "name": "Constellation Energy Corporation Common Stock ",
+        "marketCapUSD": 104127395614.0
+      },
+      {
+        "companyKey": "DDOG",
+        "symbol": "DDOG",
+        "name": "Datadog Inc. Class A Common Stock",
+        "marketCapUSD": 103158663645.0
+      },
+      {
+        "companyKey": "EQIX",
+        "symbol": "EQIX",
+        "name": "Equinix Inc. Common Stock REIT",
+        "marketCapUSD": 101888382964.0
+      },
+      {
+        "companyKey": "CME",
+        "symbol": "CME",
+        "name": "CME Group Inc. Class A Common Stock",
+        "marketCapUSD": 99689754874.0
+      },
+      {
+        "companyKey": "HOOD",
+        "symbol": "HOOD",
+        "name": "Robinhood Markets Inc. Class A Common Stock",
+        "marketCapUSD": 98197765857.0
+      },
+      {
+        "companyKey": "ABNB",
+        "symbol": "ABNB",
+        "name": "Airbnb Inc. Class A Common Stock",
+        "marketCapUSD": 97901459007.0
+      },
+      {
+        "companyKey": "SNY",
+        "symbol": "SNY",
+        "name": "Sanofi ADS",
+        "marketCapUSD": 96920065590.0
+      },
+      {
+        "companyKey": "MAR",
+        "symbol": "MAR",
+        "name": "Marriott International Class A Common Stock",
+        "marketCapUSD": 96300990158.0
+      },
+      {
+        "companyKey": "SNPS",
+        "symbol": "SNPS",
+        "name": "Synopsys Inc. Common Stock",
+        "marketCapUSD": 96299330981.0
+      },
+      {
+        "companyKey": "CDNS",
+        "symbol": "CDNS",
+        "name": "Cadence Design Systems Inc. Common Stock",
+        "marketCapUSD": 95952429060.0
+      },
+      {
+        "companyKey": "MELI",
+        "symbol": "MELI",
+        "name": "MercadoLibre Inc. Common Stock",
+        "marketCapUSD": 95940655977.0
+      },
+      {
+        "companyKey": "ADBE",
+        "symbol": "ADBE",
+        "name": "Adobe Inc. Common Stock",
+        "marketCapUSD": 92684088000.0
+      },
+      {
+        "companyKey": "APP",
+        "symbol": "APP",
+        "name": "Applovin Corporation Class A Common Stock",
+        "marketCapUSD": 90646916370.0
+      },
+      {
+        "companyKey": "LITE",
+        "symbol": "LITE",
+        "name": "Lumentum Holdings Inc. Common Stock",
+        "marketCapUSD": 90167080691.0
+      },
+      {
+        "companyKey": "CSX",
+        "symbol": "CSX",
+        "name": "CSX Corporation Common Stock",
+        "marketCapUSD": 88455677287.0
+      },
+      {
+        "companyKey": "MRNA",
+        "symbol": "MRNA",
+        "name": "Moderna Inc. Common Stock",
+        "marketCapUSD": 85332678915.0
+      },
+      {
+        "companyKey": "DASH",
+        "symbol": "DASH",
+        "name": "DoorDash Inc. Class A Common Stock",
+        "marketCapUSD": 84163791283.0
+      },
+      {
+        "companyKey": "INTU",
+        "symbol": "INTU",
+        "name": "Intuit Inc. Common Stock",
+        "marketCapUSD": 81771543640.0
+      },
+      {
+        "companyKey": "CTAS",
+        "symbol": "CTAS",
+        "name": "Cintas Corporation Common Stock",
+        "marketCapUSD": 81491721336.0
+      },
+      {
+        "companyKey": "NTES",
+        "symbol": "NTES",
+        "name": "NetEase Inc. American Depositary Shares",
+        "marketCapUSD": 80027645648.0
+      },
+      {
+        "companyKey": "MDLZ",
+        "symbol": "MDLZ",
+        "name": "Mondelez International Inc. Class A Common Stock",
+        "marketCapUSD": 78863074842.0
+      },
+      {
+        "companyKey": "REGN",
+        "symbol": "REGN",
+        "name": "Regeneron Pharmaceuticals Inc. Common Stock",
+        "marketCapUSD": 78535094396.0
+      },
+      {
+        "companyKey": "CMCSA",
+        "symbol": "CMCSA",
+        "name": "Comcast Corporation Class A Common Stock",
+        "marketCapUSD": 73385804330.0
+      },
+      {
+        "companyKey": "ROST",
+        "symbol": "ROST",
+        "name": "Ross Stores Inc. Common Stock",
+        "marketCapUSD": 72145290362.0
+      },
+      {
+        "companyKey": "ORLY",
+        "symbol": "ORLY",
+        "name": "O'Reilly Automotive Inc. Common Stock",
+        "marketCapUSD": 70096452627.0
+      },
+      {
+        "companyKey": "AEP",
+        "symbol": "AEP",
+        "name": "American Electric Power Company Inc. Common Stock",
+        "marketCapUSD": 67630483039.0
+      },
+      {
+        "companyKey": "HON",
+        "symbol": "HON",
+        "name": "Honeywell International Inc. Common Stock",
+        "marketCapUSD": 66443303696.0
+      },
+      {
+        "companyKey": "MPWR",
+        "symbol": "MPWR",
+        "name": "Monolithic Power Systems Inc. Common Stock",
+        "marketCapUSD": 64830919890.0
+      },
+      {
+        "companyKey": "MSTR",
+        "symbol": "MSTR",
+        "name": "Strategy Inc Common Stock Class A",
+        "marketCapUSD": 64427586993.0
+      },
+      {
+        "companyKey": "TER",
+        "symbol": "TER",
+        "name": "Teradyne Inc. Common Stock",
+        "marketCapUSD": 60011396888.0
+      },
+      {
+        "companyKey": "FAST",
+        "symbol": "FAST",
+        "name": "Fastenal Company Common Stock",
+        "marketCapUSD": 59084650034.0
+      },
+      {
+        "companyKey": "NTRA",
+        "symbol": "NTRA",
+        "name": "Natera Inc. Common Stock",
+        "marketCapUSD": 57336226501.0
+      },
+      {
+        "companyKey": "NBIS",
+        "symbol": "NBIS",
+        "name": "Nebius Group N.V. Class A Ordinary Shares",
+        "marketCapUSD": 57105907093.0
+      },
+      {
+        "companyKey": "PCAR",
+        "symbol": "PCAR",
+        "name": "PACCAR Inc. Common Stock",
+        "marketCapUSD": 56915842368.0
+      },
+      {
+        "companyKey": "NXPI",
+        "symbol": "NXPI",
+        "name": "NXP Semiconductors N.V. Common Stock",
+        "marketCapUSD": 56789893627.0
+      },
+      {
+        "companyKey": "ALAB",
+        "symbol": "ALAB",
+        "name": "Astera Labs Inc. Common Stock",
+        "marketCapUSD": 56228257057.0
+      },
+      {
+        "companyKey": "BKR",
+        "symbol": "BKR",
+        "name": "Baker Hughes Company Class A Common Stock",
+        "marketCapUSD": 55768429309.0
+      },
+      {
+        "companyKey": "FANG",
+        "symbol": "FANG",
+        "name": "Diamondback Energy Inc. Common Stock",
+        "marketCapUSD": 54635551514.0
+      },
+      {
+        "companyKey": "NDAQ",
+        "symbol": "NDAQ",
+        "name": "Nasdaq Inc. Common Stock",
+        "marketCapUSD": 52705976406.0
+      },
+      {
+        "companyKey": "TEAM",
+        "symbol": "TEAM",
+        "name": "Atlassian Corporation Class A Common Stock",
+        "marketCapUSD": 52589588816.0
+      },
+      {
+        "companyKey": "EBAY",
+        "symbol": "EBAY",
+        "name": "eBay Inc. Common Stock",
+        "marketCapUSD": 51019250000.0
+      },
+      {
+        "companyKey": "ARGX",
+        "symbol": "ARGX",
+        "name": "argenx SE American Depositary Shares",
+        "marketCapUSD": 50413683922.0
+      },
+      {
+        "companyKey": "HONA",
+        "symbol": "HONA",
+        "name": "Honeywell Aerospace Inc. Common Stock ",
+        "marketCapUSD": 49847155061.0
+      },
+      {
+        "companyKey": "ADSK",
+        "symbol": "ADSK",
+        "name": "Autodesk Inc. Common Stock",
+        "marketCapUSD": 48809860000.0
+      },
+      {
+        "companyKey": "PYPL",
+        "symbol": "PYPL",
+        "name": "PayPal Holdings Inc. Common Stock",
+        "marketCapUSD": 47948581988.0
+      },
+      {
+        "companyKey": "CCEP",
+        "symbol": "CCEP",
+        "name": "Coca-Cola Europacific Partners plc Ordinary Shares",
+        "marketCapUSD": 47704474060.0
+      },
+      {
+        "companyKey": "COIN",
+        "symbol": "COIN",
+        "name": "Coinbase Global Inc. Class A Common Stock",
+        "marketCapUSD": 47593542540.0
+      },
+      {
+        "companyKey": "MDLN",
+        "symbol": "MDLN",
+        "name": "Medline Inc. Class A Common Stock",
+        "marketCapUSD": 47013939914.0
+      },
+      {
+        "companyKey": "NTAP",
+        "symbol": "NTAP",
+        "name": "NetApp Inc. Common Stock",
+        "marketCapUSD": 46979497616.0
+      },
+      {
+        "companyKey": "XEL",
+        "symbol": "XEL",
+        "name": "Xcel Energy Inc. Common Stock",
+        "marketCapUSD": 46329126476.0
+      },
+      {
+        "companyKey": "WDAY",
+        "symbol": "WDAY",
+        "name": "Workday Inc. Class A Common Stock",
+        "marketCapUSD": 45368250000.0
+      },
+      {
+        "companyKey": "TRI",
+        "symbol": "TRI",
+        "name": "Thomson Reuters Corporation Common Shares",
+        "marketCapUSD": 45161100000.0
+      },
+      {
+        "companyKey": "KDP",
+        "symbol": "KDP",
+        "name": "Keurig Dr Pepper Inc. Common Stock",
+        "marketCapUSD": 44567052745.0
+      },
+      {
+        "companyKey": "CRWV",
+        "symbol": "CRWV",
+        "name": "CoreWeave Inc. Class A Common Stock",
+        "marketCapUSD": 44266327677.0
+      },
+      {
+        "companyKey": "EXC",
+        "symbol": "EXC",
+        "name": "Exelon Corporation Common Stock",
+        "marketCapUSD": 43478537090.0
+      },
+      {
+        "companyKey": "FLEX",
+        "symbol": "FLEX",
+        "name": "Flex Ltd. Ordinary Shares",
+        "marketCapUSD": 43315542337.0
+      },
+      {
+        "companyKey": "ILMN",
+        "symbol": "ILMN",
+        "name": "Illumina Inc. Common Stock",
+        "marketCapUSD": 41777170000.0
+      },
+      {
+        "companyKey": "RVMD",
+        "symbol": "RVMD",
+        "name": "Revolution Medicines Inc. Common Stock",
+        "marketCapUSD": 41570548271.0
+      },
+      {
+        "companyKey": "IDXX",
+        "symbol": "IDXX",
+        "name": "IDEXX Laboratories Inc. Common Stock",
+        "marketCapUSD": 41276577917.0
+      },
+      {
+        "companyKey": "RKLB",
+        "symbol": "RKLB",
+        "name": "Rocket Lab Corporation Common Stock",
+        "marketCapUSD": 41250092450.0
+      },
+      {
+        "companyKey": "MCHP",
+        "symbol": "MCHP",
+        "name": "Microchip Technology Incorporated Common Stock",
+        "marketCapUSD": 40090331657.0
+      },
+      {
+        "companyKey": "ONC",
+        "symbol": "ONC",
+        "name": "BeOne Medicines Ltd. American Depositary Shares",
+        "marketCapUSD": 39841137701.0
+      },
+      {
+        "companyKey": "IBKR",
+        "symbol": "IBKR",
+        "name": "Interactive Brokers Group Inc. Class A Common Stock",
+        "marketCapUSD": 39821040449.0
+      },
+      {
+        "companyKey": "OKTA",
+        "symbol": "OKTA",
+        "name": "Okta Inc. Class A Common Stock",
+        "marketCapUSD": 39698336330.0
+      },
+      {
+        "companyKey": "TTWO",
+        "symbol": "TTWO",
+        "name": "Take-Two Interactive Software Inc. Common Stock",
+        "marketCapUSD": 39045256107.0
+      },
+      {
+        "companyKey": "CRDO",
+        "symbol": "CRDO",
+        "name": "Credo Technology Group Holding Ltd Ordinary Shares",
+        "marketCapUSD": 37748263211.0
+      },
+      {
+        "companyKey": "ODFL",
+        "symbol": "ODFL",
+        "name": "Old Dominion Freight Line Inc. Common Stock",
+        "marketCapUSD": 37720243108.0
+      },
+      {
+        "companyKey": "PAYX",
+        "symbol": "PAYX",
+        "name": "Paychex Inc. Common Stock",
+        "marketCapUSD": 37249796695.0
+      },
+      {
+        "companyKey": "ZS",
+        "symbol": "ZS",
+        "name": "Zscaler Inc. Common Stock",
+        "marketCapUSD": 36814489714.0
+      },
+      {
+        "companyKey": "ROP",
+        "symbol": "ROP",
+        "name": "Roper Technologies Inc. Common Stock",
+        "marketCapUSD": 36328269038.0
+      },
+      {
+        "companyKey": "FER",
+        "symbol": "FER",
+        "name": "Ferrovial N.V. Ordinary Shares",
+        "marketCapUSD": 36217503236.0
+      },
+      {
+        "companyKey": "JD",
+        "symbol": "JD",
+        "name": "JD.com Inc. American Depositary Shares",
+        "marketCapUSD": 35911680000.0
+      },
+      {
+        "companyKey": "VOD",
+        "symbol": "VOD",
+        "name": "Vodafone Group Plc American Depositary Shares",
+        "marketCapUSD": 35617017210.0
+      },
+      {
+        "companyKey": "CBRS",
+        "symbol": "CBRS",
+        "name": "Cerebras Systems Inc. Class A Common Stock",
+        "marketCapUSD": 34831639691.0
+      },
+      {
+        "companyKey": "STLD",
+        "symbol": "STLD",
+        "name": "Steel Dynamics Inc.",
+        "marketCapUSD": 34275478964.0
+      },
+      {
+        "companyKey": "UAL",
+        "symbol": "UAL",
+        "name": "United Airlines Holdings Inc. Common Stock",
+        "marketCapUSD": 33899529148.0
+      },
+      {
+        "companyKey": "BIIB",
+        "symbol": "BIIB",
+        "name": "Biogen Inc. Common Stock",
+        "marketCapUSD": 33896244681.0
+      },
+      {
+        "companyKey": "AXON",
+        "symbol": "AXON",
+        "name": "Axon Enterprise Inc. Common Stock",
+        "marketCapUSD": 33667221898.0
+      },
+      {
+        "companyKey": "RPRX",
+        "symbol": "RPRX",
+        "name": "Royalty Pharma plc Class A Ordinary Shares ",
+        "marketCapUSD": 33223569567.0
+      },
+      {
+        "companyKey": "ACGL",
+        "symbol": "ACGL",
+        "name": "Arch Capital Group Ltd. Common Stock",
+        "marketCapUSD": 33153821882.0
+      },
+      {
+        "companyKey": "KMB",
+        "symbol": "KMB",
+        "name": "Kimberly-Clark Corporation Common Stock",
+        "marketCapUSD": 32848831583.0
+      },
+      {
+        "companyKey": "DXCM",
+        "symbol": "DXCM",
+        "name": "DexCom Inc. Common Stock",
+        "marketCapUSD": 32422836929.0
+      },
+      {
+        "companyKey": "ERIC",
+        "symbol": "ERIC",
+        "name": "Ericsson American Depositary Shares",
+        "marketCapUSD": 31589565757.0
+      },
+      {
+        "companyKey": "HBAN",
+        "symbol": "HBAN",
+        "name": "Huntington Bancshares Incorporated Common Stock",
+        "marketCapUSD": 31114388320.0
+      },
+      {
+        "companyKey": "NTRS",
+        "symbol": "NTRS",
+        "name": "Northern Trust Corporation Common Stock",
+        "marketCapUSD": 30957926044.0
+      },
+      {
+        "companyKey": "EXPE",
+        "symbol": "EXPE",
+        "name": "Expedia Group Inc. Common Stock",
+        "marketCapUSD": 30738711857.0
+      },
+      {
+        "companyKey": "MDB",
+        "symbol": "MDB",
+        "name": "MongoDB Inc. Class A Common Stock",
+        "marketCapUSD": 30715327260.0
+      },
+      {
+        "companyKey": "GEHC",
+        "symbol": "GEHC",
+        "name": "GE HealthCare Technologies Inc. Common Stock ",
+        "marketCapUSD": 30597226710.0
+      },
+      {
+        "companyKey": "ESLT",
+        "symbol": "ESLT",
+        "name": "Elbit Systems Ltd. Ordinary Shares",
+        "marketCapUSD": 30409400753.0
+      },
+      {
+        "companyKey": "ALNY",
+        "symbol": "ALNY",
+        "name": "Alnylam Pharmaceuticals Inc. Common Stock",
+        "marketCapUSD": 30377345968.0
+      },
+      {
+        "companyKey": "ON",
+        "symbol": "ON",
+        "name": "ON Semiconductor Corporation Common Stock",
+        "marketCapUSD": 29588214588.0
+      },
+      {
+        "companyKey": "BIDU",
+        "symbol": "BIDU",
+        "name": "Baidu Inc. ADS",
+        "marketCapUSD": 28683299154.0
+      },
+      {
+        "companyKey": "ZM",
+        "symbol": "ZM",
+        "name": "Zoom Communications Inc. Class A Common Stock",
+        "marketCapUSD": 28577296655.0
+      },
+      {
+        "companyKey": "RYAAY",
+        "symbol": "RYAAY",
+        "name": "Ryanair Holdings plc American Depositary Shares",
+        "marketCapUSD": 27890390817.0
+      },
+      {
+        "companyKey": "WTW",
+        "symbol": "WTW",
+        "name": "Willis Towers Watson Public Limited Company Ordinary Shares",
+        "marketCapUSD": 27715772159.0
+      },
+      {
+        "companyKey": "ECHO",
+        "symbol": "ECHO",
+        "name": "EchoStar  Corporation Common Stock",
+        "marketCapUSD": 27656586764.0
+      },
+      {
+        "companyKey": "VRSN",
+        "symbol": "VRSN",
+        "name": "VeriSign Inc. Common Stock",
+        "marketCapUSD": 27333810000.0
+      },
+      {
+        "companyKey": "GFS",
+        "symbol": "GFS",
+        "name": "GlobalFoundries Inc. Ordinary Shares",
+        "marketCapUSD": 26945615269.0
+      },
+      {
+        "companyKey": "CTSH",
+        "symbol": "CTSH",
+        "name": "Cognizant Technology Solutions Corporation Class A Common Stock",
+        "marketCapUSD": 26882510393.0
+      },
+      {
+        "companyKey": "FFIV",
+        "symbol": "FFIV",
+        "name": "F5 Inc. Common Stock",
+        "marketCapUSD": 26812404405.0
+      },
+      {
+        "companyKey": "AFRM",
+        "symbol": "AFRM",
+        "name": "Affirm Holdings Inc. Class A Common Stock",
+        "marketCapUSD": 26531433359.0
+      },
+      {
+        "companyKey": "FOXA",
+        "symbol": "FOXA",
+        "name": "Fox Corporation Class A Common Stock",
+        "marketCapUSD": 26392552001.0
+      },
+      {
+        "companyKey": "SMCI",
+        "symbol": "SMCI",
+        "name": "Super Micro Computer Inc. Common Stock",
+        "marketCapUSD": 26265476052.0
+      },
+      {
+        "companyKey": "LPLA",
+        "symbol": "LPLA",
+        "name": "LPL Financial Holdings Inc. Common Stock",
+        "marketCapUSD": 25994404775.0
+      },
+      {
+        "companyKey": "TW",
+        "symbol": "TW",
+        "name": "Tradeweb Markets Inc. Class A Common Stock",
+        "marketCapUSD": 25890546625.0
+      }
+    ]
+  },
+  "companies": [
+    {
+      "companyKey": "NVDA",
+      "symbol": "NVDA",
+      "name": "NVIDIA Corporation Common Stock",
+      "marketCapUSD": 5454312000000.0,
+      "ranks": {
+        "sp500": 1,
+        "nasdaq": 1
+      }
+    },
+    {
+      "companyKey": "AAPL",
+      "symbol": "AAPL",
+      "name": "Apple Inc. Common Stock",
+      "marketCapUSD": 4976177554600.0,
+      "ranks": {
+        "sp500": 2,
+        "nasdaq": 2
+      }
+    },
+    {
+      "companyKey": "GOOGL",
+      "symbol": "GOOGL",
+      "name": "Alphabet Inc. Class A Common Stock",
+      "marketCapUSD": 4313765600000.0,
+      "ranks": {
+        "sp500": 3,
+        "nasdaq": 3
+      }
+    },
+    {
+      "companyKey": "MSFT",
+      "symbol": "MSFT",
+      "name": "Microsoft Corporation Common Stock",
+      "marketCapUSD": 4018333942455.0,
+      "ranks": {
+        "sp500": 4,
+        "nasdaq": 4
+      }
+    },
+    {
+      "companyKey": "AMZN",
+      "symbol": "AMZN",
+      "name": "Amazon.com Inc. Common Stock",
+      "marketCapUSD": 2799371961341.0,
+      "ranks": {
+        "sp500": 5,
+        "nasdaq": 5
+      }
+    },
+    {
+      "companyKey": "META",
+      "symbol": "META",
+      "name": "Meta Platforms Inc. Class A Common Stock",
+      "marketCapUSD": 1892695224926.0,
+      "ranks": {
+        "sp500": 6,
+        "nasdaq": 7
+      }
+    },
+    {
+      "companyKey": "AVGO",
+      "symbol": "AVGO",
+      "name": "Broadcom Inc. Common Stock",
+      "marketCapUSD": 1693349722011.0,
+      "ranks": {
+        "sp500": 7,
+        "nasdaq": 8
+      }
+    },
+    {
+      "companyKey": "TSLA",
+      "symbol": "TSLA",
+      "name": "Tesla Inc. Common Stock",
+      "marketCapUSD": 1493047401354.0,
+      "ranks": {
+        "sp500": 8,
+        "nasdaq": 9
+      }
+    },
+    {
+      "companyKey": "BRK/B",
+      "symbol": "BRK-B",
+      "name": "Berkshire Hathaway Inc.",
+      "marketCapUSD": 1141986765630.0,
+      "ranks": {
+        "sp500": 9
+      }
+    },
+    {
+      "companyKey": "MU",
+      "symbol": "MU",
+      "name": "Micron Technology Inc. Common Stock",
+      "marketCapUSD": 1119022813596.0,
+      "ranks": {
+        "sp500": 10,
+        "nasdaq": 11
+      }
+    },
+    {
+      "companyKey": "LLY",
+      "symbol": "LLY",
+      "name": "Eli Lilly and Company Common Stock",
+      "marketCapUSD": 1113267692210.0,
+      "ranks": {
+        "sp500": 11
+      }
+    },
+    {
+      "companyKey": "AMD",
+      "symbol": "AMD",
+      "name": "Advanced Micro Devices Inc. Common Stock",
+      "marketCapUSD": 970081968958.0,
+      "ranks": {
+        "sp500": 12,
+        "nasdaq": 12
+      }
+    },
+    {
+      "companyKey": "WMT",
+      "symbol": "WMT",
+      "name": "Walmart Inc. Common Stock",
+      "marketCapUSD": 897148024932.0,
+      "ranks": {
+        "sp500": 13,
+        "nasdaq": 13
+      }
+    },
+    {
+      "companyKey": "JPM",
+      "symbol": "JPM",
+      "name": "JP Morgan Chase & Co. Common Stock",
+      "marketCapUSD": 888631644989.0,
+      "ranks": {
+        "sp500": 14
+      }
+    },
+    {
+      "companyKey": "XOM",
+      "symbol": "XOM",
+      "name": "ExxonMobil Holdings Corporation Common Stock",
+      "marketCapUSD": 707865643914.0,
+      "ranks": {
+        "sp500": 15
+      }
+    },
+    {
+      "companyKey": "V",
+      "symbol": "V",
+      "name": "Visa Inc.",
+      "marketCapUSD": 695530206436.0,
+      "ranks": {
+        "sp500": 16
+      }
+    },
+    {
+      "companyKey": "JNJ",
+      "symbol": "JNJ",
+      "name": "Johnson & Johnson Common Stock",
+      "marketCapUSD": 635562556987.0,
+      "ranks": {
+        "sp500": 17
+      }
+    },
+    {
+      "companyKey": "INTC",
+      "symbol": "INTC",
+      "name": "Intel Corporation Common Stock",
+      "marketCapUSD": 535641794940.0,
+      "ranks": {
+        "sp500": 18,
+        "nasdaq": 15
+      }
+    },
+    {
+      "companyKey": "MA",
+      "symbol": "MA",
+      "name": "Mastercard Incorporated Common Stock",
+      "marketCapUSD": 521304755195.0,
+      "ranks": {
+        "sp500": 19
+      }
+    },
+    {
+      "companyKey": "PLTR",
+      "symbol": "PLTR",
+      "name": "Palantir Technologies Inc. Class A Common Stock",
+      "marketCapUSD": 502029177320.0,
+      "ranks": {
+        "sp500": 20,
+        "nasdaq": 16
+      }
+    },
+    {
+      "companyKey": "ABBV",
+      "symbol": "ABBV",
+      "name": "AbbVie Inc. Common Stock",
+      "marketCapUSD": 496772011159.0,
+      "ranks": {
+        "sp500": 21
+      }
+    },
+    {
+      "companyKey": "CSCO",
+      "symbol": "CSCO",
+      "name": "Cisco Systems Inc. Common Stock (DE)",
+      "marketCapUSD": 454737969932.0,
+      "ranks": {
+        "sp500": 22,
+        "nasdaq": 17
+      }
+    },
+    {
+      "companyKey": "COST",
+      "symbol": "COST",
+      "name": "Costco Wholesale Corporation Common Stock",
+      "marketCapUSD": 425156022605.0,
+      "ranks": {
+        "sp500": 23,
+        "nasdaq": 18
+      }
+    },
+    {
+      "companyKey": "CVX",
+      "symbol": "CVX",
+      "name": "Chevron Corporation Common Stock",
+      "marketCapUSD": 424790823910.0,
+      "ranks": {
+        "sp500": 24
+      }
+    },
+    {
+      "companyKey": "ORCL",
+      "symbol": "ORCL",
+      "name": "Oracle Corporation Common Stock",
+      "marketCapUSD": 416497942861.0,
+      "ranks": {
+        "sp500": 25
+      }
+    },
+    {
+      "companyKey": "AMAT",
+      "symbol": "AMAT",
+      "name": "Applied Materials Inc. Common Stock",
+      "marketCapUSD": 394838535816.0,
+      "ranks": {
+        "sp500": 26,
+        "nasdaq": 19
+      }
+    },
+    {
+      "companyKey": "LRCX",
+      "symbol": "LRCX",
+      "name": "Lam Research Corporation Common Stock",
+      "marketCapUSD": 387390925501.0,
+      "ranks": {
+        "sp500": 27,
+        "nasdaq": 20
+      }
+    },
+    {
+      "companyKey": "KO",
+      "symbol": "KO",
+      "name": "Coca-Cola Company (The) Common Stock",
+      "marketCapUSD": 386325896529.0,
+      "ranks": {
+        "sp500": 28
+      }
+    },
+    {
+      "companyKey": "BAC",
+      "symbol": "BAC",
+      "name": "Bank of America Corporation Common Stock",
+      "marketCapUSD": 381664205762.0,
+      "ranks": {
+        "sp500": 29
+      }
+    },
+    {
+      "companyKey": "CAT",
+      "symbol": "CAT",
+      "name": "Caterpillar Inc. Common Stock",
+      "marketCapUSD": 367450316020.0,
+      "ranks": {
+        "sp500": 30
+      }
+    },
+    {
+      "companyKey": "DELL",
+      "symbol": "DELL",
+      "name": "Dell Technologies Inc. Class C Common Stock ",
+      "marketCapUSD": 366711361690.0,
+      "ranks": {
+        "sp500": 31
+      }
+    },
+    {
+      "companyKey": "MRK",
+      "symbol": "MRK",
+      "name": "Merck & Company Inc. Common Stock (new)",
+      "marketCapUSD": 358850114747.0,
+      "ranks": {
+        "sp500": 32
+      }
+    },
+    {
+      "companyKey": "PG",
+      "symbol": "PG",
+      "name": "Procter & Gamble Company (The) Common Stock",
+      "marketCapUSD": 356103144792.0,
+      "ranks": {
+        "sp500": 33
+      }
+    },
+    {
+      "companyKey": "UNH",
+      "symbol": "UNH",
+      "name": "UnitedHealth Group Incorporated Common Stock (DE)",
+      "marketCapUSD": 339757601486.0,
+      "ranks": {
+        "sp500": 34
+      }
+    },
+    {
+      "companyKey": "PANW",
+      "symbol": "PANW",
+      "name": "Palo Alto Networks Inc. Common Stock",
+      "marketCapUSD": 330332940000.0,
+      "ranks": {
+        "sp500": 35,
+        "nasdaq": 21
+      }
+    },
+    {
+      "companyKey": "GE",
+      "symbol": "GE",
+      "name": "GE Aerospace Common Stock",
+      "marketCapUSD": 320233294012.0,
+      "ranks": {
+        "sp500": 36
+      }
+    },
+    {
+      "companyKey": "PM",
+      "symbol": "PM",
+      "name": "Philip Morris International Inc Common Stock",
+      "marketCapUSD": 314839914678.0,
+      "ranks": {
+        "sp500": 37
+      }
+    },
+    {
+      "companyKey": "MS",
+      "symbol": "MS",
+      "name": "Morgan Stanley Common Stock",
+      "marketCapUSD": 298439006806.0,
+      "ranks": {
+        "sp500": 38
+      }
+    },
+    {
+      "companyKey": "HD",
+      "symbol": "HD",
+      "name": "Home Depot Inc. (The) Common Stock",
+      "marketCapUSD": 289948559108.0,
+      "ranks": {
+        "sp500": 39
+      }
+    },
+    {
+      "companyKey": "CRWD",
+      "symbol": "CRWD",
+      "name": "CrowdStrike Holdings Inc. Class A Common Stock",
+      "marketCapUSD": 269305102794.0,
+      "ranks": {
+        "sp500": 40,
+        "nasdaq": 23
+      }
+    },
+    {
+      "companyKey": "ANET",
+      "symbol": "ANET",
+      "name": "Arista Networks Inc. Common Stock",
+      "marketCapUSD": 265967053770.0,
+      "ranks": {
+        "sp500": 41
+      }
+    },
+    {
+      "companyKey": "GEV",
+      "symbol": "GEV",
+      "name": "GE Vernova Inc. Common Stock",
+      "marketCapUSD": 265481313541.0,
+      "ranks": {
+        "sp500": 42
+      }
+    },
+    {
+      "companyKey": "GS",
+      "symbol": "GS",
+      "name": "Goldman Sachs Group Inc. (The) Common Stock",
+      "marketCapUSD": 260292680182.0,
+      "ranks": {
+        "sp500": 43
+      }
+    },
+    {
+      "companyKey": "TXN",
+      "symbol": "TXN",
+      "name": "Texas Instruments Incorporated Common Stock",
+      "marketCapUSD": 257298403054.0,
+      "ranks": {
+        "sp500": 44,
+        "nasdaq": 24
+      }
+    },
+    {
+      "companyKey": "WFC",
+      "symbol": "WFC",
+      "name": "Wells Fargo & Company Common Stock",
+      "marketCapUSD": 251959624676.0,
+      "ranks": {
+        "sp500": 45
+      }
+    },
+    {
+      "companyKey": "RTX",
+      "symbol": "RTX",
+      "name": "RTX Corporation Common Stock",
+      "marketCapUSD": 251572535159.0,
+      "ranks": {
+        "sp500": 46
+      }
+    },
+    {
+      "companyKey": "KLAC",
+      "symbol": "KLAC",
+      "name": "KLA Corporation Common Stock",
+      "marketCapUSD": 248107834259.0,
+      "ranks": {
+        "sp500": 47,
+        "nasdaq": 25
+      }
+    },
+    {
+      "companyKey": "TMO",
+      "symbol": "TMO",
+      "name": "Thermo Fisher Scientific Inc Common Stock",
+      "marketCapUSD": 244861442681.0,
+      "ranks": {
+        "sp500": 48
+      }
+    },
+    {
+      "companyKey": "MRVL",
+      "symbol": "MRVL",
+      "name": "Marvell Technology Inc. Common Stock",
+      "marketCapUSD": 233132634000.0,
+      "ranks": {
+        "sp500": 49,
+        "nasdaq": 26
+      }
+    },
+    {
+      "companyKey": "AMGN",
+      "symbol": "AMGN",
+      "name": "Amgen Inc. Common Stock",
+      "marketCapUSD": 225751706328.0,
+      "ranks": {
+        "sp500": 50,
+        "nasdaq": 28
+      }
+    },
+    {
+      "companyKey": "LIN",
+      "symbol": "LIN",
+      "name": "Linde plc Ordinary Shares",
+      "marketCapUSD": 224658682438.0,
+      "ranks": {
+        "sp500": 51,
+        "nasdaq": 29
+      }
+    },
+    {
+      "companyKey": "C",
+      "symbol": "C",
+      "name": "Citigroup Inc. Common Stock",
+      "marketCapUSD": 221287460413.0,
+      "ranks": {
+        "sp500": 52
+      }
+    },
+    {
+      "companyKey": "SNDK",
+      "symbol": "SNDK",
+      "name": "Sandisk Corporation Common Stock",
+      "marketCapUSD": 216150221269.0,
+      "ranks": {
+        "sp500": 53,
+        "nasdaq": 30
+      }
+    },
+    {
+      "companyKey": "IBM",
+      "symbol": "IBM",
+      "name": "International Business Machines Corporation Common Stock",
+      "marketCapUSD": 213883349218.0,
+      "ranks": {
+        "sp500": 54
+      }
+    },
+    {
+      "companyKey": "APH",
+      "symbol": "APH",
+      "name": "Amphenol Corporation Common Stock",
+      "marketCapUSD": 212541688318.0,
+      "ranks": {
+        "sp500": 55
+      }
+    },
+    {
+      "companyKey": "AXP",
+      "symbol": "AXP",
+      "name": "American Express Company Common Stock",
+      "marketCapUSD": 210379272274.0,
+      "ranks": {
+        "sp500": 56
+      }
+    },
+    {
+      "companyKey": "ADI",
+      "symbol": "ADI",
+      "name": "Analog Devices Inc. Common Stock",
+      "marketCapUSD": 196852297329.0,
+      "ranks": {
+        "sp500": 57,
+        "nasdaq": 31
+      }
+    },
+    {
+      "companyKey": "CRM",
+      "symbol": "CRM",
+      "name": "Salesforce Inc. Common Stock",
+      "marketCapUSD": 192516160000.0,
+      "ranks": {
+        "sp500": 58
+      }
+    },
+    {
+      "companyKey": "DIS",
+      "symbol": "DIS",
+      "name": "Walt Disney Company (The) Common Stock",
+      "marketCapUSD": 187328261998.0,
+      "ranks": {
+        "sp500": 59
+      }
+    },
+    {
+      "companyKey": "GILD",
+      "symbol": "GILD",
+      "name": "Gilead Sciences Inc. Common Stock",
+      "marketCapUSD": 186526453967.0,
+      "ranks": {
+        "sp500": 60,
+        "nasdaq": 32
+      }
+    },
+    {
+      "companyKey": "QCOM",
+      "symbol": "QCOM",
+      "name": "QUALCOMM Incorporated Common Stock",
+      "marketCapUSD": 183192302840.0,
+      "ranks": {
+        "sp500": 61,
+        "nasdaq": 33
+      }
+    },
+    {
+      "companyKey": "VZ",
+      "symbol": "VZ",
+      "name": "Verizon Communications Inc. Common Stock",
+      "marketCapUSD": 177741283142.0,
+      "ranks": {
+        "sp500": 62
+      }
+    },
+    {
+      "companyKey": "ABT",
+      "symbol": "ABT",
+      "name": "Abbott Laboratories Common Stock",
+      "marketCapUSD": 176187627199.0,
+      "ranks": {
+        "sp500": 63
+      }
+    },
+    {
+      "companyKey": "PEP",
+      "symbol": "PEP",
+      "name": "PepsiCo Inc. Common Stock",
+      "marketCapUSD": 172632041535.0,
+      "ranks": {
+        "sp500": 64,
+        "nasdaq": 34
+      }
+    },
+    {
+      "companyKey": "STX",
+      "symbol": "STX",
+      "name": "Seagate Technology Holdings PLC Ordinary Shares (Ireland)",
+      "marketCapUSD": 172282248541.0,
+      "ranks": {
+        "sp500": 65,
+        "nasdaq": 35
+      }
+    },
+    {
+      "companyKey": "DE",
+      "symbol": "DE",
+      "name": "Deere & Company Common Stock",
+      "marketCapUSD": 170567731885.0,
+      "ranks": {
+        "sp500": 66
+      }
+    },
+    {
+      "companyKey": "BLK",
+      "symbol": "BLK",
+      "name": "BlackRock Inc. Common Stock",
+      "marketCapUSD": 167865887215.0,
+      "ranks": {
+        "sp500": 67
+      }
+    },
+    {
+      "companyKey": "SCHW",
+      "symbol": "SCHW",
+      "name": "Charles Schwab Corporation (The) Common Stock",
+      "marketCapUSD": 167849324401.0,
+      "ranks": {
+        "sp500": 68
+      }
+    },
+    {
+      "companyKey": "UNP",
+      "symbol": "UNP",
+      "name": "Union Pacific Corporation Common Stock",
+      "marketCapUSD": 167273837972.0,
+      "ranks": {
+        "sp500": 69
+      }
+    },
+    {
+      "companyKey": "MCD",
+      "symbol": "MCD",
+      "name": "McDonald's Corporation Common Stock",
+      "marketCapUSD": 166755726780.0,
+      "ranks": {
+        "sp500": 70
+      }
+    },
+    {
+      "companyKey": "WELL",
+      "symbol": "WELL",
+      "name": "Welltower Inc. Common Stock",
+      "marketCapUSD": 165980354766.0,
+      "ranks": {
+        "sp500": 71
+      }
+    },
+    {
+      "companyKey": "ETN",
+      "symbol": "ETN",
+      "name": "Eaton Corporation PLC Ordinary Shares",
+      "marketCapUSD": 165726396000.0,
+      "ranks": {
+        "sp500": 72
+      }
+    },
+    {
+      "companyKey": "COP",
+      "symbol": "COP",
+      "name": "ConocoPhillips Common Stock",
+      "marketCapUSD": 165255983611.0,
+      "ranks": {
+        "sp500": 73
+      }
+    },
+    {
+      "companyKey": "NEE",
+      "symbol": "NEE",
+      "name": "NextEra Energy Inc. Common Stock",
+      "marketCapUSD": 163770149189.0,
+      "ranks": {
+        "sp500": 74
+      }
+    },
+    {
+      "companyKey": "TMUS",
+      "symbol": "TMUS",
+      "name": "T-Mobile US Inc. Common Stock",
+      "marketCapUSD": 162906637866.0,
+      "ranks": {
+        "sp500": 75,
+        "nasdaq": 36
+      }
+    },
+    {
+      "companyKey": "PFE",
+      "symbol": "PFE",
+      "name": "Pfizer Inc. Common Stock",
+      "marketCapUSD": 161870729928.0,
+      "ranks": {
+        "sp500": 76
+      }
+    },
+    {
+      "companyKey": "TJX",
+      "symbol": "TJX",
+      "name": "TJX Companies Inc. (The) Common Stock",
+      "marketCapUSD": 156108318737.0,
+      "ranks": {
+        "sp500": 77
+      }
+    },
+    {
+      "companyKey": "DHR",
+      "symbol": "DHR",
+      "name": "Danaher Corporation Common Stock",
+      "marketCapUSD": 155500515145.0,
+      "ranks": {
+        "sp500": 78
+      }
+    },
+    {
+      "companyKey": "T",
+      "symbol": "T",
+      "name": "AT&T Inc.",
+      "marketCapUSD": 154110153269.0,
+      "ranks": {
+        "sp500": 79
+      }
+    },
+    {
+      "companyKey": "ISRG",
+      "symbol": "ISRG",
+      "name": "Intuitive Surgical Inc. Common Stock",
+      "marketCapUSD": 151075820170.0,
+      "ranks": {
+        "sp500": 80,
+        "nasdaq": 37
+      }
+    },
+    {
+      "companyKey": "BA",
+      "symbol": "BA",
+      "name": "Boeing Company (The) Common Stock",
+      "marketCapUSD": 149775118790.0,
+      "ranks": {
+        "sp500": 81
+      }
+    },
+    {
+      "companyKey": "UBER",
+      "symbol": "UBER",
+      "name": "Uber Technologies Inc. Common Stock",
+      "marketCapUSD": 146043048652.0,
+      "ranks": {
+        "sp500": 82
+      }
+    },
+    {
+      "companyKey": "NOW",
+      "symbol": "NOW",
+      "name": "ServiceNow Inc. Common Stock",
+      "marketCapUSD": 145090880000.0,
+      "ranks": {
+        "sp500": 83
+      }
+    },
+    {
+      "companyKey": "WDC",
+      "symbol": "WDC",
+      "name": "Western Digital Corporation Common Stock",
+      "marketCapUSD": 144548394181.0,
+      "ranks": {
+        "sp500": 84,
+        "nasdaq": 38
+      }
+    },
+    {
+      "companyKey": "ACN",
+      "symbol": "ACN",
+      "name": "Accenture plc Class A Ordinary Shares (Ireland)",
+      "marketCapUSD": 143427918823.0,
+      "ranks": {
+        "sp500": 85
+      }
+    },
+    {
+      "companyKey": "FTNT",
+      "symbol": "FTNT",
+      "name": "Fortinet Inc. Common Stock",
+      "marketCapUSD": 141562712210.0,
+      "ranks": {
+        "sp500": 86,
+        "nasdaq": 39
+      }
+    },
+    {
+      "companyKey": "CB",
+      "symbol": "CB",
+      "name": "Chubb Limited  Common Stock",
+      "marketCapUSD": 133124099347.0,
+      "ranks": {
+        "sp500": 87
+      }
+    },
+    {
+      "companyKey": "MPC",
+      "symbol": "MPC",
+      "name": "Marathon Petroleum Corporation Common Stock",
+      "marketCapUSD": 128845209512.0,
+      "ranks": {
+        "sp500": 88
+      }
+    },
+    {
+      "companyKey": "MNST",
+      "symbol": "MNST",
+      "name": "Monster Beverage Corporation",
+      "marketCapUSD": 128592286400.0,
+      "ranks": {
+        "sp500": 89,
+        "nasdaq": 40
+      }
+    },
+    {
+      "companyKey": "VRTX",
+      "symbol": "VRTX",
+      "name": "Vertex Pharmaceuticals Incorporated Common Stock",
+      "marketCapUSD": 128504688468.0,
+      "ranks": {
+        "sp500": 90,
+        "nasdaq": 41
+      }
+    },
+    {
+      "companyKey": "PGR",
+      "symbol": "PGR",
+      "name": "Progressive Corporation (The) Common Stock",
+      "marketCapUSD": 128064573496.0,
+      "ranks": {
+        "sp500": 91
+      }
+    },
+    {
+      "companyKey": "GLW",
+      "symbol": "GLW",
+      "name": "Corning Incorporated Common Stock",
+      "marketCapUSD": 126865273390.0,
+      "ranks": {
+        "sp500": 92
+      }
+    },
+    {
+      "companyKey": "PLD",
+      "symbol": "PLD",
+      "name": "Prologis Inc. Common Stock",
+      "marketCapUSD": 125591627720.0,
+      "ranks": {
+        "sp500": 93
+      }
+    },
+    {
+      "companyKey": "VLO",
+      "symbol": "VLO",
+      "name": "Valero Energy Corporation Common Stock",
+      "marketCapUSD": 125536372996.0,
+      "ranks": {
+        "sp500": 94
+      }
+    },
+    {
+      "companyKey": "NEM",
+      "symbol": "NEM",
+      "name": "Newmont Corporation",
+      "marketCapUSD": 123440049548.0,
+      "ranks": {
+        "sp500": 95
+      }
+    },
+    {
+      "companyKey": "COF",
+      "symbol": "COF",
+      "name": "Capital One Financial Corporation Common Stock",
+      "marketCapUSD": 123396339913.0,
+      "ranks": {
+        "sp500": 96
+      }
+    },
+    {
+      "companyKey": "SPGI",
+      "symbol": "SPGI",
+      "name": "S&P Global Inc. Common Stock",
+      "marketCapUSD": 121513612000.0,
+      "ranks": {
+        "sp500": 97
+      }
+    },
+    {
+      "companyKey": "PH",
+      "symbol": "PH",
+      "name": "Parker-Hannifin Corporation Common Stock",
+      "marketCapUSD": 120675708789.0,
+      "ranks": {
+        "sp500": 98
+      }
+    },
+    {
+      "companyKey": "MO",
+      "symbol": "MO",
+      "name": "Altria Group Inc.",
+      "marketCapUSD": 119653849737.0,
+      "ranks": {
+        "sp500": 99
+      }
+    },
+    {
+      "companyKey": "BKNG",
+      "symbol": "BKNG",
+      "name": "Booking Holdings Inc. Common Stock",
+      "marketCapUSD": 119041212615.0,
+      "ranks": {
+        "sp500": 100,
+        "nasdaq": 42
+      }
+    },
+    {
+      "companyKey": "LMT",
+      "symbol": "LMT",
+      "name": "Lockheed Martin Corporation Common Stock",
+      "marketCapUSD": 118137170646.0,
+      "ranks": {
+        "sp500": 101
+      }
+    },
+    {
+      "companyKey": "BMY",
+      "symbol": "BMY",
+      "name": "Bristol-Myers Squibb Company Common Stock",
+      "marketCapUSD": 117619509892.0,
+      "ranks": {
+        "sp500": 102
+      }
+    },
+    {
+      "companyKey": "MDT",
+      "symbol": "MDT",
+      "name": "Medtronic plc. Ordinary Shares",
+      "marketCapUSD": 117591146228.0,
+      "ranks": {
+        "sp500": 103
+      }
+    },
+    {
+      "companyKey": "PSX",
+      "symbol": "PSX",
+      "name": "Phillips 66 Common Stock",
+      "marketCapUSD": 112312417227.0,
+      "ranks": {
+        "sp500": 104
+      }
+    },
+    {
+      "companyKey": "CVS",
+      "symbol": "CVS",
+      "name": "CVS Health Corporation Common Stock",
+      "marketCapUSD": 112216860176.0,
+      "ranks": {
+        "sp500": 105
+      }
+    },
+    {
+      "companyKey": "MCK",
+      "symbol": "MCK",
+      "name": "McKesson Corporation Common Stock",
+      "marketCapUSD": 111432405341.0,
+      "ranks": {
+        "sp500": 106
+      }
+    },
+    {
+      "companyKey": "ADP",
+      "symbol": "ADP",
+      "name": "Automatic Data Processing Inc. Common Stock",
+      "marketCapUSD": 108497636358.0,
+      "ranks": {
+        "sp500": 107,
+        "nasdaq": 44
+      }
+    },
+    {
+      "companyKey": "SYK",
+      "symbol": "SYK",
+      "name": "Stryker Corporation Common Stock",
+      "marketCapUSD": 108397742800.0,
+      "ranks": {
+        "sp500": 108
+      }
+    },
+    {
+      "companyKey": "FCX",
+      "symbol": "FCX",
+      "name": "Freeport-McMoRan Inc. Common Stock",
+      "marketCapUSD": 105245724261.0,
+      "ranks": {
+        "sp500": 109
+      }
+    },
+    {
+      "companyKey": "SBUX",
+      "symbol": "SBUX",
+      "name": "Starbucks Corporation Common Stock",
+      "marketCapUSD": 105204900000.0,
+      "ranks": {
+        "sp500": 110,
+        "nasdaq": 45
+      }
+    },
+    {
+      "companyKey": "TT",
+      "symbol": "TT",
+      "name": "Trane Technologies plc",
+      "marketCapUSD": 105072068176.0,
+      "ranks": {
+        "sp500": 111
+      }
+    },
+    {
+      "companyKey": "CEG",
+      "symbol": "CEG",
+      "name": "Constellation Energy Corporation Common Stock ",
+      "marketCapUSD": 104127395614.0,
+      "ranks": {
+        "sp500": 112,
+        "nasdaq": 46
+      }
+    },
+    {
+      "companyKey": "LOW",
+      "symbol": "LOW",
+      "name": "Lowe's Companies Inc. Common Stock",
+      "marketCapUSD": 104114794306.0,
+      "ranks": {
+        "sp500": 113
+      }
+    },
+    {
+      "companyKey": "DDOG",
+      "symbol": "DDOG",
+      "name": "Datadog Inc. Class A Common Stock",
+      "marketCapUSD": 103158663645.0,
+      "ranks": {
+        "sp500": 114,
+        "nasdaq": 47
+      }
+    },
+    {
+      "companyKey": "PWR",
+      "symbol": "PWR",
+      "name": "Quanta Services Inc. Common Stock",
+      "marketCapUSD": 102363257151.0,
+      "ranks": {
+        "sp500": 115
+      }
+    },
+    {
+      "companyKey": "EQIX",
+      "symbol": "EQIX",
+      "name": "Equinix Inc. Common Stock REIT",
+      "marketCapUSD": 101888382964.0,
+      "ranks": {
+        "sp500": 116,
+        "nasdaq": 48
+      }
+    },
+    {
+      "companyKey": "SO",
+      "symbol": "SO",
+      "name": "Southern Company (The) Common Stock",
+      "marketCapUSD": 100127592561.0,
+      "ranks": {
+        "sp500": 117
+      }
+    },
+    {
+      "companyKey": "CME",
+      "symbol": "CME",
+      "name": "CME Group Inc. Class A Common Stock",
+      "marketCapUSD": 99689754874.0,
+      "ranks": {
+        "sp500": 118,
+        "nasdaq": 49
+      }
+    },
+    {
+      "companyKey": "HCA",
+      "symbol": "HCA",
+      "name": "HCA Healthcare Inc. Common Stock",
+      "marketCapUSD": 99287587900.0,
+      "ranks": {
+        "sp500": 119
+      }
+    },
+    {
+      "companyKey": "HOOD",
+      "symbol": "HOOD",
+      "name": "Robinhood Markets Inc. Class A Common Stock",
+      "marketCapUSD": 98197765857.0,
+      "ranks": {
+        "sp500": 120,
+        "nasdaq": 50
+      }
+    },
+    {
+      "companyKey": "ABNB",
+      "symbol": "ABNB",
+      "name": "Airbnb Inc. Class A Common Stock",
+      "marketCapUSD": 97901459007.0,
+      "ranks": {
+        "sp500": 121,
+        "nasdaq": 51
+      }
+    },
+    {
+      "companyKey": "BNY",
+      "symbol": "BNY",
+      "name": "The Bank of New York Mellon Corporation Common Stock",
+      "marketCapUSD": 96924316685.0,
+      "ranks": {
+        "sp500": 122
+      }
+    },
+    {
+      "companyKey": "MAR",
+      "symbol": "MAR",
+      "name": "Marriott International Class A Common Stock",
+      "marketCapUSD": 96300990158.0,
+      "ranks": {
+        "sp500": 123,
+        "nasdaq": 53
+      }
+    },
+    {
+      "companyKey": "SNPS",
+      "symbol": "SNPS",
+      "name": "Synopsys Inc. Common Stock",
+      "marketCapUSD": 96299330981.0,
+      "ranks": {
+        "sp500": 124,
+        "nasdaq": 54
+      }
+    },
+    {
+      "companyKey": "CDNS",
+      "symbol": "CDNS",
+      "name": "Cadence Design Systems Inc. Common Stock",
+      "marketCapUSD": 95952429060.0,
+      "ranks": {
+        "sp500": 125,
+        "nasdaq": 55
+      }
+    },
+    {
+      "companyKey": "JCI",
+      "symbol": "JCI",
+      "name": "Johnson Controls International plc Ordinary Share",
+      "marketCapUSD": 94138281853.0,
+      "ranks": {
+        "sp500": 126
+      }
+    },
+    {
+      "companyKey": "HPE",
+      "symbol": "HPE",
+      "name": "Hewlett Packard Enterprise Company Common Stock",
+      "marketCapUSD": 93360597907.0,
+      "ranks": {
+        "sp500": 127
+      }
+    },
+    {
+      "companyKey": "ADBE",
+      "symbol": "ADBE",
+      "name": "Adobe Inc. Common Stock",
+      "marketCapUSD": 92684088000.0,
+      "ranks": {
+        "sp500": 128,
+        "nasdaq": 57
+      }
+    },
+    {
+      "companyKey": "VRT",
+      "symbol": "VRT",
+      "name": "Vertiv Holdings LLC Class A Common Stock",
+      "marketCapUSD": 92150769089.0,
+      "ranks": {
+        "sp500": 129
+      }
+    },
+    {
+      "companyKey": "DUK",
+      "symbol": "DUK",
+      "name": "Duke Energy Corporation (Holding Company) Common Stock",
+      "marketCapUSD": 91763151094.0,
+      "ranks": {
+        "sp500": 130
+      }
+    },
+    {
+      "companyKey": "ELV",
+      "symbol": "ELV",
+      "name": "Elevance Health Inc. Common Stock",
+      "marketCapUSD": 91538358616.0,
+      "ranks": {
+        "sp500": 131
+      }
+    },
+    {
+      "companyKey": "GD",
+      "symbol": "GD",
+      "name": "General Dynamics Corporation Common Stock",
+      "marketCapUSD": 90761116635.0,
+      "ranks": {
+        "sp500": 132
+      }
+    },
+    {
+      "companyKey": "WMB",
+      "symbol": "WMB",
+      "name": "Williams Companies Inc. (The) Common Stock",
+      "marketCapUSD": 90722331398.0,
+      "ranks": {
+        "sp500": 133
+      }
+    },
+    {
+      "companyKey": "APP",
+      "symbol": "APP",
+      "name": "Applovin Corporation Class A Common Stock",
+      "marketCapUSD": 90646916370.0,
+      "ranks": {
+        "sp500": 134,
+        "nasdaq": 58
+      }
+    },
+    {
+      "companyKey": "EMR",
+      "symbol": "EMR",
+      "name": "Emerson Electric Company Common Stock",
+      "marketCapUSD": 90620188000.0,
+      "ranks": {
+        "sp500": 135
+      }
+    },
+    {
+      "companyKey": "LITE",
+      "symbol": "LITE",
+      "name": "Lumentum Holdings Inc. Common Stock",
+      "marketCapUSD": 90167080691.0,
+      "ranks": {
+        "sp500": 136,
+        "nasdaq": 59
+      }
+    },
+    {
+      "companyKey": "USB",
+      "symbol": "USB",
+      "name": "U.S. Bancorp Common Stock",
+      "marketCapUSD": 89463314029.0,
+      "ranks": {
+        "sp500": 137
+      }
+    },
+    {
+      "companyKey": "CSX",
+      "symbol": "CSX",
+      "name": "CSX Corporation Common Stock",
+      "marketCapUSD": 88455677287.0,
+      "ranks": {
+        "sp500": 138,
+        "nasdaq": 60
+      }
+    },
+    {
+      "companyKey": "ICE",
+      "symbol": "ICE",
+      "name": "Intercontinental Exchange Inc. Common Stock",
+      "marketCapUSD": 88374720144.0,
+      "ranks": {
+        "sp500": 139
+      }
+    },
+    {
+      "companyKey": "PNC",
+      "symbol": "PNC",
+      "name": "PNC Financial Services Group Inc. (The) Common Stock",
+      "marketCapUSD": 88270275760.0,
+      "ranks": {
+        "sp500": 140
+      }
+    },
+    {
+      "companyKey": "HWM",
+      "symbol": "HWM",
+      "name": "Howmet Aerospace Inc. Common Stock",
+      "marketCapUSD": 88059336913.0,
+      "ranks": {
+        "sp500": 141
+      }
+    },
+    {
+      "companyKey": "BX",
+      "symbol": "BX",
+      "name": "Blackstone Inc. Common Stock",
+      "marketCapUSD": 86156750585.0,
+      "ranks": {
+        "sp500": 142
+      }
+    },
+    {
+      "companyKey": "MRNA",
+      "symbol": "MRNA",
+      "name": "Moderna Inc. Common Stock",
+      "marketCapUSD": 85332678915.0,
+      "ranks": {
+        "sp500": 143,
+        "nasdaq": 61
+      }
+    },
+    {
+      "companyKey": "AMT",
+      "symbol": "AMT",
+      "name": "American Tower Corporation (REIT) Common Stock",
+      "marketCapUSD": 85065666363.0,
+      "ranks": {
+        "sp500": 144
+      }
+    },
+    {
+      "companyKey": "WM",
+      "symbol": "WM",
+      "name": "Waste Management Inc. Common Stock",
+      "marketCapUSD": 84395863950.0,
+      "ranks": {
+        "sp500": 145
+      }
+    },
+    {
+      "companyKey": "MRSH",
+      "symbol": "MRSH",
+      "name": "Marsh Common Stock",
+      "marketCapUSD": 84246877253.0,
+      "ranks": {
+        "sp500": 146
+      }
+    },
+    {
+      "companyKey": "DASH",
+      "symbol": "DASH",
+      "name": "DoorDash Inc. Class A Common Stock",
+      "marketCapUSD": 84163791283.0,
+      "ranks": {
+        "sp500": 147,
+        "nasdaq": 62
+      }
+    },
+    {
+      "companyKey": "MMM",
+      "symbol": "MMM",
+      "name": "3M Company Common Stock",
+      "marketCapUSD": 82974579671.0,
+      "ranks": {
+        "sp500": 148
+      }
+    },
+    {
+      "companyKey": "KKR",
+      "symbol": "KKR",
+      "name": "KKR & Co. Inc. Common Stock",
+      "marketCapUSD": 82142633848.0,
+      "ranks": {
+        "sp500": 149
+      }
+    },
+    {
+      "companyKey": "INTU",
+      "symbol": "INTU",
+      "name": "Intuit Inc. Common Stock",
+      "marketCapUSD": 81771543640.0,
+      "ranks": {
+        "sp500": 150,
+        "nasdaq": 63
+      }
+    },
+    {
+      "companyKey": "SPCX",
+      "symbol": "SPCX",
+      "name": "Space Exploration Technologies Corp. Class A Common Stock",
+      "marketCapUSD": 2218070509958.0,
+      "ranks": {
+        "nasdaq": 6
+      }
+    },
+    {
+      "companyKey": "SKHY",
+      "symbol": "SKHY",
+      "name": "SK hynix Inc. American Depositary Shares",
+      "marketCapUSD": 1182438500650.0,
+      "ranks": {
+        "nasdaq": 10
+      }
+    },
+    {
+      "companyKey": "ASML",
+      "symbol": "ASML",
+      "name": "ASML Holding N.V. New York Registry Shares",
+      "marketCapUSD": 674573413990.0,
+      "ranks": {
+        "nasdaq": 14
+      }
+    },
+    {
+      "companyKey": "ARM",
+      "symbol": "ARM",
+      "name": "Arm Holdings plc American Depositary Shares",
+      "marketCapUSD": 271589462520.0,
+      "ranks": {
+        "nasdaq": 22
+      }
+    },
+    {
+      "companyKey": "SHOP",
+      "symbol": "SHOP",
+      "name": "Shopify Inc. Class A Subordinate Voting Shares",
+      "marketCapUSD": 232235251901.0,
+      "ranks": {
+        "nasdaq": 27
+      }
+    },
+    {
+      "companyKey": "PDD",
+      "symbol": "PDD",
+      "name": "PDD Holdings Inc. American Depositary Shares",
+      "marketCapUSD": 115181241705.0,
+      "ranks": {
+        "nasdaq": 43
+      }
+    },
+    {
+      "companyKey": "SNY",
+      "symbol": "SNY",
+      "name": "Sanofi ADS",
+      "marketCapUSD": 96920065590.0,
+      "ranks": {
+        "nasdaq": 52
+      }
+    },
+    {
+      "companyKey": "MELI",
+      "symbol": "MELI",
+      "name": "MercadoLibre Inc. Common Stock",
+      "marketCapUSD": 95940655977.0,
+      "ranks": {
+        "nasdaq": 56
+      }
+    },
+    {
+      "companyKey": "CTAS",
+      "symbol": "CTAS",
+      "name": "Cintas Corporation Common Stock",
+      "marketCapUSD": 81491721336.0,
+      "ranks": {
+        "nasdaq": 64
+      }
+    },
+    {
+      "companyKey": "NTES",
+      "symbol": "NTES",
+      "name": "NetEase Inc. American Depositary Shares",
+      "marketCapUSD": 80027645648.0,
+      "ranks": {
+        "nasdaq": 65
+      }
+    },
+    {
+      "companyKey": "MDLZ",
+      "symbol": "MDLZ",
+      "name": "Mondelez International Inc. Class A Common Stock",
+      "marketCapUSD": 78863074842.0,
+      "ranks": {
+        "nasdaq": 66
+      }
+    },
+    {
+      "companyKey": "REGN",
+      "symbol": "REGN",
+      "name": "Regeneron Pharmaceuticals Inc. Common Stock",
+      "marketCapUSD": 78535094396.0,
+      "ranks": {
+        "nasdaq": 67
+      }
+    },
+    {
+      "companyKey": "CMCSA",
+      "symbol": "CMCSA",
+      "name": "Comcast Corporation Class A Common Stock",
+      "marketCapUSD": 73385804330.0,
+      "ranks": {
+        "nasdaq": 68
+      }
+    },
+    {
+      "companyKey": "ROST",
+      "symbol": "ROST",
+      "name": "Ross Stores Inc. Common Stock",
+      "marketCapUSD": 72145290362.0,
+      "ranks": {
+        "nasdaq": 69
+      }
+    },
+    {
+      "companyKey": "ORLY",
+      "symbol": "ORLY",
+      "name": "O'Reilly Automotive Inc. Common Stock",
+      "marketCapUSD": 70096452627.0,
+      "ranks": {
+        "nasdaq": 70
+      }
+    },
+    {
+      "companyKey": "AEP",
+      "symbol": "AEP",
+      "name": "American Electric Power Company Inc. Common Stock",
+      "marketCapUSD": 67630483039.0,
+      "ranks": {
+        "nasdaq": 71
+      }
+    },
+    {
+      "companyKey": "HON",
+      "symbol": "HON",
+      "name": "Honeywell International Inc. Common Stock",
+      "marketCapUSD": 66443303696.0,
+      "ranks": {
+        "nasdaq": 72
+      }
+    },
+    {
+      "companyKey": "MPWR",
+      "symbol": "MPWR",
+      "name": "Monolithic Power Systems Inc. Common Stock",
+      "marketCapUSD": 64830919890.0,
+      "ranks": {
+        "nasdaq": 73
+      }
+    },
+    {
+      "companyKey": "MSTR",
+      "symbol": "MSTR",
+      "name": "Strategy Inc Common Stock Class A",
+      "marketCapUSD": 64427586993.0,
+      "ranks": {
+        "nasdaq": 74
+      }
+    },
+    {
+      "companyKey": "TER",
+      "symbol": "TER",
+      "name": "Teradyne Inc. Common Stock",
+      "marketCapUSD": 60011396888.0,
+      "ranks": {
+        "nasdaq": 75
+      }
+    },
+    {
+      "companyKey": "FAST",
+      "symbol": "FAST",
+      "name": "Fastenal Company Common Stock",
+      "marketCapUSD": 59084650034.0,
+      "ranks": {
+        "nasdaq": 76
+      }
+    },
+    {
+      "companyKey": "NTRA",
+      "symbol": "NTRA",
+      "name": "Natera Inc. Common Stock",
+      "marketCapUSD": 57336226501.0,
+      "ranks": {
+        "nasdaq": 77
+      }
+    },
+    {
+      "companyKey": "NBIS",
+      "symbol": "NBIS",
+      "name": "Nebius Group N.V. Class A Ordinary Shares",
+      "marketCapUSD": 57105907093.0,
+      "ranks": {
+        "nasdaq": 78
+      }
+    },
+    {
+      "companyKey": "PCAR",
+      "symbol": "PCAR",
+      "name": "PACCAR Inc. Common Stock",
+      "marketCapUSD": 56915842368.0,
+      "ranks": {
+        "nasdaq": 79
+      }
+    },
+    {
+      "companyKey": "NXPI",
+      "symbol": "NXPI",
+      "name": "NXP Semiconductors N.V. Common Stock",
+      "marketCapUSD": 56789893627.0,
+      "ranks": {
+        "nasdaq": 80
+      }
+    },
+    {
+      "companyKey": "ALAB",
+      "symbol": "ALAB",
+      "name": "Astera Labs Inc. Common Stock",
+      "marketCapUSD": 56228257057.0,
+      "ranks": {
+        "nasdaq": 81
+      }
+    },
+    {
+      "companyKey": "BKR",
+      "symbol": "BKR",
+      "name": "Baker Hughes Company Class A Common Stock",
+      "marketCapUSD": 55768429309.0,
+      "ranks": {
+        "nasdaq": 82
+      }
+    },
+    {
+      "companyKey": "FANG",
+      "symbol": "FANG",
+      "name": "Diamondback Energy Inc. Common Stock",
+      "marketCapUSD": 54635551514.0,
+      "ranks": {
+        "nasdaq": 83
+      }
+    },
+    {
+      "companyKey": "NDAQ",
+      "symbol": "NDAQ",
+      "name": "Nasdaq Inc. Common Stock",
+      "marketCapUSD": 52705976406.0,
+      "ranks": {
+        "nasdaq": 84
+      }
+    },
+    {
+      "companyKey": "TEAM",
+      "symbol": "TEAM",
+      "name": "Atlassian Corporation Class A Common Stock",
+      "marketCapUSD": 52589588816.0,
+      "ranks": {
+        "nasdaq": 85
+      }
+    },
+    {
+      "companyKey": "EBAY",
+      "symbol": "EBAY",
+      "name": "eBay Inc. Common Stock",
+      "marketCapUSD": 51019250000.0,
+      "ranks": {
+        "nasdaq": 86
+      }
+    },
+    {
+      "companyKey": "ARGX",
+      "symbol": "ARGX",
+      "name": "argenx SE American Depositary Shares",
+      "marketCapUSD": 50413683922.0,
+      "ranks": {
+        "nasdaq": 87
+      }
+    },
+    {
+      "companyKey": "HONA",
+      "symbol": "HONA",
+      "name": "Honeywell Aerospace Inc. Common Stock ",
+      "marketCapUSD": 49847155061.0,
+      "ranks": {
+        "nasdaq": 88
+      }
+    },
+    {
+      "companyKey": "ADSK",
+      "symbol": "ADSK",
+      "name": "Autodesk Inc. Common Stock",
+      "marketCapUSD": 48809860000.0,
+      "ranks": {
+        "nasdaq": 89
+      }
+    },
+    {
+      "companyKey": "PYPL",
+      "symbol": "PYPL",
+      "name": "PayPal Holdings Inc. Common Stock",
+      "marketCapUSD": 47948581988.0,
+      "ranks": {
+        "nasdaq": 90
+      }
+    },
+    {
+      "companyKey": "CCEP",
+      "symbol": "CCEP",
+      "name": "Coca-Cola Europacific Partners plc Ordinary Shares",
+      "marketCapUSD": 47704474060.0,
+      "ranks": {
+        "nasdaq": 91
+      }
+    },
+    {
+      "companyKey": "COIN",
+      "symbol": "COIN",
+      "name": "Coinbase Global Inc. Class A Common Stock",
+      "marketCapUSD": 47593542540.0,
+      "ranks": {
+        "nasdaq": 92
+      }
+    },
+    {
+      "companyKey": "MDLN",
+      "symbol": "MDLN",
+      "name": "Medline Inc. Class A Common Stock",
+      "marketCapUSD": 47013939914.0,
+      "ranks": {
+        "nasdaq": 93
+      }
+    },
+    {
+      "companyKey": "NTAP",
+      "symbol": "NTAP",
+      "name": "NetApp Inc. Common Stock",
+      "marketCapUSD": 46979497616.0,
+      "ranks": {
+        "nasdaq": 94
+      }
+    },
+    {
+      "companyKey": "XEL",
+      "symbol": "XEL",
+      "name": "Xcel Energy Inc. Common Stock",
+      "marketCapUSD": 46329126476.0,
+      "ranks": {
+        "nasdaq": 95
+      }
+    },
+    {
+      "companyKey": "WDAY",
+      "symbol": "WDAY",
+      "name": "Workday Inc. Class A Common Stock",
+      "marketCapUSD": 45368250000.0,
+      "ranks": {
+        "nasdaq": 96
+      }
+    },
+    {
+      "companyKey": "TRI",
+      "symbol": "TRI",
+      "name": "Thomson Reuters Corporation Common Shares",
+      "marketCapUSD": 45161100000.0,
+      "ranks": {
+        "nasdaq": 97
+      }
+    },
+    {
+      "companyKey": "KDP",
+      "symbol": "KDP",
+      "name": "Keurig Dr Pepper Inc. Common Stock",
+      "marketCapUSD": 44567052745.0,
+      "ranks": {
+        "nasdaq": 98
+      }
+    },
+    {
+      "companyKey": "CRWV",
+      "symbol": "CRWV",
+      "name": "CoreWeave Inc. Class A Common Stock",
+      "marketCapUSD": 44266327677.0,
+      "ranks": {
+        "nasdaq": 99
+      }
+    },
+    {
+      "companyKey": "EXC",
+      "symbol": "EXC",
+      "name": "Exelon Corporation Common Stock",
+      "marketCapUSD": 43478537090.0,
+      "ranks": {
+        "nasdaq": 100
+      }
+    },
+    {
+      "companyKey": "FLEX",
+      "symbol": "FLEX",
+      "name": "Flex Ltd. Ordinary Shares",
+      "marketCapUSD": 43315542337.0,
+      "ranks": {
+        "nasdaq": 101
+      }
+    },
+    {
+      "companyKey": "ILMN",
+      "symbol": "ILMN",
+      "name": "Illumina Inc. Common Stock",
+      "marketCapUSD": 41777170000.0,
+      "ranks": {
+        "nasdaq": 102
+      }
+    },
+    {
+      "companyKey": "RVMD",
+      "symbol": "RVMD",
+      "name": "Revolution Medicines Inc. Common Stock",
+      "marketCapUSD": 41570548271.0,
+      "ranks": {
+        "nasdaq": 103
+      }
+    },
+    {
+      "companyKey": "IDXX",
+      "symbol": "IDXX",
+      "name": "IDEXX Laboratories Inc. Common Stock",
+      "marketCapUSD": 41276577917.0,
+      "ranks": {
+        "nasdaq": 104
+      }
+    },
+    {
+      "companyKey": "RKLB",
+      "symbol": "RKLB",
+      "name": "Rocket Lab Corporation Common Stock",
+      "marketCapUSD": 41250092450.0,
+      "ranks": {
+        "nasdaq": 105
+      }
+    },
+    {
+      "companyKey": "MCHP",
+      "symbol": "MCHP",
+      "name": "Microchip Technology Incorporated Common Stock",
+      "marketCapUSD": 40090331657.0,
+      "ranks": {
+        "nasdaq": 106
+      }
+    },
+    {
+      "companyKey": "ONC",
+      "symbol": "ONC",
+      "name": "BeOne Medicines Ltd. American Depositary Shares",
+      "marketCapUSD": 39841137701.0,
+      "ranks": {
+        "nasdaq": 107
+      }
+    },
+    {
+      "companyKey": "IBKR",
+      "symbol": "IBKR",
+      "name": "Interactive Brokers Group Inc. Class A Common Stock",
+      "marketCapUSD": 39821040449.0,
+      "ranks": {
+        "nasdaq": 108
+      }
+    },
+    {
+      "companyKey": "OKTA",
+      "symbol": "OKTA",
+      "name": "Okta Inc. Class A Common Stock",
+      "marketCapUSD": 39698336330.0,
+      "ranks": {
+        "nasdaq": 109
+      }
+    },
+    {
+      "companyKey": "TTWO",
+      "symbol": "TTWO",
+      "name": "Take-Two Interactive Software Inc. Common Stock",
+      "marketCapUSD": 39045256107.0,
+      "ranks": {
+        "nasdaq": 110
+      }
+    },
+    {
+      "companyKey": "CRDO",
+      "symbol": "CRDO",
+      "name": "Credo Technology Group Holding Ltd Ordinary Shares",
+      "marketCapUSD": 37748263211.0,
+      "ranks": {
+        "nasdaq": 111
+      }
+    },
+    {
+      "companyKey": "ODFL",
+      "symbol": "ODFL",
+      "name": "Old Dominion Freight Line Inc. Common Stock",
+      "marketCapUSD": 37720243108.0,
+      "ranks": {
+        "nasdaq": 112
+      }
+    },
+    {
+      "companyKey": "PAYX",
+      "symbol": "PAYX",
+      "name": "Paychex Inc. Common Stock",
+      "marketCapUSD": 37249796695.0,
+      "ranks": {
+        "nasdaq": 113
+      }
+    },
+    {
+      "companyKey": "ZS",
+      "symbol": "ZS",
+      "name": "Zscaler Inc. Common Stock",
+      "marketCapUSD": 36814489714.0,
+      "ranks": {
+        "nasdaq": 114
+      }
+    },
+    {
+      "companyKey": "ROP",
+      "symbol": "ROP",
+      "name": "Roper Technologies Inc. Common Stock",
+      "marketCapUSD": 36328269038.0,
+      "ranks": {
+        "nasdaq": 115
+      }
+    },
+    {
+      "companyKey": "FER",
+      "symbol": "FER",
+      "name": "Ferrovial N.V. Ordinary Shares",
+      "marketCapUSD": 36217503236.0,
+      "ranks": {
+        "nasdaq": 116
+      }
+    },
+    {
+      "companyKey": "JD",
+      "symbol": "JD",
+      "name": "JD.com Inc. American Depositary Shares",
+      "marketCapUSD": 35911680000.0,
+      "ranks": {
+        "nasdaq": 117
+      }
+    },
+    {
+      "companyKey": "VOD",
+      "symbol": "VOD",
+      "name": "Vodafone Group Plc American Depositary Shares",
+      "marketCapUSD": 35617017210.0,
+      "ranks": {
+        "nasdaq": 118
+      }
+    },
+    {
+      "companyKey": "CBRS",
+      "symbol": "CBRS",
+      "name": "Cerebras Systems Inc. Class A Common Stock",
+      "marketCapUSD": 34831639691.0,
+      "ranks": {
+        "nasdaq": 119
+      }
+    },
+    {
+      "companyKey": "STLD",
+      "symbol": "STLD",
+      "name": "Steel Dynamics Inc.",
+      "marketCapUSD": 34275478964.0,
+      "ranks": {
+        "nasdaq": 120
+      }
+    },
+    {
+      "companyKey": "UAL",
+      "symbol": "UAL",
+      "name": "United Airlines Holdings Inc. Common Stock",
+      "marketCapUSD": 33899529148.0,
+      "ranks": {
+        "nasdaq": 121
+      }
+    },
+    {
+      "companyKey": "BIIB",
+      "symbol": "BIIB",
+      "name": "Biogen Inc. Common Stock",
+      "marketCapUSD": 33896244681.0,
+      "ranks": {
+        "nasdaq": 122
+      }
+    },
+    {
+      "companyKey": "AXON",
+      "symbol": "AXON",
+      "name": "Axon Enterprise Inc. Common Stock",
+      "marketCapUSD": 33667221898.0,
+      "ranks": {
+        "nasdaq": 123
+      }
+    },
+    {
+      "companyKey": "RPRX",
+      "symbol": "RPRX",
+      "name": "Royalty Pharma plc Class A Ordinary Shares ",
+      "marketCapUSD": 33223569567.0,
+      "ranks": {
+        "nasdaq": 124
+      }
+    },
+    {
+      "companyKey": "ACGL",
+      "symbol": "ACGL",
+      "name": "Arch Capital Group Ltd. Common Stock",
+      "marketCapUSD": 33153821882.0,
+      "ranks": {
+        "nasdaq": 125
+      }
+    },
+    {
+      "companyKey": "KMB",
+      "symbol": "KMB",
+      "name": "Kimberly-Clark Corporation Common Stock",
+      "marketCapUSD": 32848831583.0,
+      "ranks": {
+        "nasdaq": 126
+      }
+    },
+    {
+      "companyKey": "DXCM",
+      "symbol": "DXCM",
+      "name": "DexCom Inc. Common Stock",
+      "marketCapUSD": 32422836929.0,
+      "ranks": {
+        "nasdaq": 127
+      }
+    },
+    {
+      "companyKey": "ERIC",
+      "symbol": "ERIC",
+      "name": "Ericsson American Depositary Shares",
+      "marketCapUSD": 31589565757.0,
+      "ranks": {
+        "nasdaq": 128
+      }
+    },
+    {
+      "companyKey": "HBAN",
+      "symbol": "HBAN",
+      "name": "Huntington Bancshares Incorporated Common Stock",
+      "marketCapUSD": 31114388320.0,
+      "ranks": {
+        "nasdaq": 129
+      }
+    },
+    {
+      "companyKey": "NTRS",
+      "symbol": "NTRS",
+      "name": "Northern Trust Corporation Common Stock",
+      "marketCapUSD": 30957926044.0,
+      "ranks": {
+        "nasdaq": 130
+      }
+    },
+    {
+      "companyKey": "EXPE",
+      "symbol": "EXPE",
+      "name": "Expedia Group Inc. Common Stock",
+      "marketCapUSD": 30738711857.0,
+      "ranks": {
+        "nasdaq": 131
+      }
+    },
+    {
+      "companyKey": "MDB",
+      "symbol": "MDB",
+      "name": "MongoDB Inc. Class A Common Stock",
+      "marketCapUSD": 30715327260.0,
+      "ranks": {
+        "nasdaq": 132
+      }
+    },
+    {
+      "companyKey": "GEHC",
+      "symbol": "GEHC",
+      "name": "GE HealthCare Technologies Inc. Common Stock ",
+      "marketCapUSD": 30597226710.0,
+      "ranks": {
+        "nasdaq": 133
+      }
+    },
+    {
+      "companyKey": "ESLT",
+      "symbol": "ESLT",
+      "name": "Elbit Systems Ltd. Ordinary Shares",
+      "marketCapUSD": 30409400753.0,
+      "ranks": {
+        "nasdaq": 134
+      }
+    },
+    {
+      "companyKey": "ALNY",
+      "symbol": "ALNY",
+      "name": "Alnylam Pharmaceuticals Inc. Common Stock",
+      "marketCapUSD": 30377345968.0,
+      "ranks": {
+        "nasdaq": 135
+      }
+    },
+    {
+      "companyKey": "ON",
+      "symbol": "ON",
+      "name": "ON Semiconductor Corporation Common Stock",
+      "marketCapUSD": 29588214588.0,
+      "ranks": {
+        "nasdaq": 136
+      }
+    },
+    {
+      "companyKey": "BIDU",
+      "symbol": "BIDU",
+      "name": "Baidu Inc. ADS",
+      "marketCapUSD": 28683299154.0,
+      "ranks": {
+        "nasdaq": 137
+      }
+    },
+    {
+      "companyKey": "ZM",
+      "symbol": "ZM",
+      "name": "Zoom Communications Inc. Class A Common Stock",
+      "marketCapUSD": 28577296655.0,
+      "ranks": {
+        "nasdaq": 138
+      }
+    },
+    {
+      "companyKey": "RYAAY",
+      "symbol": "RYAAY",
+      "name": "Ryanair Holdings plc American Depositary Shares",
+      "marketCapUSD": 27890390817.0,
+      "ranks": {
+        "nasdaq": 139
+      }
+    },
+    {
+      "companyKey": "WTW",
+      "symbol": "WTW",
+      "name": "Willis Towers Watson Public Limited Company Ordinary Shares",
+      "marketCapUSD": 27715772159.0,
+      "ranks": {
+        "nasdaq": 140
+      }
+    },
+    {
+      "companyKey": "ECHO",
+      "symbol": "ECHO",
+      "name": "EchoStar  Corporation Common Stock",
+      "marketCapUSD": 27656586764.0,
+      "ranks": {
+        "nasdaq": 141
+      }
+    },
+    {
+      "companyKey": "VRSN",
+      "symbol": "VRSN",
+      "name": "VeriSign Inc. Common Stock",
+      "marketCapUSD": 27333810000.0,
+      "ranks": {
+        "nasdaq": 142
+      }
+    },
+    {
+      "companyKey": "GFS",
+      "symbol": "GFS",
+      "name": "GlobalFoundries Inc. Ordinary Shares",
+      "marketCapUSD": 26945615269.0,
+      "ranks": {
+        "nasdaq": 143
+      }
+    },
+    {
+      "companyKey": "CTSH",
+      "symbol": "CTSH",
+      "name": "Cognizant Technology Solutions Corporation Class A Common Stock",
+      "marketCapUSD": 26882510393.0,
+      "ranks": {
+        "nasdaq": 144
+      }
+    },
+    {
+      "companyKey": "FFIV",
+      "symbol": "FFIV",
+      "name": "F5 Inc. Common Stock",
+      "marketCapUSD": 26812404405.0,
+      "ranks": {
+        "nasdaq": 145
+      }
+    },
+    {
+      "companyKey": "AFRM",
+      "symbol": "AFRM",
+      "name": "Affirm Holdings Inc. Class A Common Stock",
+      "marketCapUSD": 26531433359.0,
+      "ranks": {
+        "nasdaq": 146
+      }
+    },
+    {
+      "companyKey": "FOXA",
+      "symbol": "FOXA",
+      "name": "Fox Corporation Class A Common Stock",
+      "marketCapUSD": 26392552001.0,
+      "ranks": {
+        "nasdaq": 147
+      }
+    },
+    {
+      "companyKey": "SMCI",
+      "symbol": "SMCI",
+      "name": "Super Micro Computer Inc. Common Stock",
+      "marketCapUSD": 26265476052.0,
+      "ranks": {
+        "nasdaq": 148
+      }
+    },
+    {
+      "companyKey": "LPLA",
+      "symbol": "LPLA",
+      "name": "LPL Financial Holdings Inc. Common Stock",
+      "marketCapUSD": 25994404775.0,
+      "ranks": {
+        "nasdaq": 149
+      }
+    },
+    {
+      "companyKey": "TW",
+      "symbol": "TW",
+      "name": "Tradeweb Markets Inc. Class A Common Stock",
+      "marketCapUSD": 25890546625.0,
+      "ranks": {
+        "nasdaq": 150
+      }
+    }
+  ]
+}

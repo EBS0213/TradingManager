@@ -1,0 +1,18 @@
+# TM26 이 쓰는 파이썬 라이브러리
+requests>=2.31
+pyyaml>=6.0
+pandas>=2.0
+matplotlib>=3.7
+jinja2>=3.1
+beautifulsoup4>=4.12
+lxml>=4.9
+finance-datareader>=0.9.90
+pykrx>=1.0.45
+pdfplumber>=0.11
+playwright>=1.40
+# 아래는 코드가 쓰는데 목록에서 빠져 있던 것들 (2026-08-29 추가)
+pillow>=10.0
+openpyxl>=3.1
+pdfminer.six>=20221105
+pypdfium2>=4.20
+cairosvg>=2.7

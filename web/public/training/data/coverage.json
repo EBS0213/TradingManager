@@ -1,0 +1,1732 @@
+{
+  "companies": [
+    {
+      "symbol": "NVDA",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "AAPL",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 13
+    },
+    {
+      "symbol": "GOOGL",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 14
+    },
+    {
+      "symbol": "MSFT",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 11
+    },
+    {
+      "symbol": "AMZN",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 10
+    },
+    {
+      "symbol": "META",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 11
+    },
+    {
+      "symbol": "AVGO",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 12
+    },
+    {
+      "symbol": "TSLA",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 1
+    },
+    {
+      "symbol": "BRK-B",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 3
+    },
+    {
+      "symbol": "MU",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 1
+    },
+    {
+      "symbol": "LLY",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 11
+    },
+    {
+      "symbol": "AMD",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 0
+    },
+    {
+      "symbol": "WMT",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "JPM",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "XOM",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "V",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "JNJ",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "INTC",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "MA",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "PLTR",
+      "firstDate": "2020-09-30",
+      "lastDate": "2026-10-12",
+      "candles": 1515,
+      "cases": 1
+    },
+    {
+      "symbol": "ABBV",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "CSCO",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 10
+    },
+    {
+      "symbol": "COST",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 10
+    },
+    {
+      "symbol": "CVX",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "ORCL",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 10
+    },
+    {
+      "symbol": "AMAT",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "LRCX",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "KO",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 0
+    },
+    {
+      "symbol": "BAC",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 11
+    },
+    {
+      "symbol": "CAT",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 13
+    },
+    {
+      "symbol": "DELL",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "MRK",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "PG",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 1
+    },
+    {
+      "symbol": "UNH",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "PANW",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 12
+    },
+    {
+      "symbol": "GE",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 10
+    },
+    {
+      "symbol": "PM",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "MS",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 12
+    },
+    {
+      "symbol": "HD",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "CRWD",
+      "firstDate": "2019-06-12",
+      "lastDate": "2026-10-12",
+      "candles": 1844,
+      "cases": 4
+    },
+    {
+      "symbol": "ANET",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 5
+    },
+    {
+      "symbol": "GEV",
+      "firstDate": "2024-03-27",
+      "lastDate": "2026-10-12",
+      "candles": 638,
+      "cases": 0
+    },
+    {
+      "symbol": "GS",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 11
+    },
+    {
+      "symbol": "TXN",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "WFC",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "RTX",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "KLAC",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "TMO",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "MRVL",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "AMGN",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "LIN",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 3
+    },
+    {
+      "symbol": "C",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "SNDK",
+      "firstDate": "2025-02-13",
+      "lastDate": "2026-10-12",
+      "candles": 417,
+      "cases": 0
+    },
+    {
+      "symbol": "IBM",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "APH",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 10
+    },
+    {
+      "symbol": "AXP",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 11
+    },
+    {
+      "symbol": "ADI",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "CRM",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 10
+    },
+    {
+      "symbol": "DIS",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "GILD",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "QCOM",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "VZ",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "ABT",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "PEP",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "STX",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "DE",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 11
+    },
+    {
+      "symbol": "BLK",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 11
+    },
+    {
+      "symbol": "SCHW",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "UNP",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "MCD",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "WELL",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "ETN",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 11
+    },
+    {
+      "symbol": "COP",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "NEE",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "TMUS",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 3
+    },
+    {
+      "symbol": "PFE",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "TJX",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "DHR",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "T",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "ISRG",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 16
+    },
+    {
+      "symbol": "BA",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "UBER",
+      "firstDate": "2019-05-10",
+      "lastDate": "2026-10-12",
+      "candles": 1866,
+      "cases": 4
+    },
+    {
+      "symbol": "NOW",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 16
+    },
+    {
+      "symbol": "WDC",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "ACN",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "FTNT",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "CB",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 1
+    },
+    {
+      "symbol": "MPC",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 10
+    },
+    {
+      "symbol": "MNST",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 10
+    },
+    {
+      "symbol": "VRTX",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 10
+    },
+    {
+      "symbol": "PGR",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "GLW",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "PLD",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "VLO",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "NEM",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 3
+    },
+    {
+      "symbol": "COF",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "SPGI",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 11
+    },
+    {
+      "symbol": "PH",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 12
+    },
+    {
+      "symbol": "MO",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 1
+    },
+    {
+      "symbol": "BKNG",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 11
+    },
+    {
+      "symbol": "LMT",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 5
+    },
+    {
+      "symbol": "BMY",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "MDT",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 1
+    },
+    {
+      "symbol": "PSX",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 10
+    },
+    {
+      "symbol": "CVS",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "MCK",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "ADP",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "SYK",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "FCX",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "SBUX",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 10
+    },
+    {
+      "symbol": "TT",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 12
+    },
+    {
+      "symbol": "CEG",
+      "firstDate": "2022-01-19",
+      "lastDate": "2026-10-12",
+      "candles": 1187,
+      "cases": 4
+    },
+    {
+      "symbol": "LOW",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 12
+    },
+    {
+      "symbol": "DDOG",
+      "firstDate": "2019-09-19",
+      "lastDate": "2026-10-12",
+      "candles": 1775,
+      "cases": 2
+    },
+    {
+      "symbol": "PWR",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 11
+    },
+    {
+      "symbol": "EQIX",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "SO",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "CME",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 1
+    },
+    {
+      "symbol": "HCA",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 15
+    },
+    {
+      "symbol": "HOOD",
+      "firstDate": "2021-07-29",
+      "lastDate": "2026-10-12",
+      "candles": 1307,
+      "cases": 0
+    },
+    {
+      "symbol": "ABNB",
+      "firstDate": "2020-12-10",
+      "lastDate": "2026-10-12",
+      "candles": 1465,
+      "cases": 2
+    },
+    {
+      "symbol": "BNY",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "MAR",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "SNPS",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "CDNS",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 12
+    },
+    {
+      "symbol": "JCI",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "HPE",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 10
+    },
+    {
+      "symbol": "ADBE",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "VRT",
+      "firstDate": "2018-08-02",
+      "lastDate": "2026-10-12",
+      "candles": 2059,
+      "cases": 3
+    },
+    {
+      "symbol": "DUK",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "ELV",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "GD",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "WMB",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "APP",
+      "firstDate": "2021-04-15",
+      "lastDate": "2026-10-12",
+      "candles": 1380,
+      "cases": 0
+    },
+    {
+      "symbol": "EMR",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "LITE",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 0
+    },
+    {
+      "symbol": "USB",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "CSX",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "ICE",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "PNC",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "HWM",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 14
+    },
+    {
+      "symbol": "BX",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "MRNA",
+      "firstDate": "2018-12-07",
+      "lastDate": "2026-10-12",
+      "candles": 1971,
+      "cases": 0
+    },
+    {
+      "symbol": "AMT",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "WM",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "MRSH",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "DASH",
+      "firstDate": "2020-12-09",
+      "lastDate": "2026-10-12",
+      "candles": 1466,
+      "cases": 3
+    },
+    {
+      "symbol": "MMM",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "KKR",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 11
+    },
+    {
+      "symbol": "INTU",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 12
+    },
+    {
+      "symbol": "SPCX",
+      "firstDate": "2026-06-12",
+      "lastDate": "2026-10-12",
+      "candles": 84,
+      "cases": 0
+    },
+    {
+      "symbol": "SKHY",
+      "firstDate": "2026-07-10",
+      "lastDate": "2026-10-12",
+      "candles": 66,
+      "cases": 0
+    },
+    {
+      "symbol": "ASML",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "ARM",
+      "firstDate": "2023-09-14",
+      "lastDate": "2026-10-12",
+      "candles": 772,
+      "cases": 0
+    },
+    {
+      "symbol": "SHOP",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "PDD",
+      "firstDate": "2018-07-26",
+      "lastDate": "2026-10-12",
+      "candles": 2064,
+      "cases": 2
+    },
+    {
+      "symbol": "SNY",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "MELI",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 5
+    },
+    {
+      "symbol": "CTAS",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "NTES",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "MDLZ",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 3
+    },
+    {
+      "symbol": "REGN",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 5
+    },
+    {
+      "symbol": "CMCSA",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "ROST",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 12
+    },
+    {
+      "symbol": "ORLY",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "AEP",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "HON",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "MPWR",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "MSTR",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 3
+    },
+    {
+      "symbol": "TER",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "FAST",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 12
+    },
+    {
+      "symbol": "NTRA",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 3
+    },
+    {
+      "symbol": "NBIS",
+      "firstDate": "2024-10-21",
+      "lastDate": "2026-10-12",
+      "candles": 495,
+      "cases": 0
+    },
+    {
+      "symbol": "PCAR",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "NXPI",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "ALAB",
+      "firstDate": "2024-03-20",
+      "lastDate": "2026-10-12",
+      "candles": 643,
+      "cases": 0
+    },
+    {
+      "symbol": "BKR",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "FANG",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "NDAQ",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "TEAM",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "EBAY",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 10
+    },
+    {
+      "symbol": "ARGX",
+      "firstDate": "2017-05-18",
+      "lastDate": "2026-10-12",
+      "candles": 2363,
+      "cases": 8
+    },
+    {
+      "symbol": "HONA",
+      "firstDate": "2026-06-15",
+      "lastDate": "2026-10-12",
+      "candles": 83,
+      "cases": 0
+    },
+    {
+      "symbol": "ADSK",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 12
+    },
+    {
+      "symbol": "PYPL",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "CCEP",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "COIN",
+      "firstDate": "2021-04-14",
+      "lastDate": "2026-10-12",
+      "candles": 1381,
+      "cases": 0
+    },
+    {
+      "symbol": "MDLN",
+      "firstDate": "2025-12-17",
+      "lastDate": "2026-10-12",
+      "candles": 205,
+      "cases": 0
+    },
+    {
+      "symbol": "NTAP",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "XEL",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "WDAY",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "TRI",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "KDP",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 3
+    },
+    {
+      "symbol": "CRWV",
+      "firstDate": "2025-03-28",
+      "lastDate": "2026-10-12",
+      "candles": 387,
+      "cases": 0
+    },
+    {
+      "symbol": "EXC",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 3
+    },
+    {
+      "symbol": "FLEX",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 5
+    },
+    {
+      "symbol": "ILMN",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 5
+    },
+    {
+      "symbol": "RVMD",
+      "firstDate": "2020-02-13",
+      "lastDate": "2026-10-12",
+      "candles": 1674,
+      "cases": 3
+    },
+    {
+      "symbol": "IDXX",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 12
+    },
+    {
+      "symbol": "RKLB",
+      "firstDate": "2020-11-24",
+      "lastDate": "2026-10-12",
+      "candles": 1476,
+      "cases": 0
+    },
+    {
+      "symbol": "MCHP",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "ONC",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 1
+    },
+    {
+      "symbol": "IBKR",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 11
+    },
+    {
+      "symbol": "OKTA",
+      "firstDate": "2017-04-07",
+      "lastDate": "2026-10-12",
+      "candles": 2391,
+      "cases": 3
+    },
+    {
+      "symbol": "TTWO",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 10
+    },
+    {
+      "symbol": "CRDO",
+      "firstDate": "2022-01-27",
+      "lastDate": "2026-10-12",
+      "candles": 1181,
+      "cases": 0
+    },
+    {
+      "symbol": "ODFL",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 11
+    },
+    {
+      "symbol": "PAYX",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "ZS",
+      "firstDate": "2018-03-16",
+      "lastDate": "2026-10-12",
+      "candles": 2155,
+      "cases": 3
+    },
+    {
+      "symbol": "ROP",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 5
+    },
+    {
+      "symbol": "FER",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 5
+    },
+    {
+      "symbol": "JD",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "VOD",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "CBRS",
+      "firstDate": "2026-05-14",
+      "lastDate": "2026-10-12",
+      "candles": 104,
+      "cases": 0
+    },
+    {
+      "symbol": "STLD",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "UAL",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 3
+    },
+    {
+      "symbol": "BIIB",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "AXON",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "RPRX",
+      "firstDate": "2020-06-16",
+      "lastDate": "2026-10-12",
+      "candles": 1589,
+      "cases": 3
+    },
+    {
+      "symbol": "ACGL",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 9
+    },
+    {
+      "symbol": "KMB",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 1
+    },
+    {
+      "symbol": "DXCM",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "ERIC",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "HBAN",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "NTRS",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "EXPE",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 6
+    },
+    {
+      "symbol": "MDB",
+      "firstDate": "2017-10-19",
+      "lastDate": "2026-10-12",
+      "candles": 2256,
+      "cases": 1
+    },
+    {
+      "symbol": "GEHC",
+      "firstDate": "2022-12-15",
+      "lastDate": "2026-10-12",
+      "candles": 958,
+      "cases": 1
+    },
+    {
+      "symbol": "ESLT",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "ALNY",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "ON",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 1
+    },
+    {
+      "symbol": "BIDU",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "ZM",
+      "firstDate": "2019-04-18",
+      "lastDate": "2026-10-12",
+      "candles": 1881,
+      "cases": 3
+    },
+    {
+      "symbol": "RYAAY",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 7
+    },
+    {
+      "symbol": "WTW",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "ECHO",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 2
+    },
+    {
+      "symbol": "VRSN",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "GFS",
+      "firstDate": "2021-10-28",
+      "lastDate": "2026-10-12",
+      "candles": 1243,
+      "cases": 0
+    },
+    {
+      "symbol": "CTSH",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 4
+    },
+    {
+      "symbol": "FFIV",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 8
+    },
+    {
+      "symbol": "AFRM",
+      "firstDate": "2021-01-13",
+      "lastDate": "2026-10-12",
+      "candles": 1443,
+      "cases": 0
+    },
+    {
+      "symbol": "FOXA",
+      "firstDate": "2019-03-12",
+      "lastDate": "2026-10-12",
+      "candles": 1908,
+      "cases": 4
+    },
+    {
+      "symbol": "SMCI",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 5
+    },
+    {
+      "symbol": "LPLA",
+      "firstDate": "2017-01-03",
+      "lastDate": "2026-10-12",
+      "candles": 2457,
+      "cases": 14
+    },
+    {
+      "symbol": "TW",
+      "firstDate": "2019-04-04",
+      "lastDate": "2026-10-12",
+      "candles": 1891,
+      "cases": 8
+    }
+  ],
+  "activeCases": 1484,
+  "minNominalClose": 5,
+  "byYear": {
+    "2018": 123,
+    "2019": 207,
+    "2020": 213,
+    "2021": 219,
+    "2022": 64,
+    "2023": 187,
+    "2024": 246,
+    "2025": 187,
+    "2026": 38
+  }
+}

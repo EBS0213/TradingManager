@@ -1,0 +1,65 @@
+{
+  "type": "object",
+  "properties": {
+    "context": {
+      "type": "boolean"
+    },
+    "spelling": {
+      "type": "boolean"
+    },
+    "consistency": {
+      "type": "boolean"
+    },
+    "naturalness": {
+      "type": "boolean"
+    },
+    "pdf_checked": {
+      "type": "boolean"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "publication": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "pdf": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "category",
+        "body",
+        "pdf"
+      ],
+      "additionalProperties": false
+    },
+    "issues_checked": {
+      "type": "boolean"
+    },
+    "content_preserved": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "context",
+    "spelling",
+    "consistency",
+    "naturalness",
+    "pdf_checked",
+    "summary",
+    "publication",
+    "issues_checked",
+    "content_preserved"
+  ],
+  "additionalProperties": false
+}

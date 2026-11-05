@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ko"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{회사명}}({{종목코드}}) 기업분석 보고서</title>
+<style>
+:root{
+  --surface:#ffffff; --plane:#f7f7f5;
+  --ink:#0b0b0b; --ink2:#3d3c3a; --ink3:#6b6a66; --mute:#8f8d87;
+  --line:#e4e3dd; --line2:#c9c8c2; --rule:#0b0b0b;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100;
+  --neg:#d03b3b; --pos:#0f7a3d;
+  --band:#f4f6fa;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--plane);
+  font-family:"Noto Sans CJK KR","Noto Sans KR","Noto Sans CJK JP","Malgun Gothic",
+              system-ui,-apple-system,"Segoe UI",sans-serif;
+  color:var(--ink); font-size:10.4pt; line-height:1.68;
+  letter-spacing:-0.005em; word-break:keep-all;
+}
+/* A4 고정 레이아웃 — 화면에서도 인쇄물과 같은 폭(210mm)으로 보이게 한다 */
+.wrap{width:210mm;max-width:100%;margin:0 auto;background:var(--surface);
+  box-shadow:0 0 0 1px rgba(11,11,11,.06)}
+section{padding:8mm 11mm 7mm}   /* 좌우 11mm = @page 여백과 동일 */
+section+section{border-top:1px solid var(--line)}
+
+h1,h2,h3{margin:0;font-weight:700;letter-spacing:-0.02em}
+h2{font-size:16.5pt;margin:4px 0 13px;padding-bottom:6px;
+   border-bottom:2px solid var(--rule);line-height:1.3}
+h3{font-size:12pt;margin:22px 0 8px;color:var(--ink);line-height:1.4}
+h3.app{font-size:10.5pt;margin:16px 0 6px}
+h4.sub-h{font-size:10.2pt;font-weight:700;margin:16px 0 6px;color:var(--s1);
+  letter-spacing:-0.02em}
+h3:first-of-type{margin-top:6px}
+p{margin:0 0 11px}
+p.lead{font-size:11pt;color:var(--ink2);background:var(--band);
+  padding:13px 16px;border-left:3px solid var(--s1);margin-bottom:18px}
+p.small{font-size:9.4pt}
+.mut{color:var(--ink3)}
+.tiny{font-size:8.4pt;color:var(--mute);font-weight:400}
+b{font-weight:700}
+
+/* ---------- COVER ---------- */
+.cover{padding-top:34px}
+.cov-top{display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:2px solid var(--rule);padding-bottom:7px}
+.cov-brand{font-size:9.6pt;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--s1)}
+.cov-date{font-size:9.4pt;color:var(--ink3)}
+.cov-title{font-size:27pt;margin:20px 0 3px;line-height:1.1}
+.cov-title .code{font-size:13pt;font-weight:400;color:var(--ink3);letter-spacing:0}
+.cov-sub{font-size:13.5pt;color:var(--s1);font-weight:700;margin:0 0 20px;letter-spacing:-0.02em}
+.cov-grid{display:grid;grid-template-columns:1fr 232px;gap:24px;align-items:start}
+.bullets{margin:0;padding-left:0;list-style:none}
+.bullets li{position:relative;padding-left:15px;margin-bottom:12px;font-size:10.2pt;line-height:1.66}
+.bullets li:before{content:"";position:absolute;left:0;top:.62em;
+  width:6px;height:6px;background:var(--s1);border-radius:1px}
+.cov-side{background:var(--band);padding:14px 15px;border-top:2px solid var(--s1)}
+.side-block{margin-bottom:13px}
+.side-h{font-size:8.6pt;color:var(--ink3);letter-spacing:.06em;margin-bottom:2px}
+.side-big{font-size:14pt;font-weight:700;line-height:1.2}
+.side-big.accent{color:var(--s2);font-size:13pt}
+.side-note{font-size:8.4pt;color:var(--mute);margin-top:2px;line-height:1.45}
+.side-tbl{width:100%;border-collapse:collapse;font-size:8.9pt;margin-top:4px}
+.side-tbl td{padding:3.4px 0;border-bottom:1px solid #e2e2dc;color:var(--ink2)}
+.side-tbl td.r{text-align:right;font-weight:600;color:var(--ink);
+  font-variant-numeric:tabular-nums}
+
+/* ---------- TABLES ---------- */
+.tbl-title{font-size:10.5pt;font-weight:700;margin:24px 0 6px}
+.unit{font-size:8.6pt;font-weight:400;color:var(--mute)}
+table.fin{width:100%;border-collapse:collapse;font-size:9.4pt;
+  font-variant-numeric:tabular-nums}
+table.fin.sm{font-size:9pt}
+table.fin.xs{font-size:8.3pt}
+table.fin th{background:var(--ink);color:#fff;font-weight:600;padding:5px 7px;
+  text-align:right;border:none;white-space:nowrap}
+table.fin th.l{text-align:left}
+table.fin th.est{background:#2f2f2d}
+table.fin td{padding:4.2px 7px;text-align:right;border-bottom:1px solid var(--line);
+  vertical-align:top}
+table.fin td.l{text-align:left}
+table.fin td.r{text-align:right}
+table.fin td.est{background:#fafbfd}
+table.fin tr.sub td{color:var(--ink3);font-size:.92em;padding-top:1px;padding-bottom:3px;
+  border-bottom:1px solid #f2f1ec}
+table.fin tr.bd td{font-weight:700;border-top:1px solid var(--line2)}
+table.fin tr.tot td{font-weight:700;border-top:1.5px solid var(--rule);
+  border-bottom:1.5px solid var(--rule);background:var(--band)}
+table.fin tr.grp td{background:#eeede8;font-weight:700;font-size:.94em;
+  color:var(--ink2);text-align:left;padding:3.5px 7px}
+table.fin.wide td.l{line-height:1.5}
+.neg{color:var(--neg);font-weight:600}
+.pos{color:var(--pos);font-weight:600}
+table.mini{width:100%;border-collapse:collapse;font-size:9.2pt}
+table.mini td{padding:3.5px 0;vertical-align:top;border-bottom:1px solid #e8e7e1}
+table.mini td.k{width:110px;font-weight:700;color:var(--s1);padding-right:10px}
+p.src{font-size:8.4pt;color:var(--mute);margin:5px 0 14px;line-height:1.5}
+
+/* ---------- FIGURES ---------- */
+.figwrap{margin:12px 0 14px}
+.fig-t{font-size:9.6pt;font-weight:700;margin-bottom:5px;color:var(--ink);
+  padding-left:8px;border-left:3px solid var(--s1)}
+.fig-s{font-size:8.3pt;color:var(--mute);margin-top:4px;line-height:1.5}
+svg.chart{width:100%;height:auto;display:block}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.half{min-width:0}
+.tblwrap{margin:16px 0}
+
+/* ---------- BOXES ---------- */
+.box{background:var(--band);border-left:3px solid var(--s1);
+  padding:12px 15px;margin:14px 0 16px}
+.box-h{font-weight:700;font-size:10pt;margin-bottom:6px;color:var(--s1)}
+.box p{margin:0 0 8px;font-size:9.7pt;line-height:1.62}
+.box p:last-child{margin-bottom:0}
+.warn{background:#fdf4ef;border-left:3px solid var(--s2);padding:12px 15px;margin:14px 0 16px}
+.warn-h{font-weight:700;font-size:10pt;margin-bottom:6px;color:var(--s2)}
+.warn p{margin:0 0 8px;font-size:9.7pt;line-height:1.62}
+.warn p:last-child{margin-bottom:0}
+/* 절 첫머리 '핵심 포인트' 상자 · 절 끝 '리스크 요인' · '모니터링 지표' */
+.box ul,.warn ul,.mon ul{margin:3px 0 0;padding-left:17px}
+.box li,.warn li,.mon li{font-size:9.7pt;line-height:1.6;margin-bottom:4px}
+.box li:last-child,.warn li:last-child,.mon li:last-child{margin-bottom:0}
+.kp{background:var(--band);border:1px solid #d5dbe6;border-left:3px solid var(--s1);
+  padding:11px 15px;margin:8px 0 15px}
+.kp-h{font-weight:700;font-size:9.8pt;color:var(--s1);margin-bottom:5px;letter-spacing:-.02em}
+.kp ul{margin:0;padding-left:17px}
+.kp li{font-size:9.7pt;line-height:1.62;margin-bottom:4px}
+.kp li:last-child{margin-bottom:0}
+.mon{background:#f1f8f4;border-left:3px solid var(--s3);padding:11px 15px;margin:12px 0 14px}
+.mon-h{font-weight:700;font-size:9.8pt;color:#0e7a55;margin-bottom:5px}
+.formula{background:#fff;border:1px solid var(--line2);border-left:3px solid var(--s3);
+  padding:11px 15px;margin:12px 0;font-size:9.7pt;font-weight:600;color:var(--ink2);
+  line-height:1.6}
+
+/* ---------- CHAIN ---------- */
+.chain{margin:14px 0 18px}
+.chain-step{display:grid;grid-template-columns:30px 1fr;gap:12px;
+  padding:11px 0;border-bottom:1px solid var(--line)}
+.chain-step:first-child{border-top:1px solid var(--line)}
+.chain-n{width:26px;height:26px;border-radius:50%;background:var(--s1);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10.5pt}
+.chain-b b{font-size:10.2pt}
+.chain-b p{margin:4px 0 0;font-size:9.6pt;color:var(--ink2);line-height:1.6}
+
+/* ---------- SCORE / RISK ---------- */
+table.score,table.risk{width:100%;border-collapse:collapse;font-size:9pt}
+table.score th,table.risk th{background:var(--ink);color:#fff;font-weight:600;
+  padding:5px 7px;text-align:center}
+table.score th.l,table.risk th.l{text-align:left}
+table.score td,table.risk td{padding:5px 7px;border-bottom:1px solid var(--line);
+  text-align:center;vertical-align:top;line-height:1.5}
+table.score td.l,table.risk td.l{text-align:left}
+table.score tr.tot td{border-top:1.5px solid var(--rule);
+  border-bottom:1.5px solid var(--rule);background:var(--band)}
+.sc{font-weight:700;white-space:nowrap}
+.s-a{color:#0f7a3d}.s-b{color:#b57a00}.s-c{color:#d03b3b}.s-d{color:var(--ink3)}
+table.risk td:nth-child(2),table.risk td:nth-child(3){width:62px}
+table.score td:nth-child(2),table.score td:nth-child(3){width:52px}
+
+/* ---------- CHECKLIST ---------- */
+.check{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:10px}
+.chk-col{background:var(--band);padding:12px 15px;border-top:2px solid var(--s1)}
+.chk-h{font-weight:700;font-size:9.6pt;margin-bottom:7px;color:var(--s1)}
+.chk-col ul{margin:0;padding-left:16px}
+.chk-col li{font-size:9.2pt;margin-bottom:5px;line-height:1.5}
+
+/* ---------- REFS / DISCLAIMER ---------- */
+ol.refs{margin:6px 0 16px;padding-left:20px;font-size:8.8pt;color:var(--ink2)}
+ol.refs li{margin-bottom:3.5px;line-height:1.55}
+.disc{border-top:1.5px solid var(--rule);padding-top:11px;margin-top:20px}
+.disc-h{font-weight:700;font-size:9.4pt;margin-bottom:6px}
+.disc p{font-size:8.5pt;color:var(--ink3);line-height:1.6;margin-bottom:7px}
+
+/* ---------- PRINT ---------- */
+@page{size:A4;margin:10mm 11mm 11mm}
+@media print{
+  body{background:#fff;font-size:9pt;line-height:1.5}
+  .wrap{width:auto;max-width:none;box-shadow:none}
+  section{padding:0 0 2px}
+  section+section{border-top:none}
+  section.cover{break-after:page;page-break-after:always}
+  /* 강제 페이지 나눔은 쓰지 않는다 — 빈 여백의 주범이다.
+     꼭 새 페이지에서 시작해야 하면 .brk-force 를 쓴다. */
+  section.brk{break-before:auto;page-break-before:auto}
+  section.brk-force{break-before:page;page-break-before:always}
+
+  h2{font-size:13pt;margin:9px 0 9px;padding-bottom:5px}
+  h3{font-size:10.2pt;margin:11px 0 4px}
+  h3:first-of-type{margin-top:4px}
+  h3.app{font-size:9.4pt;margin:9px 0 3px}
+  h4.sub-h{font-size:9.4pt;margin:9px 0 4px}
+  p{margin:0 0 7px}
+  p.lead{font-size:9.4pt;padding:8px 11px;margin-bottom:11px}
+
+  /* --- cover 압축 --- */
+  .cover{padding-top:0}
+  .cov-title{font-size:20pt;margin:7px 0 2px}
+  .cov-title .code{font-size:10.5pt}
+  .cov-sub{font-size:11pt;margin-bottom:9px}
+  .cov-grid{gap:16px;grid-template-columns:1fr 208px}
+  .bullets li{font-size:8.6pt;margin-bottom:5px;line-height:1.5}
+  .cov-side{padding:10px 11px}
+  .side-block{margin-bottom:8px}
+  .side-big{font-size:12pt}.side-big.accent{font-size:11pt}
+  .side-tbl{font-size:7.8pt}.side-tbl td{padding:1.9px 0}
+  .side-note{font-size:7.4pt}
+  .cover table.fin{font-size:8pt}
+  .cover table.fin td{padding:1.9px 6px}
+  .cover table.fin th{padding:2.8px 6px}
+  .cover p.src{font-size:7.4pt;margin-top:3px}
+
+  /* --- 표 --- */
+  .tbl-title{margin:9px 0 3px;font-size:9.6pt}
+  table.fin td{padding:2.6px 6px}
+  table.fin th{padding:3.4px 6px}
+  table.fin.xs{font-size:7.6pt}
+  table.fin.xs td{padding:2px 5px}
+  table.fin.xs th{padding:2.8px 5px}
+  table.risk td,table.score td{padding:3.4px 6px}
+  table.risk th,table.score th{padding:3.6px 6px}
+  p.src{font-size:7.6pt;margin:3px 0 9px}
+
+  /* --- 그림 --- */
+  .figwrap{margin:8px 0 10px}
+  .fig-t{font-size:9pt;margin-bottom:3px}
+  .fig-s{font-size:7.6pt;margin-top:2px}
+  svg.chart{max-height:72mm}
+
+  /* --- 상자 --- */
+  .box,.warn,.kp,.mon{padding:8px 12px;margin:7px 0 9px}
+  .box p,.warn p{font-size:9pt;line-height:1.55;margin-bottom:6px}
+  .kp li,.mon li,.box li,.warn li{font-size:8.9pt;line-height:1.52;margin-bottom:3px}
+  .kp-h,.mon-h{font-size:9.2pt;margin-bottom:3px}
+  .kp,.mon{page-break-inside:auto}
+  .formula{padding:8px 12px;margin:9px 0;font-size:9pt}
+  .chain-step{padding:8px 0}
+  .check{gap:13px;margin-top:7px}
+  .chk-col{padding:10px 12px}
+  .chk-col li{font-size:8.6pt;margin-bottom:3.5px;line-height:1.45}
+  .two-col{gap:14px}
+  ol.refs{font-size:8.4pt}
+  ol.refs li{margin-bottom:2px;line-height:1.45}
+  .disc{padding-top:9px;margin-top:12px}
+  .disc p{font-size:8pt;line-height:1.5;margin-bottom:5px}
+
+  /* 덩어리가 페이지를 넘지 않게 하되, 큰 덩어리는 허용해 빈칸을 만들지 않는다 */
+  table.fin,table.score,table.risk{page-break-inside:auto}
+  table.fin tr,table.score tr,table.risk tr{page-break-inside:avoid}
+  .figwrap,.chain-step{page-break-inside:avoid}
+  /* 상자는 글이므로 페이지를 넘어 이어져도 된다 — 통째로 밀면 빈 여백이 생긴다 */
+  .box,.warn{page-break-inside:auto}
+  .check{page-break-inside:auto}
+  h2,h3,h4{page-break-after:avoid}
+  a{color:inherit;text-decoration:none}
+}
+@media screen and (max-width:800px){
+  .wrap{width:100%}
+  section{padding:16px 14px 18px}
+  .cov-grid,.two-col,.check{grid-template-columns:1fr}
+  .cov-title{font-size:21pt}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ============ 표지 (1장 안에 끝낼 것) ============ -->
+<section class="cover">
+  <div class="cov-top">
+    <div class="cov-brand">EQUITY RESEARCH</div>
+    <div class="cov-date">{{작성일}}</div>
+  </div>
+  <h1 class="cov-title">{{회사명}} <span class="code">({{종목코드}})</span></h1>
+  <p class="cov-sub">{{한 줄 요약 — 이 회사를 지금 보는 이유}}</p>
+
+  <div class="cov-grid">
+    <div>
+      <ul class="bullets">
+        <li><b>{{핵심 문장 1}}</b> {{근거 숫자}}</li>
+        <li><b>{{핵심 문장 2}}</b> {{근거 숫자}}</li>
+        <li><b>{{핵심 문장 3 — 리스크}}</b> {{근거 숫자}}</li>
+      </ul>
+    </div>
+    <aside class="cov-side">
+      <div class="side-block">
+        <div class="side-h">현재가 ({{기준일}})</div>
+        <div class="side-big">{{종가}}원</div>
+        <div class="side-note">52주 {{저점}} ~ {{고점}}</div>
+      </div>
+      <div class="side-block">
+        <div class="side-h">적정가 밴드</div>
+        <div class="side-big accent">{{하단}} ~ {{상단}}원</div>
+        <div class="side-note">{{산출 근거 한 줄}}</div>
+      </div>
+      <div class="side-block">
+        <div class="side-h">주요 지표</div>
+        <table class="side-tbl">
+          <tr><td>시가총액</td><td class="r">{{}}억원</td></tr>
+          <tr><td>PER (12M Fwd)</td><td class="r">{{}}배</td></tr>
+          <tr><td>PBR</td><td class="r">{{}}배</td></tr>
+          <tr><td>부채비율</td><td class="r">{{}}%</td></tr>
+        </table>
+      </div>
+    </aside>
+  </div>
+
+  <div class="tbl-title">Summary Financial Data <span class="unit">(단위: 억원, 원, %)</span></div>
+  <table class="fin sm">
+    <tr><th class="l">항목</th><th>2024</th><th>2025</th><th class="est">2026E</th><th class="est">2027F</th></tr>
+    <tr><td class="l">매출액</td><td></td><td></td><td class="est"></td><td class="est"></td></tr>
+    <tr><td class="l">영업이익</td><td></td><td></td><td class="est"></td><td class="est"></td></tr>
+    <tr class="bd"><td class="l">영업이익률</td><td></td><td></td><td class="est"></td><td class="est"></td></tr>
+  </table>
+  <p class="src">자료: DART 전자공시, 본 보고서 추정. E=추정치, F=전망치</p>
+</section>
+
+<!-- ============ 본문 ============
+     절 순서와 분량 배분은 skills/기업분석리포트/SKILL.md 를 따를 것.
+     사용 가능한 부품:
+       p.lead            절 첫머리 요약 (파란 왼쪽 선)
+       .box / .box-h     보조 설명 상자
+       .warn / .warn-h   주의·리스크 상자 (주황)
+       .formula          계산식 한 줄
+       table.fin         숫자 표 (tr.grp 소제목행 / tr.bd 굵은행 / tr.tot 합계행 / td.est 추정치열)
+       table.risk        리스크 표 (발생가능성·영향도·대응)
+       table.score       스코어카드
+       .chain            1-2-3 논리 단계
+       .figwrap>.fig-t + <svg class="chart"> + .fig-s   차트 (SVG 를 그대로 붙여넣기)
+       .check>.chk-col   모니터링 체크리스트 2열
+       section.brk       인쇄 시 이 절부터 새 페이지
+       span.pos/.neg     증가(초록)/감소(빨강)
+=========================================== -->
+
+<section>
+  <h2>I. Investment Summary</h2>
+  <p class="lead">{{3~4문장. 결론 먼저.}}</p>
+</section>
+
+<section>
+  <h2>II. 기업 개요</h2>
+  <p>{{짧게. 배점 5%.}}</p>
+</section>
+
+<section>
+  <h2>III. 산업 동향 · 피어그룹</h2>
+  <div class="figwrap">
+    <div class="fig-t">그림 1. {{제목}}</div>
+    <!-- 여기에 out/<종목>/차트/*.svg 파일 내용을 그대로 붙여넣기 -->
+    <p class="fig-s">자료: {{출처}}</p>
+  </div>
+</section>
+
+<section>
+  <h2>IV. 재무 분석</h2>
+</section>
+
+<section class="brk">
+  <h2>V. 밸류에이션</h2>
+</section>
+
+<section>
+  <h2>VI. 증권사 투자포인트와 그 검증</h2>
+</section>
+
+<section class="brk">
+  <h2>VII. 리스크 요인 (레드팀)</h2>
+  <table class="risk">
+    <tr><th class="l">리스크</th><th>발생<br>가능성</th><th>영향도</th><th class="l">무엇이 무너지나 · 무엇을 보면 아나</th></tr>
+  </table>
+</section>
+
+<section>
+  <h2>모니터링 체크리스트</h2>
+  <div class="check">
+    <div class="chk-col"><div class="chk-h">매분기 확인</div><ul></ul></div>
+    <div class="chk-col"><div class="chk-h">수시 확인</div><ul></ul></div>
+  </div>
+</section>
+
+<section>
+  <h3 class="app">자료 출처</h3>
+  <ol class="refs"></ol>
+  <div class="disc">
+    <div class="disc-h">고지</div>
+    <p>본 보고서는 작성자 본인의 투자 판단을 돕기 위한 개인 자료이며, 특정 종목의 매매를 권유하지 않습니다.
+       인용된 증권사 리포트의 내용은 검증 대상으로 언급한 것이며 원문을 대체하지 않습니다.
+       투자 결과에 대한 책임은 투자자 본인에게 있습니다.</p>
+  </div>
+</section>
+
+</div>
+</body></html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<!--
+  기업분석 요약본(게시글 본문) 고정 틀 — 2026-10-05 신설.
+  리포트마다 요약본 모양이 달랐습니다(EXPD 는 소제목이 있고 NHC·ABBV 는 문단뿐).
+  이 파일을 복사해 {…} 자리만 채우십시오. 태그·class·소제목(h3) 이름·차례를 바꾸지 마십시오.
+  2026-10-28: 핵심 차트는 전문 HTML·PDF와 같은 자료로 figure 안에 직접 내장합니다.
+  차트 자리표시자는 실제 인라인 SVG 또는 내장 이미지로 교체합니다.
+  카드뉴스(카드뉴스.py)가 이 모양을 그대로 읽어 카드로 굽습니다.
+    · h2 다음, 첫 h3 앞의 문단  → 「한눈에」 카드
+    · <b>표지어</b>은 ○○입니다.  → 표지어가 갈피, ○○가 카드 소제목, 나머지가 그 아래 문단
+-->
+<title>{회사명}({코드}) 분석보고서 요약</title>
+<style>
+body{font-family:"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;font-size:15px;
+  line-height:1.75;color:#1a1a1a;max-width:760px;margin:0 auto;padding:18px;word-break:keep-all}
+h2{font-size:19px;margin:0 0 6px;border-bottom:2px solid #111;padding-bottom:6px}
+h3{font-size:15px;margin:20px 0 6px;color:#2a78d6}
+p{margin:0 0 12px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0 12px}
+th{background:#111;color:#fff;padding:5px 7px;text-align:center}
+th.l,td.l{text-align:left}
+td{padding:5px 7px;border-bottom:1px solid #e3e3dd;text-align:center}
+.date{color:#666;font-size:13px;margin:0 0 14px}
+figure.report-chart{margin:20px 0;padding:12px;border:1px solid #b8bec7;background:#fff;color:#1a1a1a;break-inside:avoid}
+.report-chart svg,.report-chart img{display:block;width:100%;height:auto}
+.report-chart figcaption{margin-top:8px;font-size:12px;line-height:1.6}
+.end{border-top:1px solid #ccc;padding-top:10px;color:#555;font-size:13px}
+</style></head><body>
+
+<h2>{회사명}({코드})</h2>
+<p class="date">기준일 — 주가 {YYYY-MM-DD} 종가 {가격} · 재무 {기간}</p>
+
+<p>{한 문단 — 무엇으로 돈을 버는 회사인지, 최근 실적의 핵심 숫자, 투자 판단의 핵심 쟁점. 4~5문장}</p>
+
+<h3>투자포인트</h3>
+<p><b>투자포인트 1</b>은 {한 줄 소제목, 25자 안팎}입니다. {근거 두 문장, 숫자 하나 이상}</p>
+<p><b>투자포인트 2</b>는 {한 줄 소제목}입니다. {근거 두 문장}</p>
+<p><b>투자포인트 3</b>은 {한 줄 소제목}입니다. {근거 두 문장}</p>
+
+<h3>가장 큰 위험</h3>
+<p><b>가장 큰 위험</b>은 {한 줄 소제목}입니다. {무엇이 틀리면 투자포인트가 무너지는지, 어디서 먼저 확인하는지}</p>
+
+<h3>시나리오</h3>
+<table>
+<tr><th class="l">시나리오</th><th>확률</th><th>{추정 지표}</th><th>목표 배수</th><th>주당가치</th></tr>
+<tr><td class="l">Bull</td><td>{%}</td><td>{값}</td><td>{배}</td><td>{가치}</td></tr>
+<tr><td class="l">Base</td><td>{%}</td><td>{값}</td><td>{배}</td><td>{가치}</td></tr>
+<tr><td class="l">Bear</td><td>{%}</td><td>{값}</td><td>{배}</td><td>{가치}</td></tr>
+<tr><td class="l"><b>확률가중</b></td><td>—</td><td>—</td><td>—</td><td><b>{가치}</b></td></tr>
+</table>
+<p>{적정가 밴드와 현재가의 위치 한두 문장. 매수·매도 의견이 아님을 밝힘}</p>
+
+<h3>다음 분수령</h3>
+<p><b>다음 분수령</b>은 {날짜와 사건}입니다. {그때 무엇을 보면 전제가 맞았는지 판단되는지}</p>
+
+<!-- 아래 자리표시자는 실제 차트로 교체. 동일 차트는 전문 HTML·PDF에도 포함합니다. -->
+<figure class="report-chart">
+  <div class="chart-title">{핵심 차트 제목 · 대상기간 · 단위}</div>
+  {전문과 동일한 핵심 차트의 인라인 SVG 또는 data URI 이미지 — 자체 배경·글자색·축·범례 포함}
+  <figcaption>{자료 출처 · 기준일 · 연결/별도 · 실적/추정 구분 · 필요한 가공 방법}</figcaption>
+</figure>
+
+<p class="end">전문은 첨부 PDF 를 보실 수 있습니다.</p>
+</body></html>
