@@ -22,6 +22,7 @@ jobs:
           python-version: '3.12'
       - name: Unit tests
         run: |
+          node --test web/tests/dashboard-quotes.test.mjs web/tests/terminal-data.test.mjs web/tests/equities-review.test.mjs web/tests/local-owner.test.mjs web/tests/local-origin.test.mjs
           python -m unittest discover -s desktop -p "test_*.py"
           python -m unittest discover -s workers/chat -p "test_*.py"
       - name: Fresh installation (real PostgreSQL, npm, build)
@@ -53,6 +54,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - run: node --test web/tests/dashboard-quotes.test.mjs web/tests/terminal-data.test.mjs web/tests/equities-review.test.mjs web/tests/local-owner.test.mjs web/tests/local-origin.test.mjs
       - run: python3 -m unittest discover -s desktop -p 'test_*.py'
       - run: python3 -m unittest discover -s workers/chat -p 'test_*.py'
       - run: npm ci

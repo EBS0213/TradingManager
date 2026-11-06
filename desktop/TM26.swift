@@ -8,6 +8,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
     var token = ""
     var started = false
     var attempts = 0
+    // Bootstrap must not inherit an old tm_session from URLSession.shared.
+    // Cookie-bearing browser writes require Origin; the launcher uses its token.
+    let launcherSession = URLSession(configuration: .ephemeral)
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         let menu=NSMenu();let main=NSMenuItem();menu.addItem(main)
@@ -41,12 +44,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
     }
     func poll(){
         attempts+=1
-        URLSession.shared.dataTask(with:URL(string:"http://127.0.0.1:8766/api/local/status")!){data,response,error in
+        launcherSession.dataTask(with:URL(string:"http://127.0.0.1:8766/api/local/status")!){data,response,error in
             DispatchQueue.main.async {
                 if let response=response as? HTTPURLResponse,response.statusCode==200 {
                     var request=URLRequest(url:URL(string:"http://127.0.0.1:8766/api/local/session")!)
                     request.httpMethod="POST";request.setValue(self.token,forHTTPHeaderField:"x-local-launch-token")
-                    URLSession.shared.dataTask(with:request){data,response,error in
+                    request.httpShouldHandleCookies=false
+                    self.launcherSession.dataTask(with:request){data,response,error in
                         guard let response=response as? HTTPURLResponse,response.statusCode==200,
                               let url=response.url else {DispatchQueue.main.async{self.fail("로컬 인증에 실패했습니다.")};return}
                         let headers=response.allHeaderFields.reduce(into:[String:String]()){result,item in result[String(describing:item.key)]=String(describing:item.value)}

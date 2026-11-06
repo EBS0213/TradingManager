@@ -8,7 +8,13 @@
 - `screener/`: 한국·미국 종목 스크리닝
 - `report-automation/`: 보고서 작성·검토·로컬 게시 자동화 (통합 배포본)
 
-최신 운영체제별 설치 파일: [GitHub Releases](https://github.com/EBS0213/TradingManager/releases/latest). Windows용은 `TradingManager_Windows_v1.1.0.zip`, macOS용은 `TradingManager_macOS_v1.1.0.tar.gz`입니다.
+최신 운영체제별 설치 파일: [GitHub Releases](https://github.com/EBS0213/TradingManager/releases/latest). Windows용은 `TradingManager_Windows_v1.1.1.zip`, macOS용은 `TradingManager_macOS_v1.1.1.tar.gz`입니다.
+
+### 1.1.1 수정 사항
+
+- 대시보드 주요주식은 NASDAQ·NYSE·AMEX의 공개 시가총액 순위를 합쳐 상위 30종목을 표시합니다. 스크리너의 시가총액이 비었을 때 알파벳순 종목과 시세 없는 워런트·유닛이 표시되던 문제를 수정했습니다. 현재값과 등락률은 같은 응답에서 가져오며 1분마다 갱신합니다.
+- S&P/TSX와 스위스 지수 등 지원 지수의 기본 제공처 조회가 실패하면 Yahoo 지수 시세와 일봉으로 보완합니다. 등락률은 직전 거래일 종가를 기준으로 계산합니다.
+- macOS 앱 시작 시 이전 로그인 쿠키 때문에 로컬 인증이 거부되던 문제를 수정했습니다.
 
 ## 운영체제별 설치
 

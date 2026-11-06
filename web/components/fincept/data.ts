@@ -17,7 +17,7 @@ export function useDeskData(page: string) {
   const history = useQuery({ queryKey: ['fincept', 'history'], queryFn: ({ signal }) => getJSON<MarketData>('/api/terminal/market-data?history=daily', signal), staleTime: 900_000, retry: 1, refetchOnWindowFocus: false, enabled: ['overview', 'market', 'watchlist'].includes(page) });
   const economy = useQuery(economyQueryOptions('overview'));
   const news = useQuery({ queryKey: ['fincept', 'news'], queryFn: ({ signal }) => getJSON<NewsResponse>('/api/terminal/news', signal), staleTime: 300_000, retry: 1, refetchOnWindowFocus: false, enabled: ['overview', 'news'].includes(page) });
-  const majorStocks = useQuery({queryKey:['fincept','top-us-market-cap',30],queryFn:({signal})=>getJSON<{items:Asset[];asOf:string}>('/api/terminal/equities?market=US&kind=stock&sort=marketCap&pageSize=30',signal),enabled:page==='overview',staleTime:300_000,retry:1,refetchOnWindowFocus:false});
+  const majorStocks = useQuery({queryKey:['fincept','major-us-stocks',30],queryFn:({signal})=>getJSON<{items:Asset[];asOf:string}>('/api/terminal/major-stocks',signal),enabled:page==='overview',staleTime:60_000,refetchInterval:60_000,retry:1,refetchOnWindowFocus:false});
   const stocks = useAssets('stocks', ['overview', 'equities', 'watchlist'].includes(page));
   const sectors = useAssets('sectors', ['overview', 'sectors', 'watchlist'].includes(page));
   const crypto = useAssets('crypto', ['overview', 'crypto', 'watchlist'].includes(page));

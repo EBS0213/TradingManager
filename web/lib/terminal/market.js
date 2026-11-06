@@ -1,5 +1,7 @@
 import { getSql } from '@/lib/db'
 import { INDICES, REGIONS, marketItem, marketSnapshot, observedDailyHistory } from './data.mjs'
+import {cachedEconomy} from './economy-cache'
+import {INDEX_FALLBACKS,yahooIndex} from './index-fallback-data.mjs'
 
 const TTL = 60_000
 let cached = null, pending = null, fetchedAt = 0
@@ -38,13 +40,20 @@ async function build() {
       if (quote?.closePrice == null) throw new Error('시세 필드 없음')
       return marketItem(spec,quote,{asOf:observedAt,history})
     } catch {
+      if(INDEX_FALLBACKS[code])try{
+        const result=await cachedEconomy(`index_fallback_v1_${code}`,TTL,async()=>({series:[
+          yahooIndex(spec,await getJson(`https://query2.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(INDEX_FALLBACKS[code])}?range=3mo&interval=1d`,6500))
+        ]}))
+        const item=result.series[0]
+        return result.stale?{...item,dataStatus:'stale',dailyHistoryStatus:'stale'}:item
+      }catch{/* Preserve a previously observed quote if both sources fail. */}
       errors.push(`${id}: 시세 제공처 응답 없음`)
       if (storedQuote?.price != null) return marketItem(spec,storedQuote,{status:'stale',asOf:storedAt})
       const prior = old.find(x=>x.id===id && x.value!==null)
       return prior ? {...prior,dataStatus:'stale'} : marketItem(spec,null)
     }
   }))
-  return marketSnapshot(items,{lastUpdated:observedAt,errors})
+  return marketSnapshot(items,{lastUpdated:observedAt,errors,source:[...new Set(items.filter(x=>x.value!==null).map(x=>x.source))].join(' + ')||'NAVER Finance'})
 }
 export async function getMarketData({force=false,includeDaily=false}={}) {
   let data
@@ -78,6 +87,9 @@ async function loadDailyHistory(data){
   await Promise.all(Array.from({length:Math.min(4,available.length)},async()=>{
     while(next<available.length){
       const item=available[next++]
+      if(item.source==='Yahoo Finance'&&item.dailyHistory?.length){
+        entries[item.id]={points:item.dailyHistory,asOf:item.dailyHistoryAsOf,status:item.dailyHistoryStatus};continue
+      }
       const domestic=['KOSPI','KOSDAQ'].includes(item.code)
       try{
         const body=await getJson(`https://api.stock.naver.com/chart/${domestic?'domestic':'foreign'}/index/${encodeURIComponent(item.code)}?periodType=dayCandle&count=60`,3000)
@@ -103,7 +115,8 @@ async function withDailyHistory(data){
     await dailyPending
   }
   return {...data,...Object.fromEntries(REGIONS.map(region=>[region,data[region].map(item=>{
-    const entry=dailyCache?.[item.id]
+    const entry=item.source==='Yahoo Finance'&&item.dailyHistory?.length
+      ? {points:item.dailyHistory,status:item.dailyHistoryStatus,asOf:item.dailyHistoryAsOf}:dailyCache?.[item.id]
     return {...item,dailyHistory:entry?.points||[],dailyHistoryGranularity:'day',
       dailyHistoryStatus:entry?.status||'unavailable',dailyHistoryAsOf:entry?.asOf||null}
   })])),dailyHistorySource:'NAVER Finance daily OHLC',dailyHistoryCacheSeconds:DAILY_TTL/1000}
