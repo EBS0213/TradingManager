@@ -24,7 +24,7 @@ def main():
  if len(sys.argv)!=2 or sys.argv[1] not in TASKS:raise SystemExit('Unknown local task')
  task=sys.argv[1]
  config={k:json.loads(v) for line in (ROOT/'web/.env.local').read_text().splitlines() if '=' in line for k,v in [line.split('=',1)]}
- env={**os.environ,**config,'TM26_URL':base_url(config),'SITE_URL':base_url(config),'RUN_HOURS':'16','US_LIVE':'0','PYTHONUNBUFFERED':'1'}
+ env={**os.environ,**config,'TM26_URL':base_url(config),'SITE_URL':base_url(config),'RUN_HOURS':config.get('RUN_HOURS',os.environ.get('RUN_HOURS','16')),'US_LIVE':'1','PYTHONUNBUFFERED':'1'}
  lockname='us' if task in ['us','us-cached','us-details'] else task
  lockpath=ROOT/'data'/('task-'+lockname+'.lock')
  with lockpath.open('a+b') as lock:

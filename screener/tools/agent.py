@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-AWS 서버에서 계속 떠 있는 상주 프로그램.
+로컬 설치에서 계속 실행하는 한국·미국 스크리너.
 
 두 가지 일을 합니다.
   1. 정해진 시각(기본: 평일 10·12·14·16시 한국시간)에 스크리닝을 돌립니다.
@@ -25,6 +25,8 @@ import datetime as dt
 import urllib.request
 import urllib.error
 import threading
+from concurrent.futures import ThreadPoolExecutor
+from local_schedule import due_slot, load_state, save_state
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE)
@@ -93,8 +95,8 @@ def run_us(reason: str) -> bool:
     """
     log(f'▶ 미국 스크리너 시작 ({reason})')
     t0 = time.time()
-    r = subprocess.run([sys.executable,os.path.join(os.path.dirname(BASE),'desktop','run-task.py'),'us-cached'], cwd=BASE, capture_output=True, text=True,
-                       timeout=60 * 60)
+    r = subprocess.run([sys.executable,os.path.join(os.path.dirname(BASE),'desktop','run-task.py'),'us'], cwd=BASE, capture_output=True, text=True,
+                       timeout=60 * 180)
     if r.returncode != 0:
         log(f'✗ 미국 스크리너 실패 (코드 {r.returncode})')
         log((r.stderr or r.stdout or '')[-1200:])
@@ -128,51 +130,42 @@ def main():
     if not SITE or not KEY:
         sys.exit('[오류] SITE_URL / SCREENER_KEY 환경변수가 필요합니다.')
 
-    log(f'상주 시작 — 자동 실행 {HOURS}시(KST), 요일 {DAYS}, 수동 요청 {POLL}초마다 확인')
-    log(f'사이트: {SITE}')
-    last_auto = None
-    last_beat = 0.0
+    log(f'상주 시작 — 한국 {HOURS}시, 미국 22:30~08:30 두 시간 간격 (KST)')
+    state_path=os.path.join(os.path.dirname(BASE),'data','screener-schedule.json')
+    state=load_state(state_path)
+    running={}; retry_at={}; manual=[]
     threading.Thread(target=heartbeat_loop, daemon=True).start()
-
-    # 처음 켰을 때 결과가 없으면 한 번 돌려 둡니다
-    if not os.path.exists(os.path.join(BASE, 'output', 'payload.json')):
-        run_screening('first')
-
-    while True:
-        try:
-            now = dt.datetime.now(KST)
-
-            if time.time() - last_beat > 60:
-                heartbeat()
-                last_beat = time.time()
-
-            # ① 예정된 시각
-            slot = (now.date(), now.hour)
-            if (now.weekday() in DAYS and now.hour in HOURS
-                    and now.minute < 5 and slot != last_auto):
-                last_auto = slot
-                run_screening('schedule')
-                continue
-
-            # ② 사이트에서 온 수동 요청
-            got = claim_job()
-            if got:
-                _, mkt = got
-                # 2026-08-23: 수동 실행은 **한국·미국을 둘 다** 돌립니다.
-                #  전에는 누른 화면의 시장만 돌아서, 다른 쪽 결과가 낡은 채로 남았습니다.
-                #  누른 쪽을 먼저 돌려 화면에 빨리 반영되게 하고, 이어서 나머지를 돕니다.
-                #  (한쪽이 실패해도 나머지는 그대로 돕니다 — 각각 로그가 남습니다)
-                if mkt == 'US':
-                    run_us('manual')
-                    run_screening('manual')
-                else:
-                    run_screening('manual')
-                    run_us('manual')
-                continue
-
-        except Exception as e:
-            log(f'· 루프 오류({e})')
-        time.sleep(POLL)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        while True:
+            try:
+                now=dt.datetime.now(KST)
+                for market,(future,slot) in list(running.items()):
+                    if not future.done():continue
+                    try:success=future.result()
+                    except Exception as error:
+                        log(f'{market} 실행 오류: {error}');success=False
+                    del running[market]
+                    if success:
+                        state[market]={'slot':slot,'finishedAt':now.isoformat()}
+                        save_state(state_path,state)
+                    else:retry_at[market]=time.monotonic()+600
+                # Manual polling remains responsive during a lengthy collection.
+                got=claim_job()
+                if got:
+                    for market in (got[1], 'KR' if got[1]=='US' else 'US'):
+                        if market not in manual and market not in running:manual.append(market)
+                for market in ('KR','US'):
+                    if market in running or time.monotonic()<retry_at.get(market,0):continue
+                    slot=due_slot(market,now,HOURS,DAYS)
+                    previous=state.get(market,{})
+                    reason='manual' if market in manual else ('first' if not previous else 'schedule')
+                    if reason=='schedule' and (not slot or slot<=previous.get('slot','')):continue
+                    if market in manual:manual.remove(market)
+                    # The current slot is recorded only after a successful upload.
+                    running[market]=(pool.submit(run_us if market=='US' else run_screening,reason),slot or now.isoformat())
+            except Exception as error:
+                log(f'루프 오류: {error}')
+            time.sleep(POLL)
 
 
 if __name__ == '__main__':

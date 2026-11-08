@@ -37,16 +37,34 @@ export function parseYahooBars(body, symbol, cutoff=closedUsDate()) {
   // Yahoo chart OHLC is split adjusted; do not mix dividend-adjusted Close with raw OHL.
   return rows.sort((a,b)=>a.d.localeCompare(b.d))
 }
-export async function dailyBars(symbol, count=520, {force=false}={}) {
+export function parseYahooObservation(body, symbol) {
+  const r=body?.chart?.result?.[0], meta=r?.meta;
+  if(!meta || String(meta.symbol).toUpperCase()!==symbol.replaceAll('.','-').toUpperCase())return null;
+  const i=(r.timestamp?.length||0)-1,q=r.indicators?.quote?.[0];
+  if(i<0||!q)return null;
+  const date=stamp=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(stamp*1000)).replaceAll('-','');
+  if(!Number.isFinite(meta.regularMarketTime)||date(r.timestamp[i])!==date(meta.regularMarketTime))return null;
+  const row={d:date(meta.regularMarketTime),o:q.open?.[i],h:q.high?.[i],l:q.low?.[i],c:q.close?.[i],v:q.volume?.[i]};
+  if(!Object.values(row).slice(1).every(Number.isFinite)||row.c<=0||row.v<0)return null;
+  return {...row,observedAt:new Date(meta.regularMarketTime*1000).toISOString(),source:'Yahoo Finance',session:'regular'};
+}
+export async function dailyBars(symbol, count=520, {force=false,live=false}={}) {
   symbol=String(symbol).toUpperCase()
   if(!validSymbol.test(symbol))throw new Error('종목코드 형식 확인 실패')
   const file=path.join(dataRoot(),'us-bars',symbol+'.json'),saved=await readJson(file)
-  if(!force&&saved?.checkedDay===closedUsDate()&&saved?.bars?.length)return saved.bars.slice(-count)
+  if(!force&&!live&&saved?.checkedDay===closedUsDate()&&saved?.bars?.length)return saved.bars.slice(-count)
+  if(live&&!force&&saved?.checkedDay===closedUsDate()&&saved?.bars?.length){
+    const observation=await readJson(path.join(dataRoot(),'us-live',symbol+'.json'))
+    if(observation&&Date.now()-Date.parse(observation.fetchedAt)<90*60*1000)return saved.bars.slice(-count)
+  }
   if(pending.has(symbol))return (await pending.get(symbol)).slice(-count)
   const work=(async()=>{
-    const response=await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol.replaceAll('.','-'))}?range=5y&interval=1d`,{headers:{'User-Agent':'Mozilla/5.0'},signal:AbortSignal.timeout(20000),cache:'no-store'})
+    const incremental=live&&saved?.checkedDay===closedUsDate()&&saved?.bars?.length;
+    const response=await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol.replaceAll('.','-'))}?range=${incremental?'5d':'5y'}&interval=1d`,{headers:{'User-Agent':'Mozilla/5.0'},signal:AbortSignal.timeout(20000),cache:'no-store'})
     if(!response.ok){const error=new Error(`Yahoo HTTP ${response.status}`);error.status=response.status;throw error}
-    const body=await response.json(),bars=parseYahooBars(body,symbol)
+    const body=await response.json(),fresh=parseYahooBars(body,symbol)
+    const bars=incremental?[...new Map([...saved.bars,...fresh].map(row=>[row.d,row])).values()].sort((a,b)=>a.d.localeCompare(b.d)):fresh
+    if(live){const observation=parseYahooObservation(body,symbol);if(observation)await saveJson(path.join(dataRoot(),'us-live',symbol+'.json'),{symbol,...observation,fetchedAt:new Date().toISOString()})}
     await saveJson(file,{symbol,source:'Yahoo Finance',checkedDay:closedUsDate(),fetchedAt:new Date().toISOString(),bars})
     return bars
   })().finally(()=>pending.delete(symbol))

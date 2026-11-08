@@ -338,7 +338,7 @@ def main(argv) -> int:
     payload = {
         'market': 'US',
         'stamp': (dt.datetime.now().strftime('%Y-%m-%d %H:%M')
-                  + (' 미국 스크리닝(장중 실시간)' if LIVE else ' 미국 스크리닝')),
+                  + (' 미국 스크리닝(정규장 관측값 반영)' if LIVE else ' 미국 스크리닝')),
         'result': report._rows_for_web(df, s),
         'heat': heat,
         'source': os.environ.get('RUN_SOURCE', 'us'),
@@ -348,8 +348,8 @@ def main(argv) -> int:
         json.dump(payload, f, ensure_ascii=False)
     log(f'저장 — {out}')
 
-    if '--no-push' not in argv:
-        push(payload)
+    if '--no-push' not in argv and not push(payload):
+        return 1
 
     log(f'끝 ({time.time() - t0:.0f}초)')
     return 0

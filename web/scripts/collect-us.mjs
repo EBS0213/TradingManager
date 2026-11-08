@@ -21,16 +21,19 @@ catch(error) {
 let ok=0,checked=0,failed=[],stopped=false
 const startedAt=new Date().toISOString()
 try {
-  for(const [i,item] of chosen.entries()) {
-    checked++
-    try {await dailyBars(item.symbol,1300);ok++}
-    catch(error){failed.push({symbol:item.symbol,error:error.message});if([401,403,429].includes(error.status)){stopped=true;break}}
-    if(i%25===0) {
-      await saveJson(path.join(dataRoot(),'us-collection-status.json'),{startedAt,day:closedUsDate(),total:chosen.length,checked,ok,failed:failed.length,running:true})
-      console.log(`미국 일봉 ${i+1}/${chosen.length} · 정상 ${ok} · 누락 ${failed.length}`)
+  let cursor=0
+  const checkpoint=()=>saveJson(path.join(dataRoot(),'us-collection-status.json'),{startedAt,day:closedUsDate(),total:chosen.length,checked,ok,failed:failed.length,lastErrors:failed.slice(-10),updatedAt:new Date().toISOString(),running:true})
+  async function worker(){
+    while(!stopped&&cursor<chosen.length){
+      const item=chosen[cursor++]
+      try {await dailyBars(item.symbol,1300,{live:args.includes('--live')});ok++}
+      catch(error){failed.push({symbol:item.symbol,error:error.message});if([401,403,429].includes(error.status))stopped=true}
+      checked++
+      if(checked===1||checked%25===0){await checkpoint();console.log(`미국 일봉 ${checked}/${chosen.length} · 정상 ${ok} · 누락 ${failed.length}`)}
+      await new Promise(r=>setTimeout(r,700))
     }
-    await new Promise(r=>setTimeout(r,350))
   }
+  await Promise.all([worker(),worker()])
   // Build same-date cross sections. Missing symbols are never silently called "all stocks".
   const days={};let observed=0
   for(const item of items) {

@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "markets": {
+    "KR": {
+      "file": "kr.json.gz",
+      "stamp": "2026-11-08 13:55 스크리닝 결과",
+      "rows": 2771,
+      "sha256": "abcb38f3381769dd3df969b42bcaed7f570551e1d7745afc79b4d612a128729a"
+    }
+  }
+}
