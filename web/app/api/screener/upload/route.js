@@ -126,21 +126,8 @@ export async function POST(request) {
       ON CONFLICT (key) DO UPDATE SET value = ${v}::jsonb, updated_at = now()`
   } catch { /* 못 적어도 스크리닝 결과는 살립니다 */ }
 
-  /* 수동 요청을 '끝남' 으로 적습니다.
-
-     2026-09-19 에 `market === 'KR'` 조건을 뺐습니다. 수동 실행은 한국·미국을
-     연달아 도는데(서버 tools/agent.py), 끝났다고 적어 주는 것이 **한국 결과가
-     올라올 때뿐**이었습니다. 그래서 한국 쪽이 실패한 날에는 미국 결과가 멀쩡히
-     올라왔는데도 단추가 계속 '진행 중' 이었고, 100분짜리 청소가 돌기 전까지
-     풀리지 않았습니다. 9/19 가 그런 날이었습니다 — 미국은 15:57 에 끝났는데
-     화면은 40분 넘게 돌고 있다고 했습니다.
-
-     누른 시장이 먼저 돌므로(아래 job 라우트가 market 을 알려 줍니다), 첫 업로드는
-     **누른 쪽의 결과**입니다. 그때 풀어 주는 것이 화면에서 기다리는 사람 기준으로
-     맞습니다. 나머지 한 시장은 뒤에서 이어서 돌고, 그 업로드는 이 줄에 걸릴 것이
-     없어 아무 일도 하지 않습니다. */
-  await sql`UPDATE screener_job SET status='done', finished_at=now()
-            WHERE status IN ('requested','running')`
+  // Each worker reports completion for its own job; an upload cannot complete
+  // queued jobs or a concurrently running request for the other market.
 
   return NextResponse.json({ ok: true, market, rows: rows.length, passed, stamp })
 }
