@@ -217,6 +217,12 @@ def run(no_browser=False, smoke=False):
         for task in ['screener', 'chat']:
             spawn(task, [str(python), str(ROOT / 'desktop/run-task.py'), task], ROOT)
         if smoke:
+            # install() stops its private cluster on exit. Run database-backed
+            # seed checks here while the launcher owns a running PostgreSQL.
+            subprocess.run([node, '--env-file=.env.local', '--test',
+                            'tests/content-seed.test.mjs', 'tests/screener-seed.test.mjs',
+                            'tests/screener-jobs.test.mjs', 'tests/call-numbers.test.mjs'],
+                           cwd=ROOT / 'web', env=env, check=True)
             subprocess.run([node, '--env-file=.env.local', 'tests/local-records-smoke.cjs'], cwd=ROOT / 'web', env=env, check=True)
             time.sleep(3)
             if any(p.poll() is not None for p in processes):
