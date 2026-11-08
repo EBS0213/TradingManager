@@ -33,7 +33,7 @@ class RefreshTests(unittest.TestCase):
   with patch.object(agent.subprocess,'run',return_value=MagicMock(returncode=0)) as run:
    self.assertTrue(agent.run_us('manual'))
    self.assertEqual(run.call_args.args[0][-1],'us')
-   self.assertTrue(run.call_args.args[0][-2].endswith('desktop/run-task.py'))
+   self.assertEqual(Path(run.call_args.args[0][-2]),ROOT/'desktop'/'run-task.py')
  def test_korean_upload_failure_is_not_reported_as_success(self):
   with patch.object(agent,'pull_watchlist'),patch.object(agent.subprocess,'run',side_effect=[MagicMock(returncode=0,stdout='calculated'),MagicMock(returncode=1,stdout='',stderr='upload failed')]):
    self.assertFalse(agent.run_screening('manual'))
