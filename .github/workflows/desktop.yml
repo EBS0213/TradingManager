@@ -22,11 +22,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Unit tests
-        run: |
-          node --test web/tests/dashboard-quotes.test.mjs web/tests/terminal-data.test.mjs web/tests/equities-review.test.mjs web/tests/local-owner.test.mjs web/tests/local-origin.test.mjs
-          python -m unittest discover -s desktop -p "test_*.py"
-          python -m unittest discover -s workers/chat -p "test_*.py"
+      - name: Web unit tests
+        run: node --test web/tests/dashboard-quotes.test.mjs web/tests/terminal-data.test.mjs web/tests/equities-review.test.mjs web/tests/local-owner.test.mjs web/tests/local-origin.test.mjs
+      - name: Desktop unit tests
+        run: python -m unittest discover -s desktop -p "test_*.py"
+      - name: Chat worker unit tests
+        run: python -m unittest discover -s workers/chat -p "test_*.py"
       - name: Fresh installation (real PostgreSQL, npm, build)
         run: python desktop/windows.py install --no-shortcut
       - name: Full web regression suite

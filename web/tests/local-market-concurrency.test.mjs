@@ -13,10 +13,78 @@ test('same-millisecond cache writes remain atomic and leave no temporary files',
     const file = path.join(folder,'quotes.json')
     await Promise.all(Array.from({length: 40}, (_,id) => saveJson(file,{id,rows:[1,2,3]})))
     const saved = await readJson(file)
-    assert(Number.isInteger(saved.id))
+    assert.equal(saved.id,39)
     assert.deepEqual(saved.rows,[1,2,3])
     assert.deepEqual(await fs.readdir(folder),['quotes.json'])
   } finally {Date.now = now; await fs.rm(folder,{recursive:true,force:true})}
+})
+
+test('a failed cache write preserves the old value and does not block the next writer', async () => {
+  const folder = await fs.mkdtemp(path.join(os.tmpdir(),'tm-cache-failure-'))
+  try {
+    const file = path.join(folder,'quotes.json')
+    await saveJson(file,{id:'previous'})
+    const circular = {}; circular.self = circular
+    const failed = saveJson(file,circular)
+    const rejection = assert.rejects(failed,TypeError)
+    await rejection
+    assert.deepEqual(await readJson(file),{id:'previous'})
+    const results = await Promise.allSettled([saveJson(file,circular),saveJson(file,{id:'next'})])
+    assert.equal(results[0].status,'rejected')
+    assert.equal(results[1].status,'fulfilled')
+    assert.deepEqual(await readJson(file),{id:'next'})
+    assert.deepEqual(await fs.readdir(folder),['quotes.json'])
+  } finally { await fs.rm(folder,{recursive:true,force:true}) }
+})
+
+test('Windows file locks are retried without deleting the previous cache', async t => {
+  const folder = await fs.mkdtemp(path.join(os.tmpdir(),'tm-cache-lock-'))
+  const platform = Object.getOwnPropertyDescriptor(process,'platform')
+  const rename = fs.rename.bind(fs)
+  try {
+    const file = path.join(folder,'quotes.json')
+    await saveJson(file,{id:'previous'})
+    Object.defineProperty(process,'platform',{...platform,value:'win32'})
+    let attempts = 0
+    const replacement = t.mock.method(fs,'rename',async (...args) => {
+      assert.deepEqual(await readJson(file),{id:'previous'})
+      if (++attempts <= 2) throw Object.assign(new Error('sharing violation'),{code:'EPERM'})
+      return rename(...args)
+    })
+    await saveJson(file,{id:'next'})
+    assert.equal(attempts,3)
+    replacement.mock.restore()
+    assert.deepEqual(await readJson(file),{id:'next'})
+    assert.deepEqual(await fs.readdir(folder),['quotes.json'])
+  } finally {
+    t.mock.restoreAll()
+    Object.defineProperty(process,'platform',platform)
+    await fs.rm(folder,{recursive:true,force:true})
+  }
+})
+
+test('permanent Windows replacement failures are bounded and clean up their temporary file', async t => {
+  const folder = await fs.mkdtemp(path.join(os.tmpdir(),'tm-cache-denied-'))
+  const platform = Object.getOwnPropertyDescriptor(process,'platform')
+  try {
+    const file = path.join(folder,'quotes.json')
+    await saveJson(file,{id:'previous'})
+    Object.defineProperty(process,'platform',{...platform,value:'win32'})
+    const replacement = t.mock.method(fs,'rename',async () => {
+      throw Object.assign(new Error('access denied'),{code:'EACCES'})
+    })
+    await assert.rejects(saveJson(file,{id:'blocked'}),{code:'EACCES'})
+    assert.equal(replacement.mock.callCount(),8)
+    assert.deepEqual(await readJson(file),{id:'previous'})
+    assert.deepEqual(await fs.readdir(folder),['quotes.json'])
+    replacement.mock.restore()
+    await saveJson(file,{id:'recovered'})
+    assert.deepEqual(await readJson(file),{id:'recovered'})
+  } finally {
+    t.mock.restoreAll()
+    Object.defineProperty(process,'platform',platform)
+    await fs.rm(folder,{recursive:true,force:true})
+  }
 })
 
 test('concurrent cold catalog requests share one provider download', async () => {
