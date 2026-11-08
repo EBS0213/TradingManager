@@ -1,37 +1,26 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { Download, ExternalLink, LineChart as ChartIcon, RefreshCw, Table2 } from "lucide-react";
+import { Download, LineChart as ChartIcon, RefreshCw, Table2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import {
-  ECONOMY_COUNTRIES, EconomyConnector, EconomySeries, economyCountry, economyCsv,
-  economyFrequency, economyNumber, economyQueryOptions, economySourceUrl, selectEconomyHighlights,
+  EconomySeries, economyCountry, economyCsv,
+  economyFrequency, economyNumber, economyQueryOptions, selectEconomyHighlights,
 } from "./types";
 import styles from "./EconomyHub.module.css";
+import IndustryPrices from "./IndustryPrices";
 
-export type HubTab = "overview" | "country" | "rates" | "markets" | "sources";
-type EconomyHubProps = { initialTab?: HubTab | "countries"; initialSeries?: string };
+export type HubTab = "overview" | "rates" | "markets" | "dram" | "oil";
+type EconomyHubProps = { initialTab?: HubTab; initialSeries?: string };
 const TABS: { id: HubTab; name: string; code: string }[] = [
-  { id: "overview", name: "개요", code: "01" }, { id: "country", name: "국가 비교", code: "02" },
-  { id: "rates", name: "금리·채권", code: "03" }, { id: "markets", name: "환율·원자재", code: "04" },
-  { id: "sources", name: "데이터 소스", code: "05" },
+  {id:"overview",name:"경제 지표",code:"01"}, {id:"dram",name:"DRAM",code:"02"},
+  {id:"oil",name:"국제 원유·석유제품",code:"03"}, {id:"rates",name:"금리·채권",code:"04"},
+  {id:"markets",name:"환율·원자재",code:"05"},
 ];
 const EMPTY_SERIES: EconomySeries[] = [];
 const STATUS_LABEL = { available: "제공 중", stale: "이전 자료", unavailable: "미제공" };
-const CONNECTOR_LABEL = { connected: "연결됨", on_request: "선택 시 조회", key_required: "인증 키 필요", unavailable: "현재 미제공" };
 const SERIES_RANK = { available: 0, stale: 1, unavailable: 2 };
-type CountrySource = { country: string; connectors: EconomyConnector[]; fetchedAt: string };
-
-function seriesReason(series: EconomySeries) {
-  return [series.note, series.source.note !== series.note ? series.source.note : ""].filter(Boolean).join(" ")
-    || (series.status === "unavailable" ? "출처에서 사용할 수 있는 관측값을 받지 못했습니다." : "최신 관측값을 확인하지 못해 이전에 수집한 자료를 표시합니다.");
-}
-
-function SourceLink({ name, url }: { name: string; url: string }) {
-  const href = economySourceUrl(url);
-  return href ? <a href={href} target="_blank" rel="noopener noreferrer">{name} <ExternalLink size={11} /></a> : <span>{name}</span>;
-}
 
 function SeriesStatus({ series }: { series: EconomySeries }) {
   return <span className={`eco-status eco-status-${series.status}`}>{STATUS_LABEL[series.status] || "상태 미제공"}</span>;
@@ -147,65 +136,31 @@ function SeriesExplorer({ series, comparison, comparisonRequested }: { series: E
   </section>;
 }
 
-function DataSources({ series, connectors, countrySources }: { series: EconomySeries[]; connectors: EconomyConnector[]; countrySources: CountrySource[] }) {
-  const sources = [...new Map(series.map((item) => [item.source.url, item.source])).values()];
-  return <section className="eco-sources"><div className="eco-section-heading"><h2>데이터 소스</h2></div>
-    {countrySources.length ? <section className={`eco-panel ${styles.countrySources}`} aria-label="현재 선택 국가의 데이터 소스"><h3>현재 선택 국가의 조회 결과</h3><div className={styles.tableScroll}><table className={styles.indicatorTable}><thead><tr><th scope="col">국가</th><th scope="col">출처</th><th scope="col">연결 상태</th><th scope="col">자료 조회 시각</th></tr></thead><tbody>{countrySources.flatMap(item => item.connectors.map(connector => <tr key={`${item.country}:${connector.id}`}><th scope="row">{economyCountry(item.country)}</th><td><SourceLink name={connector.name} url={connector.url} /></td><td><span className={`eco-status eco-connector-${connector.status}`}>{CONNECTOR_LABEL[connector.status]}</span></td><td>{Number.isFinite(new Date(item.fetchedAt).getTime()) ? new Date(item.fetchedAt).toLocaleString("ko-KR", { timeZone: "Asia/Seoul", hour12: false }) + " KST" : "—"}</td></tr>))}</tbody></table></div></section> : <p className="eco-inline-note">국가 비교에서 국가를 조회하면 World Bank·IMF의 실제 연결 결과가 여기에 함께 표시됩니다.</p>}
-    {connectors.length ? <div className="eco-source-grid">{connectors.map((connector) => <article className="eco-panel eco-source-card" key={connector.id}><div><h3><SourceLink name={connector.name} url={connector.url} /></h3><span className={`eco-status eco-connector-${connector.status}`}>{CONNECTOR_LABEL[connector.status]}</span></div><p>{connector.description}</p></article>)}</div> : <p className="eco-inline-note">별도의 연결 상태 정보가 제공되지 않았습니다.</p>}
-    <div className="eco-panel eco-source-index"><h3>현재 지표의 출처</h3>{sources.length ? sources.map((source) => <SourceLink key={source.url} {...source} />) : null}</div>
-  </section>;
-}
-
 export function EconomyHub({ initialTab = "overview", initialSeries = "" }: EconomyHubProps = {}) {
-  const [tab, setTab] = useState<HubTab>(initialTab === "countries" ? "country" : initialTab === "sources" ? "overview" : initialTab);
-  const [country, setCountry] = useState("KOR");
-  const [compareCountry, setCompareCountry] = useState("USA");
+  const [tab, setTab] = useState<HubTab>(initialTab);
   const [selectedKey, setSelectedKey] = useState(initialSeries);
-  const overview = useQuery(economyQueryOptions("overview"));
-  const countryQuery = useQuery({ ...economyQueryOptions("country", country), enabled: tab === "country" });
-  const comparisonQuery = useQuery({ ...economyQueryOptions("country", compareCountry || "USA"), enabled: tab === "country" && !!compareCountry && compareCountry !== country });
-  const activeQuery = tab === "country" ? countryQuery : overview;
-  const allSeries = activeQuery.data?.series || EMPTY_SERIES;
-  const visibleSeries = allSeries.filter((item) => tab === "rates" ? item.category === "rates" : tab === "markets" ? item.category === "fx" || item.category === "commodities" : true)
-    .sort((a, b) => SERIES_RANK[a.status] - SERIES_RANK[b.status]);
-  const highlights = tab === "overview" ? selectEconomyHighlights(visibleSeries) : visibleSeries.slice(0, 6);
-  const selected = visibleSeries.find((item) => `${item.country}:${item.id}` === selectedKey || item.id === selectedKey) || highlights[0] || visibleSeries[0];
-  const comparisonRequested = tab === "country" && !!compareCountry && compareCountry !== country;
-  const comparison = comparisonRequested && selected ? comparisonQuery.data?.series.find((item) => item.id === selected.id && item.unit === selected.unit && item.frequency === selected.frequency && item.source.name === selected.source.name) : undefined;
-  const loading = activeQuery.isFetching || (comparisonRequested && comparisonQuery.isFetching);
-  const staleCount = visibleSeries.filter((item) => item.status === "stale").length;
-  const unavailableCount = visibleSeries.filter((item) => item.status === "unavailable").length;
-  const countrySources: CountrySource[] = [
-    ...(countryQuery.data ? [{country, connectors:countryQuery.data.connectors || [], fetchedAt:countryQuery.data.fetchedAt}] : []),
-    ...(compareCountry && compareCountry !== country && comparisonQuery.data ? [{country:compareCountry, connectors:comparisonQuery.data.connectors || [], fetchedAt:comparisonQuery.data.fetchedAt}] : []),
-  ].map(item => ({...item,connectors:item.connectors.filter(connector => connector.id === "worldbank" || connector.id === "imf")}));
-  const combinedConnectors = (overview.data?.connectors || []).map(connector => {
-    const observed = countrySources.flatMap(item => item.connectors).filter(item => item.id === connector.id);
-    if (!observed.length) return connector;
-    const status = observed.some(item => item.status === "connected") ? "connected" : observed.some(item => item.status === "unavailable") ? "unavailable" : connector.status;
-    return {...connector,status,description:`${connector.description} 위 국가별 조회 결과를 반영한 상태입니다.`} as EconomyConnector;
-  });
-  const refresh = () => {
-    void activeQuery.refetch();
-    if (comparisonRequested) void comparisonQuery.refetch();
-  };
-  const fetchedAt = activeQuery.data?.fetchedAt;
-  const queryTime = fetchedAt && Number.isFinite(new Date(fetchedAt).getTime()) ? new Date(fetchedAt).toLocaleString("ko-KR", { timeZone: "Asia/Seoul", hour12: false }) : "—";
-  return <div className={`tm-economy eco-hub ${styles.workbench}`} role="region" aria-label="경제 데이터 분석">
-    <header className="eco-hub-header"><div><span className="eco-eyebrow">TM26 / ECONOMIC DATA</span><h1>경제 데이터 허브</h1></div><button type="button" className="eco-button eco-button-accent" onClick={refresh} disabled={loading}><RefreshCw size={13} className={loading ? "eco-spinning" : ""} /> {loading ? "조회 중" : "새로고침"}</button></header>
-    <nav className="eco-tabs" aria-label="경제 데이터 분류">{TABS.filter(item=>item.id!=="sources").map((item) => <button type="button" key={item.id} aria-pressed={tab === item.id} onClick={() => setTab(item.id)}><span>{item.code}</span>{item.name}</button>)}</nav>
-    <div className="eco-meta"><span><i /> 전체 {visibleSeries.length} · 제공 {visibleSeries.length - staleCount - unavailableCount} · 이전 자료 {staleCount} · 미제공 {unavailableCount}</span><span >조회 {queryTime} KST</span></div>
-    {activeQuery.isError ? <div className="eco-alert" role="alert">경제 데이터를 불러오지 못했습니다. <button type="button" className="eco-button" onClick={refresh} disabled={loading}>다시 시도</button></div> : null}
-    {comparisonRequested && comparisonQuery.isError ? <div className="eco-alert" role="alert">비교 국가의 자료를 불러오지 못했습니다. <button type="button" className="eco-button" onClick={() => void comparisonQuery.refetch()} disabled={comparisonQuery.isFetching}>비교 자료 다시 시도</button></div> : null}
-    {activeQuery.data?.errors.length ? <div className="eco-alert" role="status">일부 지표 조회 실패</div> : null}
-    {tab === "country" ? <section className="eco-country-controls" aria-label="비교 국가 선택"><label>기준 국가<select aria-label="기준 국가" value={country} onChange={(event) => { const nextCountry = event.target.value; if (nextCountry === compareCountry) setCompareCountry(country); if (selected) setSelectedKey(`${nextCountry}:${selected.id}`); setCountry(nextCountry); }}>{ECONOMY_COUNTRIES.map(([code, name]) => <option key={code} value={code}>{name} · {code}</option>)}</select></label><span className="eco-versus">VS</span><label>비교 국가<select aria-label="비교 국가" value={compareCountry} onChange={(event) => setCompareCountry(event.target.value)}><option value="">비교 안 함</option>{ECONOMY_COUNTRIES.map(([code, name]) => <option key={code} value={code} disabled={code === country}>{name} · {code}</option>)}</select></label></section> : null}
-    {activeQuery.isPending ? <div className="eco-loading" role="status"><RefreshCw className="eco-spinning" size={18} /><p>경제 데이터를 불러오는 중입니다.</p></div> : tab === "sources" ? <DataSources series={[...(overview.data?.series || EMPTY_SERIES),...(countryQuery.data?.series || EMPTY_SERIES),...(compareCountry ? comparisonQuery.data?.series || EMPTY_SERIES : EMPTY_SERIES)]} connectors={combinedConnectors} countrySources={countrySources} /> : visibleSeries.length ? <>
-      <section className="eco-metric-grid" aria-label="주요 경제 지표">{highlights.map((item) => <SeriesCard key={`${item.country}:${item.id}`} series={item} active={selected === item} onClick={() => setSelectedKey(`${item.country}:${item.id}`)} />)}</section>
-      <IndicatorTable key={tab} series={visibleSeries} selected={selected} onSelect={item => setSelectedKey(`${item.country}:${item.id}`)} />
-      {selected ? <SeriesExplorer series={selected} comparison={comparison} comparisonRequested={comparisonRequested} /> : null}
-    </> : <div className="eco-empty"><h2>현재 제공되는 지표가 없습니다.</h2><p>다른 분류를 선택하거나 잠시 후 다시 조회해 주세요.</p><button type="button" className="eco-button" onClick={refresh} disabled={loading}>다시 시도</button></div>}
-    
+  const prices = tab === "dram" || tab === "oil";
+  const overview = useQuery({...economyQueryOptions("overview"),enabled:!prices});
+  const allSeries = overview.data?.series || EMPTY_SERIES;
+  const visibleSeries = allSeries.filter(item => tab === "rates" ? item.category === "rates" : tab === "markets" ? item.category === "fx" || item.category === "commodities" : true)
+    .sort((a,b)=>SERIES_RANK[a.status]-SERIES_RANK[b.status]);
+  const highlights = tab === "overview" ? selectEconomyHighlights(visibleSeries) : visibleSeries.slice(0,6);
+  const selected = visibleSeries.find(item=>`${item.country}:${item.id}`===selectedKey||item.id===selectedKey)||highlights[0]||visibleSeries[0];
+  const staleCount = visibleSeries.filter(item=>item.status==="stale").length;
+  const unavailableCount = visibleSeries.filter(item=>item.status==="unavailable").length;
+  return <div className={`tm-economy eco-hub ${styles.workbench}`} role="region" aria-label="데이터 분석">
+    <header className="eco-hub-header"><div><span className="eco-eyebrow">TM26 / DATA</span><h1>데이터</h1></div>{!prices?<button type="button" className="eco-button" onClick={()=>void overview.refetch()} disabled={overview.isFetching}><RefreshCw size={13}/>{overview.isFetching?"조회 중":"새로고침"}</button>:null}</header>
+    <nav className="eco-tabs" aria-label="데이터 분류">{TABS.map(item=><button type="button" key={item.id} aria-pressed={tab===item.id} onClick={()=>setTab(item.id)}><span>{item.code}</span>{item.name}</button>)}</nav>
+    {prices?<IndustryPrices key={tab} view={tab === "dram" ? "dram" : "oil"}/>:<>
+      <div className="eco-meta"><span>전체 {visibleSeries.length} · 제공 {visibleSeries.length-staleCount-unavailableCount} · 이전 자료 {staleCount} · 미제공 {unavailableCount}</span></div>
+      {overview.isError?<div className="eco-alert" role="alert">경제 데이터를 불러오지 못했습니다. 새로고침으로 다시 시도해 주세요.</div>:null}
+      {overview.data?.errors.length?<div className="eco-alert" role="status">일부 지표 조회 실패</div>:null}
+      {overview.isPending?<div className="eco-loading" role="status">경제 데이터를 불러오는 중입니다.</div>:visibleSeries.length?<>
+        <section className="eco-metric-grid" aria-label="주요 경제 지표">{highlights.map(item=><SeriesCard key={`${item.country}:${item.id}`} series={item} active={selected===item} onClick={()=>setSelectedKey(`${item.country}:${item.id}`)}/>)}</section>
+        <IndicatorTable key={tab} series={visibleSeries} selected={selected} onSelect={item=>setSelectedKey(`${item.country}:${item.id}`)}/>
+        {selected?<SeriesExplorer series={selected} comparisonRequested={false}/>:null}
+      </>:<p className="eco-empty">현재 제공되는 지표가 없습니다.</p>}
+    </>}
   </div>;
 }
-
 export default EconomyHub;
