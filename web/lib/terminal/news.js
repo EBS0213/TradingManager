@@ -1,3 +1,4 @@
+import {SECTOR_RULES,newsSectors,annotateNews} from './news-sectors.mjs'
 import {getSql} from '@/lib/db'
 import {fetchNews,FEEDS} from '@/lib/rss'
 let cached=null,pending=null,loadedAt=0
@@ -8,6 +9,13 @@ export const GLOBAL_FEEDS=[
   {id:'ft',name:'Financial Times',url:'https://www.ft.com/rss/markets',market:'GLOBAL',category:'markets',language:'en'},
   {id:'marketwatch',name:'MarketWatch',url:'https://feeds.content.dowjones.io/public/rss/mw_topstories',market:'GLOBAL',category:'markets',language:'en'},
   {id:'policy',name:'Federal Reserve',url:'https://www.federalreserve.gov/feeds/press_all.xml',market:'US',category:'policy',language:'en'},
+]
+// Industry feeds supplement the general economy headlines with sector coverage.
+export const INDUSTRY_FEEDS=[
+  {id:'industry:newsis',name:'뉴시스',url:'https://www.newsis.com/RSS/industry.xml',market:'KR',category:'industry',language:'ko'},
+  {id:'industry:etnews-electronics',name:'전자신문',url:'https://rss.etnews.com/06.xml',market:'KR',category:'industry',language:'ko'},
+  {id:'industry:etnews-mobility',name:'전자신문',url:'https://rss.etnews.com/17.xml',market:'KR',category:'industry',language:'ko'},
+  {id:'industry:etoday',name:'이투데이',url:'https://rss.etoday.co.kr/eto/industry_news.xml',market:'KR',category:'industry',language:'ko'},
 ]
 const clean=text=>String(text||'').replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g,'$1').replace(/<[^>]*>/g,'')
   .replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&apos;|&#39;/g,"'").replace(/&nbsp;/g,' ')
@@ -44,12 +52,12 @@ async function publicFeed(feed){
   if(!items.length)throw new Error('기사가 없습니다')
   return {items,errors:[],sources:[feed]}
 }
-async function storedNews(){
+async function storedNews(key='news'){
   if(!process.env.DATABASE_URL)return null
   let timer
   try{return await Promise.race([(async()=>{
     const sql=await getSql()
-    return (await sql`SELECT value, updated_at FROM screener_settings WHERE key='news'`)[0]||null
+    return (await sql`SELECT value, updated_at FROM screener_settings WHERE key=${key}`)[0]||null
   })(),new Promise(resolve=>{timer=setTimeout(()=>resolve(null),2000)})])}
   catch{return null}finally{clearTimeout(timer)}
 }
@@ -74,20 +82,27 @@ async function koreanNews(){
 }
 async function build(){
   // RSS jobs run at most three at a time; no per-article requests occur here.
-  const globalResults=new Array(GLOBAL_FEEDS.length)
+  const feeds=[...GLOBAL_FEEDS,...INDUSTRY_FEEDS]
+  const globalResults=new Array(feeds.length)
   let cursor=0
   const jobs=Array.from({length:3},async()=>{
-    while(cursor<GLOBAL_FEEDS.length){
-      const index=cursor++,feed=GLOBAL_FEEDS[index]
+    while(cursor<feeds.length){
+      const index=cursor++,feed=feeds[index]
       try{globalResults[index]=await publicFeed(feed)}
       catch{globalResults[index]={items:[],sources:[feed],errors:[`${feed.name}: 공개 RSS를 받지 못했습니다.`]}}
     }
   })
-  const [domestic]=await Promise.all([
+  const [domestic,industry]=await Promise.all([
     koreanNews().catch(()=>({items:[],sources:FEEDS.map(feed=>({id:`domestic:${feed.name}`,name:feed.name,url:feed.urls[0]})),errors:['한국 경제 RSS를 받지 못했습니다.']})),
+    storedNews('industry_news'),
     Promise.all(jobs),
   ])
   const items=[],errors=[],sources=[]
+  const snapshot=industry?.value
+  if(Array.isArray(snapshot?.items)){
+    const stale=Date.now()-Date.parse(snapshot.updatedAt)>3_600_000
+    globalResults.push({items:snapshot.items.map(item=>({...item,status:stale?'stale':item.status||'delayed',bucket:item.bucket||'industry:search'})),sources:(snapshot.sources||[]).map(source=>({...source,id:source.id||'industry:search'})),errors:snapshot.errors||[]})
+  }
   for(const result of [domestic,...globalResults]){
     errors.push(...result.errors)
     for(const feed of result.sources){
@@ -99,7 +114,7 @@ async function build(){
     }
   }
   const seen=new Set()
-  const unique=items.filter(item=>{if(item.category==='telegram'||telegramLink(item.url))return false;const key=`${item.source}:${item.url}`;if(seen.has(key))return false;seen.add(key);return true})
+  const unique=items.filter(item=>{if(item.category==='telegram'||telegramLink(item.url))return false;const key=item.url;if(seen.has(key))return false;seen.add(key);return true}).map(annotateNews)
   unique.sort((a,b)=>(Date.parse(b.publishedAt)||0)-(Date.parse(a.publishedAt)||0))
   return {items:unique,source:'TM26 공개 RSS',status:!unique.length?'unavailable':unique.every(item=>item.status==='stale')?'stale':'delayed',
     lastUpdated:new Date().toISOString(),errors,sources}
@@ -113,7 +128,8 @@ export async function getTerminalNews(query=''){
   let domestic=0
   const items=cached.items.filter(item=>{
     if(item.category==='telegram'||telegramLink(item.url))return false
-    if(needle&&!`${item.title} ${item.source} ${item.channel||''}`.toLocaleLowerCase().includes(needle))return false
+    if(item.bucket.startsWith('industry:'))return false
+    if(needle&&!`${item.title} ${item.source}`.toLocaleLowerCase().includes(needle))return false
     const isDomestic=item.bucket.startsWith('domestic:')
     const cap=item.bucket==='policy'?10:20
     if((counts.get(item.bucket)||0)>=cap || (isDomestic&&domestic>=60))return false
@@ -121,7 +137,17 @@ export async function getTerminalNews(query=''){
     if(isDomestic)domestic++
     return true
   }).slice(0,170).map(({bucket,...item})=>item)
-  return {...cached,items,query:needle,limits:{domestic:60,perDomesticSource:20,global:100,perGlobalSource:20,policy:10,total:170}}
+  // Reserve space per sector before merging, so busy general feeds cannot hide
+  // all of an industry's stories. A cross-sector story can appear in both tabs.
+  const selected=new Map(items.map(item=>[item.url,item]))
+  for(const [sector] of SECTOR_RULES){
+    for(const market of ['KR','GLOBAL'])for(const kind of ['news','leadership']){
+      const rows=cached.items.filter(item=>item.sectors.includes(sector)&&item.market===market&&item.kind===kind&&(!needle||`${item.title} ${item.source}`.toLocaleLowerCase().includes(needle))).slice(0,kind==='leadership'?10:20)
+      for(const {bucket,...item} of rows)selected.set(item.url,item)
+    }
+  }
+  const catalog=[...selected.values()].sort((a,b)=>(Date.parse(b.publishedAt)||0)-(Date.parse(a.publishedAt)||0))
+  return {...cached,items:catalog,query:needle,limits:{domestic:60,perDomesticSource:20,global:100,perGlobalSource:20,policy:10,perSector:60,total:350}}
 }
 export async function findTerminalNewsItem(url){
   if(telegramLink(url))return null

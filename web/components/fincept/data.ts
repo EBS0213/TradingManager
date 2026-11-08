@@ -5,7 +5,7 @@ import { economyQueryOptions } from '../economy/types';
 export type Point = { time: string; value: number; open?: number; high?: number; low?: number; close?: number; volume?: number };
 export type Asset = { symbol: string; name: string; kind: string; sector?: string; currency: string; exchange: string; price: number | null; previousClose: number | null; change: number | null; changePercent: number | null; volume: number | null; marketCap?: number | null; volumeUnit?: string; asOf: string | null; status: string; history: Point[]; historyStatus?: string; historyAsOf?: string | null; historyGranularity?: string; source: { name: string; url: string }; note?: string; changeBasis?: string };
 export type AssetResponse = { group: string; items: Asset[]; fetchedAt: string; errors: string[]; status: string };
-export type NewsItem = { title: string; url: string; source: string; publishedAt: string | null; summary: string; market?: string; category?: string; language?: string };
+export type NewsItem = { title: string; url: string; source: string; publishedAt: string | null; summary: string; market?: string; category?: string; sectors?: string[]; kind?: string; speakers?: string[]; companies?: string[]; language?: string };
 export type NewsResponse = { items: NewsItem[]; lastUpdated: string; status: string };
 export async function getJSON<T>(url: string, signal?: AbortSignal): Promise<T> {
   const response = await fetch(url, { signal });
@@ -16,7 +16,7 @@ export function useDeskData(page: string) {
   const market = useQuery({ queryKey: ['fincept', 'market'], queryFn: ({ signal }) => getJSON<MarketData>('/api/terminal/market-data', signal), staleTime: 60_000, retry: 1, refetchOnWindowFocus: false });
   const history = useQuery({ queryKey: ['fincept', 'history'], queryFn: ({ signal }) => getJSON<MarketData>('/api/terminal/market-data?history=daily', signal), staleTime: 900_000, retry: 1, refetchOnWindowFocus: false, enabled: ['overview', 'market', 'watchlist'].includes(page) });
   const economy = useQuery({...economyQueryOptions('overview'), enabled: page === 'overview'});
-  const news = useQuery({ queryKey: ['fincept', 'news'], queryFn: ({ signal }) => getJSON<NewsResponse>('/api/terminal/news', signal), staleTime: 300_000, retry: 1, refetchOnWindowFocus: false, enabled: ['overview', 'news'].includes(page) });
+  const news = useQuery({ queryKey: ['fincept', 'news'], queryFn: ({ signal }) => getJSON<NewsResponse>('/api/terminal/news', signal), staleTime: 300_000, refetchInterval: 300_000, retry: 1, refetchOnWindowFocus: false, enabled: ['overview', 'news'].includes(page) });
   const majorStocks = useQuery({queryKey:['fincept','major-us-stocks',30],queryFn:({signal})=>getJSON<{items:Asset[];asOf:string}>('/api/terminal/major-stocks',signal),enabled:page==='overview',staleTime:60_000,refetchInterval:60_000,retry:1,refetchOnWindowFocus:false});
   const stocks = useAssets('stocks', ['overview', 'equities', 'watchlist'].includes(page));
   const sectors = useAssets('sectors', ['overview', 'sectors', 'watchlist'].includes(page));
