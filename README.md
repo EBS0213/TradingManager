@@ -123,6 +123,6 @@ node --env-file=.env.local tests/local-records-smoke.cjs
 - 전체 구조 목록 재생성: `python3 tools/code_inventory.py`
 - 웹 회귀 테스트: `cd web` 다음 `npm test`
 
-### DRAM·국제유가 업데이트 (2026-11-08)
+### 데이터 대시보드·DRAM·국제유가 업데이트 (2026-11-08)
 
-데이터 페이지에서 DRAM 부품별 현물·계약가격과 오피넷 국제 원유·석유제품 가격을 확인할 수 있습니다. DATA SOURCES는 포트폴리오 옆 주요 메뉴로 이동했고 Countries는 제거했습니다. [제공 범위·캐시·장애 처리와 구조 검토](docs/industry-prices.md)를 참고하세요.
+데이터 메뉴는 Economics·DRAM·원유·항공·해상운임 순서입니다. Economics의 전체 지표 카드에 분류·항목·국가·상태 필터를 적용하고, DRAM 현물·계약가격과 오피넷 원유·석유제품의 2008년 이후 장기 추이를 확인할 수 있습니다. 로컬 웹 서비스가 실행 중이면 자동 수집하며 수동 새로고침은 필요하지 않습니다. DATA SOURCES는 포트폴리오 옆 주요 메뉴로 이동했고 Countries는 제거했습니다. [제공 범위·캐시·장애 처리와 구조 검토](docs/industry-prices.md)를 참고하세요.

@@ -1,9 +1,12 @@
 "use client";
 import {useState} from 'react';
+import dynamic from 'next/dynamic';
+import AutoDataStatus from './AutoDataStatus';
 import {useQuery} from '@tanstack/react-query';
-import {RefreshCw} from 'lucide-react';
 import type {EconomySeries} from './types';
 import styles from './IndustryPrices.module.css';
+
+const OilHistory=dynamic(()=>import('./OilHistory'),{loading:()=> <p role="status">장기 추이를 불러오는 중입니다…</p>});
 
 type Price=EconomySeries & {group:string;access:'public'|'member_required';period?:string;periodHigh?:number;periodLow?:number;high?:number;low?:number;changePercent?:number|null;lowChangePercent?:number|null};
 type Feed={id:string;status:string;fetchedAt:string|null;error:string|null;series:Price[]};
@@ -25,14 +28,15 @@ export default function IndustryPrices({view}:{view:'dram'|'oil'}) {
   const series=query.data?.series||[], available=series.filter(row=>row.value!==null).length;
   const rows=series.filter(row=>`${row.name} ${groups[row.group]}`.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase()));
   const order=view==='dram'?['dram-spot','module-spot','gddr-spot','dram-contract','lpddr-spot','mobile-contract']:['oil-crude','oil-products'];
-  return <section className={styles.root} aria-label={view==='dram'?'DRAM 부품별 가격':'국제 원유·석유제품 가격'}>
+  return <section className={`tm-economy eco-hub ${styles.root}`} aria-label={view==='dram'?'DRAM 부품별 가격':'국제 원유·석유제품 가격'}>
     <div className={styles.toolbar}><div><h2>{view==='dram'?'DRAM 부품별 가격':'국제 원유·석유제품 가격'}</h2><span>가격 {available}종 · 회원 전용 {series.filter(row=>row.access==='member_required').length}종</span></div>
       <label>품목 검색<input type="search" value={search} onChange={event=>setSearch(event.target.value)} placeholder={view==='dram'?'DDR5 · DDR4 · GDDR':'Dubai · 경유 · 나프타'}/></label>
-      <button type="button" className="eco-button" onClick={()=>void query.refetch()} disabled={query.isFetching}><RefreshCw size={13}/>{query.isFetching?'조회 중':'새로고침'}</button>
     </div>
     {query.isPending?<p role="status">가격을 불러오는 중입니다…</p>:null}
-    {query.isError?<p className="eco-alert" role="alert">가격을 불러오지 못했습니다. 새로고침으로 다시 시도해 주세요.</p>:null}
+    {query.isError?<p className="eco-alert" role="alert">가격 조회 지연 · 자동으로 재시도합니다.</p>:null}
     {query.data?.feeds.filter(feed=>feed.error).map(feed=><p key={feed.id} className="eco-alert" role="status">{feed.id.startsWith('dram')?'DRAM':'국제유가'} · {feed.error}</p>)}
+    <div className={styles.autoStatus}><AutoDataStatus/></div>
+    {view==='oil'?<OilHistory/>:null}
     {order.map(group=>{
       const items=rows.filter(row=>row.group===group);
       if(!items.length)return null;

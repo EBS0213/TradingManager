@@ -1,7 +1,6 @@
 import {cachedEconomy} from '@/lib/terminal/economy-cache'
-import {getMarketEconomy} from '@/lib/terminal/economy-market'
+import {getOverviewEconomy} from '@/lib/terminal/economy-overview'
 import {getCountryEconomy} from '@/lib/terminal/economy-country.mjs'
-import {getBlsEconomy,normalizeBls} from '@/lib/terminal/economy-bls.mjs'
 
 export const runtime='nodejs'
 export const dynamic='force-dynamic'
@@ -33,12 +32,7 @@ export async function GET(request) {
   try {
     let data
     if(view==='country')data=await cachedEconomy(`country_${country}`,24*HOUR,()=>getCountryEconomy(country))
-    else data=await cachedEconomy('overview_v2_commodities',15*60000,async()=>{
-      const [market,bls]=await Promise.all([
-        getMarketEconomy(),cachedEconomy('bls',12*HOUR,getBlsEconomy).catch(()=>normalizeBls(null)),
-      ])
-      return {series:[...bls.series,...market.series],fetchedAt:new Date().toISOString(),errors:[...bls.errors,...market.errors]}
-    })
+    else data=await getOverviewEconomy()
     return json({...data,view,country:view==='country'?country:null,connectors:connectors(data),
       reference:{name:'FinceptTerminal 데이터 구성 참고',url:'https://github.com/Fincept-Corporation/FinceptTerminal',implementation:'TM26 공개 데이터 연결'}})
   }catch{return json({error:'경제 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.'},503)}

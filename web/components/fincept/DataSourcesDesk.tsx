@@ -2,6 +2,7 @@
 import {useMemo} from 'react';
 import {useQueries} from '@tanstack/react-query';
 import {asOf,getJSON} from './data';
+import AutoDataStatus from '../economy/AutoDataStatus';
 
 type ObjectValue=Record<string,unknown>;
 type Provider={key:string;name:string;url:string;uses:Set<string>;states:Set<string>;observedAt:string};
@@ -13,8 +14,8 @@ const feeds=[
  ['항공','/api/terminal/aviation?view=sources'],['해상·운임','/api/terminal/maritime?view=sources'],['뉴스','/api/terminal/news'],['컨퍼런스콜','/api/calls'],
 ] as const;
 const configured=[
- ['DRAMeXchange','https://www.dramexchange.com/','데이터 › DRAM · 공개 칩·모듈·GDDR·계약가격 전 항목, LPDDR·모바일 회원 전용 표시 · 현물 1시간·계약 12시간 캐시'],
- ['오피넷 · 한국석유공사','https://www.opinet.co.kr/glopcoilSelect.do','데이터 › 국제 원유·석유제품 · Dubai 현물, Brent·WTI 선물 · 국제 석유제품 7종 · USD/배럴 · 1시간 캐시'],
+ ['DRAMeXchange','https://www.dramexchange.com/','데이터 › DRAM · 공개 칩·모듈·GDDR·계약가격 전 항목, LPDDR·모바일 회원 전용 표시 · 자동 확인 15분 · 현물 1시간·계약 12시간 캐시'],
+ ['오피넷 · 한국석유공사','https://www.opinet.co.kr/glopcoilSelect.do','데이터 › 국제 원유·석유제품 · Dubai 현물, Brent·WTI 선물 · 국제 석유제품 7종 · USD/배럴 · 최신 1시간·장기 6시간 캐시 · 2008년 이후 일별 CSV 자동 수집'],
  ['Esri Light Gray','https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer','해상 지도 · Esri/HERE/Garmin/OSM'],
  ['AISstream','https://aisstream.io/documentation/','수신 AIS 위치·정적 정보 · 위성 전역 커버리지 미확보'],
  ['OpenStreetMap','https://www.openstreetmap.org/copyright','해상 지도'],
@@ -46,7 +47,7 @@ function identity(name:string,url:string){
  return [name.toLowerCase(),name];
 }
 export default function DataSourcesDesk(){
- const queries=useQueries({queries:feeds.map(([scope,url])=>({queryKey:['fincept','source-status',scope],queryFn:({signal}:{signal:AbortSignal})=>getJSON<ObjectValue>(url,signal),staleTime:300000,retry:1,refetchOnWindowFocus:false}))});
+ const queries=useQueries({queries:feeds.map(([scope,url])=>({queryKey:['fincept','source-status',scope],queryFn:({signal}:{signal:AbortSignal})=>getJSON<ObjectValue>(url,signal),staleTime:300000,refetchInterval:300000,retry:1,refetchOnWindowFocus:false}))});
  const rows=useMemo(()=>{
   const entries=new Map<string,Provider>();
   const add=(name:string,url:string,scope:string,status='',time='')=>{
@@ -77,7 +78,7 @@ export default function DataSourcesDesk(){
   return [...entries.values()].sort((a,b)=>a.name.localeCompare(b.name));
  },[queries]);
  const state=(row:Provider)=>[...row.states].some(s=>['available','connected','delayed','observed','realtime'].includes(s))?'자료 수신':row.states.has('stale')?'이전 자료':row.states.has('on_request')?'요청 시 조회':row.states.has('key_required')?'미연결':row.states.has('unavailable')?'자료 없음':'미확인';
- return <div className="fc-desk"><header className="fc-desk-title"><div><h1>데이터 소스</h1><span>DATA SOURCES</span></div><button className="fc-button" disabled={queries.some(q=>q.isFetching)} onClick={()=>queries.forEach(q=>{void q.refetch();})}>새로고침</button></header>
+ return <div className="fc-desk"><header className="fc-desk-title"><div><h1>데이터 소스</h1><span>DATA SOURCES</span></div><AutoDataStatus/></header>
   {queries.some(q=>q.isPending)?<p role="status">연결 상태 확인 중…</p>:null}
   {queries.some(q=>q.isError)?<p role="status">조회 실패: {queries.flatMap((q,i)=>q.isError?[feeds[i][0]]:[]).join(' · ')}</p>:null}
   <section className="fc-panel"><div className="fc-panel-head"><h2>제공처와 사용 범위</h2><span>{rows.length} SOURCES</span></div><div className="fc-table-wrap"><table className="fc-table"><thead><tr><th>제공처</th><th>사용 범위</th><th>상태</th><th>최근 자료</th></tr></thead><tbody>{rows.map(row=><tr key={row.key}><th>{row.url?<a href={row.url} target="_blank" rel="noopener noreferrer">{row.name} ↗</a>:row.name}</th><td>{[...row.uses].join(' · ')}</td><td>{state(row)}</td><td>{row.observedAt?asOf(row.observedAt):'—'}</td></tr>)}</tbody></table></div></section>

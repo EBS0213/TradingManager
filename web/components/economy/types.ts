@@ -68,7 +68,7 @@ export function economyFrequency(frequency: string): string {
   const labels: Record<string, string> = {
     annual: "연간", yearly: "연간", annually: "연간", A: "연간",
     quarterly: "분기", Q: "분기", monthly: "월간", M: "월간",
-    weekly: "주간", W: "주간", daily: "일간", D: "일간", intraday: "장중",
+    unknown: "주기 미제공", weekly: "주간", W: "주간", daily: "일간", D: "일간", intraday: "장중",
   };
   return labels[frequency] || frequency || "주기 미제공";
 }
