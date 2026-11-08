@@ -1,6 +1,7 @@
 'use client';
-import {useEffect,useMemo,useRef,useState} from 'react';import dynamic from 'next/dynamic';import {useQuery} from '@tanstack/react-query';import {getJSON} from './data';import styles from './AviationDesk.module.css';
+import {useEffect,useMemo,useRef,useState} from 'react';import dynamic from 'next/dynamic';import {useQuery} from '@tanstack/react-query';import styles from './AviationDesk.module.css';
 import {mergeObservations} from '@/lib/aviation/observations.mjs';
+import {fetchAviation,aviationRefetchInterval} from '@/lib/aviation/refresh.mjs';
 export type Aircraft={id:string;callsign:string;registration:string;aircraft:string;lat:number;lon:number;asOf:string;ground:boolean;altitude:number|null;speed:number|null;heading:number|null;verticalRate:number|null;squawk:string;category:string;source:string;stale:boolean};
 type Result={ok:boolean;status:string;aircraft:Aircraft[];updatedAt:string;coverage?:{lat:number;lon:number;radius:number}[];error?:string};
 type Point={lat:number;lon:number;asOf:string};
@@ -13,20 +14,18 @@ export default function AviationDesk(){
  const [listOpen,setListOpen]=useState(false);
  useEffect(()=>{if(paused)return;const timer=setTimeout(()=>setQueryCenter({lat:Math.round(pendingCenter.lat),lon:Math.round(pendingCenter.lon)}),800);return()=>clearTimeout(timer)},[pendingCenter,paused]);
  const container=useRef<HTMLDivElement>(null);
- const snapshots=useRef(new globalThis.Map<string,Result>());
- const query=useQuery<Result>({queryKey:['aviation',Math.round(queryCenter.lat),Math.round(queryCenter.lon)],queryFn:async({signal})=>{
-  const key=`${Math.round(queryCenter.lat)},${Math.round(queryCenter.lon)}`,previous=snapshots.current.get(key);let result:Result;
-  try{result=await getJSON(`/api/terminal/aviation?lat=${queryCenter.lat}&lon=${queryCenter.lon}&wide=1`,signal)}catch(error){if(signal.aborted||!previous)throw error;result={...previous,status:'unavailable',aircraft:[]}}
-  result={...result,aircraft:mergeObservations(previous?.aircraft||[],result.aircraft)};
-  snapshots.current.delete(key);snapshots.current.set(key,result);if(snapshots.current.size>10)snapshots.current.delete(snapshots.current.keys().next().value!);
-  return result;
- },refetchInterval:paused?false:state=>state.state.data?.status==='pending'?15000:60000,staleTime:55000,placeholderData:previous=>previous,retry:1});
+ const [retained,setRetained]=useState<Aircraft[]>([]);
+ const query=useQuery<Result>({queryKey:['aviation',Math.round(queryCenter.lat),Math.round(queryCenter.lon)],queryFn:({signal})=>fetchAviation(`/api/terminal/aviation?lat=${queryCenter.lat}&lon=${queryCenter.lon}&wide=1`,signal),refetchInterval:paused?false:state=>aviationRefetchInterval(state.state.data),staleTime:0,refetchOnMount:'always',placeholderData:previous=>previous,retry:1});
+ // Observation lifetime belongs to the aircraft, not to a rounded map query key.
+ // A new area's pending/empty response must not erase overlapping observations.
+ useEffect(()=>{if(!query.data||query.isPlaceholderData)return;setRetained(previous=>mergeObservations(previous,query.data!.aircraft))},[query.data,query.isPlaceholderData]);
+ useEffect(()=>{if(paused)return;const resume=()=>{if(!document.hidden)void query.refetch()};document.addEventListener('visibilitychange',resume);window.addEventListener('focus',resume);window.addEventListener('pageshow',resume);return()=>{document.removeEventListener('visibilitychange',resume);window.removeEventListener('focus',resume);window.removeEventListener('pageshow',resume)}},[paused,query.refetch]);
  const [now,setNow]=useState(Date.now);
  useEffect(()=>{if(paused)return;const timer=setInterval(()=>setNow(Date.now()),15000);return()=>clearInterval(timer)},[paused]);
- const observations=useMemo(()=>(query.data?.aircraft||[]).filter(a=>now-Date.parse(a.asOf)<300000).map(a=>({...a,stale:a.stale||now-Date.parse(a.asOf)>60000})),[query.data,now]);
- useEffect(()=>{if(!query.data?.aircraft)return;setTracks(previous=>{const next:Record<string,Point[]>={};for(const a of query.data!.aircraft){const old=previous[a.id]||[],last=old.at(-1);next[a.id]=last?.asOf===a.asOf?old:[...old,{lat:a.lat,lon:a.lon,asOf:a.asOf}].slice(-60)}return next})},[query.data]);
- const rows=useMemo(()=>{const search=q.trim().toLowerCase();return observations.filter(a=>(!search||[a.callsign,a.id,a.registration].some(s=>s.toLowerCase().includes(search)))&&(!kind||a.aircraft.toLowerCase().includes(kind.toLowerCase()))&&(phase==='all'||(phase==='ground'?a.ground:!a.ground))&&(alt==='all'||(a.altitude!==null&&(alt==='high'?a.altitude>=30000:a.altitude<10000)))).sort((a,b)=>a.callsign.localeCompare(b.callsign))},[observations,q,kind,phase,alt]);
+ const observations=useMemo(()=>retained.filter(a=>now-Date.parse(a.asOf)<300000).map(a=>({...a,stale:a.stale||now-Date.parse(a.asOf)>60000})),[retained,now]);
  const selected=observations.find(a=>a.id===id)||null;
+ useEffect(()=>{setTracks(previous=>{const next:Record<string,Point[]>={};for(const a of observations){const old=previous[a.id]||[],last=old.at(-1);next[a.id]=last?.asOf===a.asOf?old:[...old,{lat:a.lat,lon:a.lon,asOf:a.asOf}].slice(-60)}return next})},[observations]);
+ const rows=useMemo(()=>{const search=q.trim().toLowerCase();return observations.filter(a=>(!search||[a.callsign,a.id,a.registration].some(s=>s.toLowerCase().includes(search)))&&(!kind||a.aircraft.toLowerCase().includes(kind.toLowerCase()))&&(phase==='all'||(phase==='ground'?a.ground:!a.ground))&&(alt==='all'||(a.altitude!==null&&(alt==='high'?a.altitude>=30000:a.altitude<10000)))).sort((a,b)=>a.callsign.localeCompare(b.callsign))},[observations,q,kind,phase,alt]);
  const mapAircraft=selected?[selected]:rows;
  const staleCount=observations.filter(a=>a.stale).length;
  const status=(query.isPending?'항공 데이터 조회 중':query.isError||query.data?.status==='unavailable'?'조회 실패 · 이전 자료 확인':query.data?.status==='pending'?'수집 대기 중 · 잠시 후 갱신':query.data?.status==='stale'?'이전 관측 · 최근 수집 대기':!observations.length?'수신된 항공기 없음':`최근 관측 ${observations.length}대${query.data?.status==='partial'?' · 일부 영역 수신 실패':''}`)+(staleCount?` · 이전 관측 ${staleCount}대`:'');
