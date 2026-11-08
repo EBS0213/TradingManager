@@ -22,6 +22,18 @@ The chart library loads only when detail is opened.
 
 DRAM displays all public chip, module and GDDR spot rows plus the public homepage
 contract JSON feed. Member-only LPDDR/mobile names remain visible with null prices.
+MemoryMarket public tables supplement these with 36 chip/module/LPDDR quotes:
+8 DDR chips, 6 RDIMM, 9 UDIMM, 4 SODIMM and 9 LPDDR4X/LPDDR5X items. They use
+latest/previous/change columns, not inferred spot-session ranges or OEM contracts.
+Product, capacity, speed and chip-grade names remain unchanged. No provider labels,
+links or provider-specific tabs are added to the app; provenance stays in the
+backend for validation. The supplemental provider is excluded from the Data Sources
+listing per the user's explicit display preference. Each quote retains its actual
+UTC publication timestamp and USD-per-item unit. Missing categories, masked cells,
+invalid dates and changed currencies reject a new snapshot; the independent cache
+keeps previous valid data on failure. This feed uses the existing hourly cache and
+automatic startup/15-minute collection cycle; no login or credentials are needed.
+
 The parser identifies price links because the upstream reuses HTML table IDs.
 Spot tables preserve period/session highs, lows, averages, percent moves and source
 time. Contract prices preserve their publication period. Nothing is inferred from
@@ -95,3 +107,10 @@ Verification on 2026-11-08:
 Source publication times differ by series. Some Economics inputs rely on existing
 FRED/ECOS collectors and may be unavailable or old even when the refresh cycle runs.
 The previous local production build is retained for recovery during activation.
+
+Verification for supplemental memory quotes (2026-11-09): 284 web tests passed,
+2 database-dependent tests skipped; TypeScript and production builds passed in
+both checkouts. The activated local API returned 55 priced DRAM items plus the
+existing 11 restricted names and 10 oil items. Native app verification confirmed
+all five new categories, LPDDR5X search with five quoted prices, original observed
+dates and no supplemental-provider name on the price or Data Sources screen.

@@ -51,7 +51,8 @@ export default function DataSourcesDesk(){
  const rows=useMemo(()=>{
   const entries=new Map<string,Provider>();
   const add=(name:string,url:string,scope:string,status='',time='')=>{
-   if(!name||name==='TM26 공개 RSS')return;
+   // Keep supplemental memory quote attribution out of the app per display preference.
+   if(!name||name==='TM26 공개 RSS'||name==='MemoryMarket')return;
    const [key,label]=identity(name,url),row=entries.get(key)||{key,name:label,url:link(url),uses:new Set<string>(),states:new Set<string>(),observedAt:''};
    if(!row.url)row.url=link(url);row.uses.add(scope);if(status)row.states.add(status);
    if(time&&(!row.observedAt||Date.parse(time)>Date.parse(row.observedAt)))row.observedAt=time;
