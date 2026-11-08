@@ -223,6 +223,11 @@ def run(no_browser=False, smoke=False):
             spawn(task, [str(python), str(ROOT / 'desktop/run-task.py'), task], ROOT)
         spawn('reports', [str(python), str(ROOT/'desktop/report_automation.py'), 'worker'], ROOT)
         if smoke:
+            # install() stops its private cluster on exit. Run database-backed
+            # seed checks here while the launcher owns a running PostgreSQL.
+            subprocess.run([node, '--env-file=.env.local', '--test',
+                            'tests/content-seed.test.mjs', 'tests/screener-seed.test.mjs'],
+                           cwd=ROOT / 'web', env=env, check=True)
             subprocess.run([node, '--env-file=.env.local', 'tests/local-records-smoke.cjs'], cwd=ROOT / 'web', env=env, check=True)
             time.sleep(3)
             if any(p.poll() is not None for p in processes):
