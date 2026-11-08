@@ -20,7 +20,7 @@ export async function callCatalog(request,sql){
   const query=new URL(request.url).searchParams;
   if(query.get('view')==='index'){
     const rows=await sql`SELECT code,quarter,call_date,updated_at::text AS version,payload->>'madeAt' AS made_at
-      FROM conference_call_archive WHERE payload->'pipeline'->>'id'='foolcalls-codex-v1'
+      FROM conference_call_archive WHERE payload->'pipeline'->>'id' IN ('foolcalls-codex-v1', 'local-transcript-v1')
       ORDER BY code,quarter`;
     const items=rows.map(row=>({code:row.code,quarter:row.quarter,date:row.call_date,updatedAt:row.version,madeAt:row.made_at}));
     return catalogResponse(request,{ok:true,version:1,total:items.length,items});
@@ -30,7 +30,7 @@ export async function callCatalog(request,sql){
     return catalogResponse(request,{ok:false,error:'종목·분기를 확인하세요.'},{status:400,cache:false});
   const rows=await sql`SELECT payload-'documents' AS item,updated_at::text AS version
     FROM conference_call_archive WHERE code=${code} AND quarter=${quarter}
-      AND payload->'pipeline'->>'id'='foolcalls-codex-v1' LIMIT 1`;
+      AND payload->'pipeline'->>'id' IN ('foolcalls-codex-v1', 'local-transcript-v1') LIMIT 1`;
   if(!rows.length)return catalogResponse(request,{ok:false,error:'게시 자료가 없습니다.'},{status:404,cache:false});
   return catalogResponse(request,{ok:true,item:rows[0].item,updatedAt:rows[0].version});
 }

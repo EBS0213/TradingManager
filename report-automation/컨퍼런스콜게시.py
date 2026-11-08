@@ -62,7 +62,7 @@ def run(w, path):
         본문해시 = w.digest(path)
         자료 = 자료경로(w, path.read_text())
         쓸것 = 읽기(자료)
-        if any(x.get('pipeline', {}).get('id') != 'foolcalls-codex-v1' for x in 쓸것):
+        if any(x.get('pipeline', {}).get('id') not in ('foolcalls-codex-v1', 'local-transcript-v1') for x in 쓸것):
             raise ValueError('이전 요약형 콜은 현재 전문·번역·정리본 화면의 게시 대상이 아닙니다. 전용 콜 제작기를 사용하십시오')
         # 아직 쓰는 중인 파일을 올리지 않는다. 인계와 자료 둘 다 조용해진 뒤에 간다.
         if not w.stable(path, {'assets': {str(자료.relative_to(w.ROOT)): ''}}):

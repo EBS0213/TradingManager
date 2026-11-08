@@ -40,13 +40,14 @@ function 다듬기(x) {
   const period = fiscalPeriod(x?.quarter)
   const documents = normalizeCallDocuments(x?.documents, {code, quarter: x?.quarter})
   let pipeline = null
-  if (x?.pipeline?.id === 'foolcalls-codex-v1') {
-    if (!documents?.translation || !String(documents.translation.model).startsWith('Codex · ')
+  if (['foolcalls-codex-v1', 'local-transcript-v1'].includes(x?.pipeline?.id)) {
+    const local = x.pipeline.id === 'local-transcript-v1'
+    if (!documents?.translation || !(local ? /^(Codex|Claude Code) · / : /^Codex · /).test(String(documents.translation.model))
         || !String(x?.summary || '').trim() || !String(x?.call || '').trim()
-        || x?.transcriptSource?.collector !== 'foolcalls') {
-      throw new Error('Codex 한국어 전문과 정리본을 모두 완성한 Fool 콜만 게시할 수 있습니다.')
+        || x?.transcriptSource?.collector !== (local ? 'local-public' : 'foolcalls')) {
+      throw new Error('원문·한국어 전문·정리본과 실제 작성 AI 정보가 모두 필요합니다.')
     }
-    pipeline = {id:'foolcalls-codex-v1',model:글(documents.translation.model,100),
+    pipeline = {id:x.pipeline.id,model:글(documents.translation.model,100),
       collectedAt:글(x.pipeline.collectedAt,40),completedAt:documents.translation.generatedAt}
   }
   return {
@@ -101,7 +102,7 @@ export async function GET(request) {
     }
     const rows = await sql`
       SELECT payload - 'documents' AS payload, updated_at FROM conference_call_archive
-      WHERE payload->'pipeline'->>'id' = 'foolcalls-codex-v1'
+      WHERE payload->'pipeline'->>'id' IN ('foolcalls-codex-v1', 'local-transcript-v1')
         AND (${code} = '' OR code = ${code})
         AND (${search} = '' OR code ILIKE ${pattern}
           OR quarter ILIKE ${pattern}
@@ -111,7 +112,7 @@ export async function GET(request) {
       LIMIT ${limit} OFFSET ${offset}`
     const count = archive ? await sql`
       SELECT COUNT(*)::int AS total FROM conference_call_archive
-      WHERE payload->'pipeline'->>'id' = 'foolcalls-codex-v1'
+      WHERE payload->'pipeline'->>'id' IN ('foolcalls-codex-v1', 'local-transcript-v1')
         AND (${code} = '' OR code = ${code})
         AND (${search} = '' OR code ILIKE ${pattern}
           OR quarter ILIKE ${pattern}
@@ -163,7 +164,7 @@ export async function POST(request) {
   for (const item of 새것) {
     const key = `${item.code}|${item.quarter}`
     const prior = incoming.get(key) || byKey.get(key)
-    if (prior?.pipeline?.id === 'foolcalls-codex-v1' && !item.pipeline)
+    if (['foolcalls-codex-v1','local-transcript-v1'].includes(prior?.pipeline?.id) && !item.pipeline)
       return json({ok:false,error:'게시된 Codex 콜은 영문·한국어 전문·정리본을 함께 갱신해야 합니다.'},{status:422})
     incoming.set(key, { ...item, transcriptSource: retainTranscriptSource(item, prior),
       documents: mergeCallDocuments(item.documents, prior?.documents, item) })

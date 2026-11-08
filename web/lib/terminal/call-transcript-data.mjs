@@ -17,7 +17,7 @@ export function fiscalPeriod(raw){
 export function normalizeTranscriptSource(value){
   const url=callSourceUrl(value?.url)
   if(!url||!url.hostname.endsWith('fool.com')||!Number.isInteger(value.year)||value.year<1990||value.year>2100||![1,2,3,4].includes(value.quarter))return null
-  return {url:url.href,publisher:'The Motley Fool',collector:value.collector==='foolcalls'?'foolcalls':'public-source',
+  return {url:url.href,publisher:'The Motley Fool',collector:['foolcalls','local-public'].includes(value.collector)?value.collector:'public-source',
     year:value.year,quarter:value.quarter,
     sha256:/^[a-f0-9]{64}$/.test(value.sha256||'')?value.sha256:null,
     upstreamCommit:/^[a-f0-9]{40}$/.test(value.upstreamCommit||'')?value.upstreamCommit:null}

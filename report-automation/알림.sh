@@ -1,4 +1,5 @@
 #!/bin/bash
+[ "${TM26_AUTOMATION_LOCAL_ONLY:-0}" = 1 ] && exit 0
 # 화면 오른쪽 위 알림.
 #   ./알림.sh "제목줄" "본문" [소리이름] [갈 곳]
 #

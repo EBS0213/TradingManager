@@ -15,7 +15,7 @@ count_pdf() {                       # 이 종목의 PDF 가 report 에 몇 개 �
 # 시각이 새로워졌으면 성공이다.
 claude찾기() { # 기존 호출자 호환 이름, 실제 실행기는 Codex입니다.
   export PATH="$PATH:/usr/local/bin:/opt/homebrew/bin:$HOME/.local/bin"
-  CLAUDE="$(command -v codex 2>/dev/null)"
+  CLAUDE="$(command -v "${TM26_REPORT_PROVIDER:-codex}" 2>/dev/null)"
   [ -n "$CLAUDE" ] && [ -f ./코덱스실행.py ]
 }
 

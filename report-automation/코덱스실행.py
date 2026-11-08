@@ -23,6 +23,8 @@ LIMIT = re.compile(r"usage.limit|rate.limit|quota|too many requests|usage_limit_
 
 
 def run(prompt, *, role="summary", mode="text", cwd=None, timeout=600, model=None, output_schema=None):
+    if os.environ.get('TM26_REPORT_PROVIDER') == 'claude':
+        return run_claude(prompt, mode=mode, cwd=cwd, timeout=timeout, output_schema=output_schema)
     model = model or MODELS[role]
     if model not in MODELS.values():
         return subprocess.CompletedProcess([], 2, "", "허용되지 않은 자동화 모델: " + model)
@@ -47,6 +49,7 @@ def run(prompt, *, role="summary", mode="text", cwd=None, timeout=600, model=Non
         else:
             command += ["-c", "sandbox_workspace_write.network_access=true"]
             prompt += "\n\n현재 실행 역할: Codex 제작 담당입니다. 위 문서의 Claude 제작 역할을 이어받습니다. 산출물과 인계까지만 완료하십시오. 게시·텔레그램·알림 실행은 상위 자동화만 담당하므로 이 세션에서 실행하지 마십시오. 운영 코드·예약·모델 설정은 변경하지 마십시오."
+            prompt += "\n이번 설치의 실제 로컬 주소는 " + os.environ.get('SITE_URL', '') + " 입니다. 문서의 예시 포트 대신 이 주소를 사용하십시오."
         command += ["exec", "--ignore-user-config", "--sandbox",
                     "workspace-write" if mode == "agent" else "read-only",
                     "--skip-git-repo-check", "-C", str(work), "--color", "never",
@@ -117,6 +120,40 @@ def run(prompt, *, role="summary", mode="text", cwd=None, timeout=600, model=Non
     with (folder / "코덱스사용량.jsonl").open("a") as f:
         f.write(json.dumps(record, ensure_ascii=False) + "\n")
     return subprocess.CompletedProcess(command, rc, answer, errors[-4000:] if rc else "")
+
+
+def run_claude(prompt, *, mode='text', cwd=None, timeout=600, output_schema=None):
+    binary = shutil.which('claude') or str(Path.home()/'.local/bin/claude')
+    env = dict(os.environ)
+    for key in ('ANTHROPIC_API_KEY', 'ANTHROPIC_AUTH_TOKEN'):
+        env.pop(key, None)
+    try:
+        auth = subprocess.run([binary, 'auth', 'status'], capture_output=True, text=True, env=env, timeout=30)
+        if auth.returncode or not json.loads(auth.stdout).get('loggedIn'):
+            return subprocess.CompletedProcess([], 78, '', 'Claude Code 본인 계정 로그인이 필요합니다.')
+    except (OSError, ValueError, subprocess.TimeoutExpired):
+        return subprocess.CompletedProcess([], 78, '', 'Claude Code 연결을 확인하지 못했습니다.')
+    command = [binary, '-p', '--output-format', 'json']
+    if mode == 'text': command += ['--tools', '']
+    else:
+        command += ['--allowedTools', 'Read,Write,Edit,Glob,Grep,Bash,WebSearch,WebFetch']
+        prompt += ('\n산출물 작성·자체 점검·게시대기 인계까지만 수행하세요. 게시·메시지 발송·운영 코드와 예약 변경은 금지합니다.'
+                   '\n이번 설치의 로컬 주소: ' + env.get('SITE_URL', ''))
+    if output_schema is not None: command += ['--json-schema', json.dumps(output_schema)]
+    try:
+        result = subprocess.run(command, input=prompt, cwd=cwd or ROOT, env=env,
+            text=True, capture_output=True, timeout=timeout)
+        data = json.loads(result.stdout) if result.stdout.strip() else {}
+        answer = data.get('result', '')
+        if output_schema is not None and 'structured_output' in data:
+            answer = json.dumps(data['structured_output'], ensure_ascii=False)
+        rc = result.returncode or (1 if data.get('is_error') else 0)
+        if LIMIT.search(answer + result.stderr): rc = 75
+        return subprocess.CompletedProcess(command, rc, answer, result.stderr[-4000:])
+    except subprocess.TimeoutExpired:
+        return subprocess.CompletedProcess(command, 124, '', 'Claude Code 실행 시간 초과')
+    except (OSError, ValueError):
+        return subprocess.CompletedProcess(command, 1, '', 'Claude Code 실행 결과를 확인하지 못했습니다.')
 
 
 def main():

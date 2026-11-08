@@ -6,9 +6,11 @@ cd "$(dirname "$0")" || exit 1
 [ -f ./파이썬고르기.sh ] && . ./파이썬고르기.sh
 mkdir -p 로그 report
 
-for rc in "$HOME/.zprofile" "$HOME/.zshrc" "$HOME/.bash_profile" "$HOME/.profile"; do
-  [ -r "$rc" ] && . "$rc" >/dev/null 2>&1
-done
+if [ "${TM26_AUTOMATION_LOCAL_ONLY:-0}" != 1 ]; then
+  for rc in "$HOME/.zprofile" "$HOME/.zshrc" "$HOME/.bash_profile" "$HOME/.profile"; do
+    [ -r "$rc" ] && . "$rc" >/dev/null 2>&1
+  done
+fi
 export PATH="$PATH:/usr/local/bin:/opt/homebrew/bin:$HOME/.local/bin:$HOME/.claude/local:$HOME/.npm-global/bin:$HOME/bin"
 
 # 실제 실행기와 본인 로그인은 제작엔진/코덱스실행에서 확인합니다.

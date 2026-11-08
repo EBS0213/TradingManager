@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type { FormEvent, ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import styles from './AccountDesk.module.css';
+import AutomationSetup from './AutomationSetup';
 
 const SESSION = ['workspace', 'session'] as const;
 type Session = { local?: boolean; signedIn: boolean; admin: boolean; email?: string; nickname?: string | null };
@@ -33,6 +34,7 @@ export function AdminDesk({ onNavigate }: { onNavigate: Navigate }) {
   const session = useSession();
   const summary = useQuery({ queryKey: ['admin', 'summary'], queryFn: () => request<Summary>('/api/admin/summary'), enabled: session.data?.signedIn === true && session.data.admin === true, staleTime: 0, retry: 1, refetchOnWindowFocus: false, refetchOnReconnect: false });
   return <div className={`fc-desk ${styles.desk}`}><Title title="설정" code="LOCAL SETTINGS" onNavigate={onNavigate}/>
+    {session.data?.local && session.data.admin && <AutomationSetup/>}
     {!session.data?.admin ? <SessionGate loading={session.isPending} error={session.isError} denied={session.data?.signedIn} retry={() => void session.refetch()}/> : (summary.isPending || summary.isFetching) ? <div className="fc-empty" role="status">관리 자료를 조회하고 있습니다…</div> : summary.isError ? <div className="fc-alert" role="alert">{summary.error.message} <button type="button" className="fc-button" onClick={() => void summary.refetch()}>다시 조회</button></div> : summary.data ? <AdminContent key={summary.dataUpdatedAt} data={summary.data} local={session.data.local === true} onReload={() => void summary.refetch()}/> : null}
   </div>;
 }

@@ -152,6 +152,13 @@ def install(root=ROOT, port=None):
         requirement = root/'screener/requirements.txt'
         step('python-packages', fingerprint([requirement])+sys.version, lambda:python.exists(),
              lambda:subprocess.run([str(python), '-m', 'pip', 'install', '-r', str(requirement)], check=True))
+        report_python = root/'report-automation/.venv/bin/python3'
+        if not report_python.exists():
+            subprocess.run([sys.executable, '-m', 'venv', str(root/'report-automation/.venv')], check=True)
+        report_requirements = root/'report-automation/requirements.txt'
+        step('report-packages', fingerprint([report_requirements])+sys.version, lambda:report_python.exists(),
+             lambda:subprocess.run([str(report_python), '-m', 'pip', 'install', '-r', str(report_requirements)], check=True))
+        subprocess.run([str(report_python), '-m', 'playwright', 'install', 'chromium'], check=True)
         init_cluster(root, pg, config)
         ensure_database(root, pg, config)
         npm_signature = fingerprint([root/'web/package-lock.json', root/'web/package.json'])+subprocess.check_output([node,'--version'],text=True)

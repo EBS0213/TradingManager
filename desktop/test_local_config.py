@@ -62,9 +62,11 @@ class ConfigAndResume(unittest.TestCase):
         from types import SimpleNamespace
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            for name in ['web', 'screener', '.venv/bin', 'desktop']:
+            for name in ['web', 'screener', '.venv/bin', 'desktop', 'report-automation/.venv/bin']:
                 (root/name).mkdir(parents=True)
             (root/'.venv/bin/python').touch()
+            (root/'report-automation/.venv/bin/python3').touch()
+            (root/'report-automation/requirements.txt').write_text('requests>=2.31')
             (root/'screener/requirements.txt').write_text('requests>=2.31')
             (root/'web/package.json').write_text('{}')
             (root/'web/package-lock.json').write_text('{}')
@@ -91,7 +93,8 @@ class ConfigAndResume(unittest.TestCase):
                 self.assertEqual(read_config(root), config)
                 setup.install(root)
                 self.assertEqual(read_config(root), config)
-            self.assertEqual(sum('pip' in args for args in calls), 1)
+            self.assertEqual(sum('pip' in args and args[0] == str(root/'.venv/bin/python') for args in calls), 1)
+            self.assertEqual(sum('pip' in args and args[0] == str(root/'report-automation/.venv/bin/python3') for args in calls), 1)
             self.assertEqual(calls.count(['npm','ci']), 2)
             self.assertEqual(calls.count(['npm','run','build']), 1)
 
