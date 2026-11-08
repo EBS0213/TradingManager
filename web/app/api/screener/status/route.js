@@ -4,6 +4,7 @@
 import { NextResponse } from 'next/server'
 import { currentUser } from '@/lib/auth'
 import { getSql } from '@/lib/db'
+import { ensureScreenerJobs } from '@/lib/screener-jobs.mjs'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -24,15 +25,10 @@ export async function GET() {
       FROM screener_snapshot ORDER BY market, created_at DESC`
     for (const r of per) stamps[String(r.market || 'KR')] = r.stamp
   } catch { stamps = {} }
-  /* 오래 매달려 있는 작업을 치웁니다.
-     2026-08-23: 45분 → 100분. 수동 실행이 **한국·미국을 연달아** 돌게 되면서
-     한 번에 20~55분(느리면 그 이상)이 걸립니다. 45분으로 두면 **아직 돌고 있는데도**
-     실패로 적혀 단추가 풀리고, 사용자가 또 누르면 같은 일을 두 번 하게 됩니다.
-     반대로 너무 길게 두면 서버가 죽었을 때 단추가 오래 잠깁니다 — 100분이 그 사이입니다. */
-  await sql`UPDATE screener_job SET status='failed', finished_at=now()
-            WHERE status IN ('requested','running')
-              AND requested_at < now() - interval '100 minutes'`
-  const job = await sql`SELECT status FROM screener_job ORDER BY requested_at DESC LIMIT 1`
+  await ensureScreenerJobs(sql)
+  const jobs = await sql`SELECT DISTINCT ON(market) id,market,status,error,requested_at,finished_at
+    FROM screener_job ORDER BY market,requested_at DESC,id DESC`
+  const job = await sql`SELECT status FROM screener_job WHERE status IN ('requested','running') LIMIT 1`
   const hb = await sql`SELECT beat_at FROM screener_heartbeat WHERE id = 1`
   const alive = hb[0]?.beat_at
     ? (Date.now() - new Date(hb[0].beat_at).getTime()) < 5 * 60 * 1000
@@ -43,6 +39,7 @@ export async function GET() {
     ok: true,
     stamp: snap[0]?.stamp || null,
     stamps,                       // { KR: '…', US: '…' }
+    jobs: Object.fromEntries(jobs.map(job=>[job.market,job])),
     rows: snap[0]?.rows || 0,
     passed: snap[0]?.passed || 0,
     running: ['requested', 'running'].includes(job[0]?.status),

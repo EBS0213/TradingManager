@@ -4,6 +4,7 @@ import {useQuery} from '@tanstack/react-query';
 import TradingScore from '../TradingScore';
 import ScreeningTable,{screeningStyles} from './ScreeningTable';
 import SectorRsPanel from './SectorRsPanel';
+import useScreeningRefresh from './useScreeningRefresh';
 import type {SectorCountPoint} from '@/lib/sector-counts';
 import layout from './ScreeningLayout.module.css';
 import {api,fmt,num,text,percent,tone,styles,Panel,Metrics,Message,StockChart,useJournal,day,type Row} from './TradingCommon';
@@ -11,6 +12,7 @@ type Result={ok:boolean;cols?:string[];rows?:unknown[][];result?:Row[];stamp?:st
 export default function ScreeningDesk({onStock}:{onStock:(symbol:string)=>void}){
  const [market,setMarket]=useState<'KR'|'US'>('KR'),[search,setSearch]=useState(''),[filter,setFilter]=useState('pass'),[sort,setSort]=useState('score'),[ascending,setAscending]=useState(false),[wide,setWide]=useState(false),[page,setPage]=useState(1),[selected,setSelected]=useState(''),[tab,setTab]=useState('chart');
  const journal=useJournal();
+ const refresh=useScreeningRefresh(market);
  const query=useQuery({queryKey:['trading','screen',market],queryFn:({signal})=>api<Result>('/api/screener/latest?fmt=2&market='+market,{signal}),staleTime:60000,retry:1});
  const rows=useMemo(()=>query.data?.cols&&query.data.rows?query.data.rows.map(values=>Object.fromEntries(query.data!.cols!.map((key,i)=>[key,values[i]]))):query.data?.result||[],[query.data]);
  const setup=useQuery({queryKey:['trading','setup',market],queryFn:({signal})=>api<{rows:Row[];stamp?:string}>('/api/setup?market='+market,{signal}),enabled:rows.length>0,staleTime:60000,retry:1});
@@ -24,7 +26,8 @@ export default function ScreeningDesk({onStock}:{onStock:(symbol:string)=>void})
  const setupZone=selectedSetup?.state==='setup'&&setupPivot!==null?{pivot:setupPivot,stop:num(selectedSetup.stop),baseStart:text(selectedSetup.baseStart)}:undefined;
  const saved=journal.data.watchlist?.some(w=>w.코드===symbol);
  const addWatch=()=>{if(!stock||!journal.signedIn)return;const next=journal.data.watchlist||[];journal.save.mutate({watchlist:saved?next.filter(w=>w.코드!==symbol):[...next,{코드:symbol,종목명:text(stock['종목명']),추가일:day(),메모:''}]});};
- return <><div className={styles.heading}><div><h1>스크리닝</h1><span>STOCK SCREENER</span></div><button onClick={()=>void query.refetch()} disabled={query.isFetching}>새로고침</button></div>
+ return <><div className={styles.heading}><div><h1>스크리닝</h1><span>STOCK SCREENER</span></div><button type="button" onClick={refresh.request} disabled={refresh.busy}>{refresh.busy?'스크리너 실행 중…':'새로고침'}</button></div>
+ {refresh.error?<Message error>{refresh.error}</Message>:refresh.busy?<Message>{refresh.agent===false?'실행 요청을 저장했습니다. 스크리너 연결을 기다리는 중입니다.':'선택한 시장의 자료를 수집·계산하고 있습니다. 완료되면 결과가 갱신됩니다.'}</Message>:null}
  <Metrics items={[{label:'전체 종목',value:fmt(rows.length,0)},{label:'8조건 통과',value:fmt(rows.filter(r=>r['판정']==='통과'&&!r['제외사유']&&!r['부적합사유']).length,0),className:styles.up},{label:'평균 점수',value:rows.length?fmt(rows.reduce((s,r)=>s+(num(r['종합점수'])||0),0)/rows.length,1):'—'},{label:'선택 결과',value:fmt(filtered.length,0)}]}/>
  <div className={(wide?screeningStyles.wide:styles.split)+' '+layout.layout}><div className={layout.left}><div className={layout.leftFill} style={wide?{position:'static',minHeight:900}:undefined}><SectorRsPanel key={market} rows={rows} market={market} stamp={query.data?.stamp} history={Array.isArray(query.data?.summary?.sectorHist)?query.data.summary.sectorHist as SectorCountPoint[]:[]} onSelect={name=>{setSearch(name);setFilter('pass');setPage(1);}}/><Panel className={layout.list} title="종목 목록" actions={<span>{query.data?.stamp}</span>}>
  <div className={styles.toolbar+' '+layout.listToolbar}><div className={styles.tabs}>{(['KR','US'] as const).map(m=><button key={m} aria-pressed={market===m} onClick={()=>{setMarket(m);setSelected('');setPage(1);}}>{m==='KR'?'한국':'미국'}</button>)}</div><input type="search" aria-label="스크리닝 종목 검색" placeholder="종목 · 코드 · 업종" value={search} onChange={e=>{setSearch(e.target.value);setPage(1);}}/><select aria-label="스크리닝 필터" value={filter} onChange={e=>{setFilter(e.target.value);setPage(1);}}><option value="pass">8조건 통과</option><option value="all">전체</option><option value="watch">워치리스트</option></select><select aria-label="스크리닝 정렬" value={sort} onChange={e=>{setSort(e.target.value);setAscending(e.target.value==='name');}}><option value="score">점수순</option><option value="rs">RS순</option><option value="change">등락률순</option><option value="name">종목명순</option><option value="피벗대비이격">피벗 이격순</option><option value="거래대금">거래대금순</option><option value="UD비율">자금흐름순</option><option value="EPS증가율">EPS 성장순</option><option value="매출증가율">매출 성장순</option>{!["score","rs","change","name","피벗대비이격","거래대금","UD비율","EPS증가율","매출증가율"].includes(sort)&&<option value={sort}>{sort} 정렬</option>}</select><button aria-pressed={wide} onClick={()=>setWide(v=>!v)}>목록 넓게</button></div>

@@ -78,6 +78,16 @@ def claim_job():
         log(f'· 사이트 확인 실패({e})')
         return None
 
+def finish_job(job, market, success):
+    if not job:
+        return
+    body=json.dumps({'job':job,'market':market,'status':'done' if success else 'failed',
+                     'error':'' if success else '수집 또는 결과 저장에 실패했습니다. 스크리너 로그를 확인하세요.'}).encode()
+    try:
+        api('/api/screener/job', method='POST', data=body)
+    except Exception as error:
+        log(f'작업 완료 보고 실패: {error}')
+
 
 def pull_watchlist():
     try:
@@ -133,18 +143,19 @@ def main():
     log(f'상주 시작 — 한국 {HOURS}시, 미국 22:30~08:30 두 시간 간격 (KST)')
     state_path=os.path.join(os.path.dirname(BASE),'data','screener-schedule.json')
     state=load_state(state_path)
-    running={}; retry_at={}; manual=[]
+    running={}; retry_at={}; manual={}
     threading.Thread(target=heartbeat_loop, daemon=True).start()
     with ThreadPoolExecutor(max_workers=2) as pool:
         while True:
             try:
                 now=dt.datetime.now(KST)
-                for market,(future,slot) in list(running.items()):
+                for market,(future,slot,job) in list(running.items()):
                     if not future.done():continue
                     try:success=future.result()
                     except Exception as error:
                         log(f'{market} 실행 오류: {error}');success=False
                     del running[market]
+                    finish_job(job,market,success)
                     if success:
                         state[market]={'slot':slot,'finishedAt':now.isoformat()}
                         save_state(state_path,state)
@@ -152,17 +163,21 @@ def main():
                 # Manual polling remains responsive during a lengthy collection.
                 got=claim_job()
                 if got:
-                    for market in (got[1], 'KR' if got[1]=='US' else 'US'):
-                        if market not in manual and market not in running:manual.append(market)
+                    job,market=got
+                    if market in running:
+                        future,slot,current_job=running[market]
+                        if not current_job:running[market]=(future,slot,job)
+                        else:manual[market]=job
+                    else:manual[market]=job
                 for market in ('KR','US'):
-                    if market in running or time.monotonic()<retry_at.get(market,0):continue
+                    if market in running or (market not in manual and time.monotonic()<retry_at.get(market,0)):continue
                     slot=due_slot(market,now,HOURS,DAYS)
                     previous=state.get(market,{})
                     reason='manual' if market in manual else ('first' if not previous else 'schedule')
                     if reason=='schedule' and (not slot or slot<=previous.get('slot','')):continue
-                    if market in manual:manual.remove(market)
+                    job=manual.pop(market,None)
                     # The current slot is recorded only after a successful upload.
-                    running[market]=(pool.submit(run_us if market=='US' else run_screening,reason),slot or now.isoformat())
+                    running[market]=(pool.submit(run_us if market=='US' else run_screening,reason),slot or now.isoformat(),job)
             except Exception as error:
                 log(f'루프 오류: {error}')
             time.sleep(POLL)

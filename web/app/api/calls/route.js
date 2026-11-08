@@ -16,6 +16,7 @@ import { normalizeTranscriptSource, fiscalPeriod, retainTranscriptSource } from 
 import { normalizeCallDocuments, mergeCallDocuments } from '@/lib/terminal/call-documents.mjs'
 import { enqueueCallAlerts } from '@/lib/terminal/call-alerts'
 import { callCatalog } from '@/lib/terminal/call-catalog.mjs'
+import { normalizeCallNumbers } from '@/lib/call-numbers.mjs'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -69,9 +70,7 @@ function 다듬기(x) {
     pipeline,
     industry: 글(x?.industry, 4000),      // 산업 전망
     outlook: 글(x?.outlook, 4000),        // 기업 전망
-    numbers: Array.isArray(x?.numbers) ? x.numbers.slice(0, 12).map((n) => ({
-      k: 글(n?.k, 30), v: 글(n?.v, 40), note: 글(n?.note, 60),
-    })) : [],
+    numbers: normalizeCallNumbers(x?.numbers),
     sources: Array.isArray(x?.sources) ? x.sources.slice(0, 6).map((s) => ({
       label: 글(s?.label, 60), url: 글(s?.url, 400),
     })) : [],
