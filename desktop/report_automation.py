@@ -12,13 +12,14 @@ import tempfile
 import time
 import uuid
 from urllib.request import urlopen
-from zoneinfo import ZoneInfo
 from file_lock import flock, LOCK_EX, LOCK_NB
 from local_config import ROOT, read_config, base_url
 
 DATA = ROOT / 'data/report-automation'
 MODULE = ROOT / 'report-automation'
-KST = ZoneInfo('Asia/Seoul')
+# This scheduler uses present-day KST only. Windows Python does not bundle the
+# IANA database; use Korea's fixed UTC+09:00 offset without an optional package.
+KST = dt.timezone(dt.timedelta(hours=9), 'KST')
 JOBS = {
     'collect': ('리포트 수집', 6, 30),
     'strategy': ('시황 리포트 작성', 7, 0),

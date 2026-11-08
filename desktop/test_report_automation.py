@@ -34,6 +34,11 @@ class Automation(unittest.TestCase):
         self.assertTrue(app.due_slot(sunday,16,30).startswith('2026-11-06T16:30'))
         monday = sunday + dt.timedelta(days=1)
         self.assertTrue(app.due_slot(monday,16,30).startswith('2026-11-09T16:30'))
+    def test_utc_time_crosses_into_the_correct_korean_scheduled_day(self):
+        utc = dt.datetime(2026,11,8,23,0,tzinfo=dt.timezone.utc)
+        korea = utc.astimezone(app.KST)
+        self.assertEqual(korea.isoformat(),'2026-11-09T08:00:00+09:00')
+        self.assertEqual(app.due_slot(korea,7,0),'2026-11-09T07:00:00+09:00')
     def cycle(self, ready=True):
         child = MagicMock(); child.poll.return_value = 0
         response = MagicMock(); response.__enter__.return_value = io.BytesIO(b'{"ok":true}')
