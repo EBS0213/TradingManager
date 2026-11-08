@@ -1,10 +1,11 @@
 import {cachedEconomy} from './economy-cache'
-import {PRICE_SOURCES,parseDramPublic,parseDramContract,parseOpinet,agePrices} from './industry-price-data.mjs'
+import {PRICE_SOURCES,parseDramPublic,parseDramContract,parseMemoryMarket,parseOpinet,agePrices} from './industry-price-data.mjs'
 
 const HOUR=3600000
 const feeds=[
   {id:'dram-public',view:'dram',ttl:HOUR,source:PRICE_SOURCES.dram,url:PRICE_SOURCES.dram.url,parse:parseDramPublic},
   {id:'dram-contract',view:'dram',ttl:12*HOUR,source:PRICE_SOURCES.contract,url:'https://www.dramexchange.com/Home/HomePrice?Source=NationalDramContract',parse:text=>parseDramContract(JSON.parse(text))},
+  {id:'dram-memory',view:'dram',ttl:HOUR,source:PRICE_SOURCES.memory,url:PRICE_SOURCES.memory.url,parse:parseMemoryMarket},
   {id:'opinet-crude',view:'oil',ttl:HOUR,source:PRICE_SOURCES.crude,url:PRICE_SOURCES.crude.url,parse:text=>parseOpinet(text,'crude')},
   {id:'opinet-products',view:'oil',ttl:HOUR,source:PRICE_SOURCES.products,url:PRICE_SOURCES.products.url,parse:text=>parseOpinet(text,'products')},
 ]

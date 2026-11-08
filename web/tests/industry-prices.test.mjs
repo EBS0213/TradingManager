@@ -1,10 +1,12 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
-import {parseDramPublic,parseDramContract,parseOpinet,agePrices} from '../lib/terminal/industry-price-data.mjs'
+import {parseDramPublic,parseDramContract,parseMemoryMarket,parseOpinet,agePrices} from '../lib/terminal/industry-price-data.mjs'
 import {selectionFromHash,nativePages} from '../lib/workspace-routing.mjs'
 
 const now=Date.parse('2026-11-08T00:00:00Z')
+const quoteBox=(kind,name,id)=>`<div class="product-price-box ${kind} hide"><table><thead><tr>${['Product Item','Latest','Previous','Change','Currency','Trend'].map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody><tr><td><a href="/price/${kind==='rdimm'?'ems':'ews'}/${id}">${name}</a></td><td>42.00</td><td>45.00</td><td>-3.00<small>(-6.67%)</small></td><td>USD</td><td></td></tr></tbody></table><p>Last update: 2026-11-03 03:00 (UTC+0)</p></div>`
+const memory=[['ddr','DDR5 16Gb Major'],['rdimm','DDR5 RDIMM 32GB'],['udimm','DDR4 UDIMM 8GB 3200'],['sodimm','DDR5 SODIMM 16GB 5600'],['lpddr','LPDDR5X 64Gb']].map(([kind,name],i)=>quoteBox(kind,name,100+i)).join('')
 const section=(path,name,average='10.125')=>`<div class="left_tab"><span class="tab_time">Last Update: Nov.6 2026 18:10 (GMT+8)</span><table><tbody id="tb_ModuleSpotPrice"><tr><td><a href="/Price/${path}">${name}</a></td>${['12','8','12','8',average,'-1.25 %'].map(v=>`<td>${v}</td>`).join('')}</tr></tbody></table></div>`
 const dram=section('Dram_Spot','DDR5 16Gb')+section('Module_Spot','DDR5 UDIMM 16GB')+section('GDDR_Spot','GDDR6 8Gb')+section('Flash_Wafer_Spot','512Gb TLC')+`<table><tbody><tr><td><a href="/Price/LPDDR_Spot">LPDDR 4 8Gb</a></td><td><a href="/Price/MobileDramDetail">LPDDR5X 16GB</a></td></tr></tbody></table>`
 const contract=[{show_listid:1,show_name:'DDR5 8GB SO-DIMM',show_day:'2026-09-30T17:00:00',show_hi:15,show_lo:10,show_avg:12,show_avg_change:0,show_lo_change:2,show_duration:2}]
@@ -15,13 +17,14 @@ const oil=(kind='crude',last='11.25')=>{
 
 test('DRAM duplicate table ids cannot mix GDDR, module, chip or NAND wafer prices',()=>{
   const data=parseDramPublic(dram,now)
-  assert.equal(data.series.length,5)
+  assert.equal(data.series.length,3)
   assert.deepEqual(data.series.slice(0,3).map(r=>r.group),['dram-spot','module-spot','gddr-spot'])
   assert.ok(data.series.every(r=>!r.name.includes('TLC')))
   assert.equal(data.series[0].value,10.125)
   assert.equal(data.series[0].changePercent,-1.25)
   assert.equal(data.series[0].asOf,'2026-11-06T18:10:00+08:00')
-  assert.ok(data.series.slice(3).every(r=>r.value===null&&r.access==='member_required'))
+  assert.ok(data.series.every(r=>r.access==='public'))
+  assert.ok(data.series.every(r=>!['lpddr-spot','mobile-contract'].includes(r.group)))
 })
 test('DRAM malformed, missing and login pages fail instead of producing zeros or partial replacements',()=>{
   for(const input of ['<h1>Login</h1>',dram.replace('10.125','—'),dram.replace('Nov.6 2026 18:10','missing date'),dram.replace('/Price/GDDR_Spot','/unknown')])
@@ -52,9 +55,11 @@ test('missing newest oil price does not resurrect an older price; all-missing re
   assert.throws(()=>parseOpinet('<h1>maintenance</h1>','crude',now))
 })
 test('cached observations age using source date and never promote member-only data',()=>{
-  const result=agePrices(parseDramPublic(dram,now),now+30*86400000)
+  const parsed=parseDramPublic(dram,now)
+  const result=agePrices({...parsed,series:[...parsed.series,{id:'old-member-cache',value:null,asOf:null,access:'member_required',status:'unavailable'}]},now+30*86400000)
   assert.ok(result.series.slice(0,3).every(r=>r.status==='stale'))
-  assert.ok(result.series.slice(3).every(r=>r.status==='unavailable'))
+  assert.equal(result.series.length,3)
+  assert.ok(result.series.every(r=>r.access==='public'))
   assert.equal(result.series[0].value,10.125)
 })
 
@@ -66,19 +71,51 @@ test('provider failures stay isolated, view filters avoid unrelated network call
   const seen=[]
   const service=createIndustryPriceService({cache:async(key,ttl,loader)=>loader(),fetcher:async url=>{
     seen.push(url)
+    if(url.includes('memorymarket'))return memory
     if(url.includes('HomePrice'))throw new Error('offline')
     if(url.includes('glopcoil'))return oil('crude')
     if(url.includes('glopopd'))return oil('products')
     return dram
   }})
   const prices=await service('dram')
-  assert.equal(seen.length,2);assert.ok(seen.every(url=>url.includes('dramexchange')))
-  assert.equal(prices.feeds[0].series.length,5);assert.equal(prices.feeds[1].status,'unavailable')
+  assert.equal(seen.length,3);assert.ok(seen.every(url=>url.includes('dramexchange')||url.includes('memorymarket')))
+  assert.equal(prices.feeds[0].series.length,3);assert.equal(prices.feeds[1].status,'unavailable')
   const both=await service('all')
-  assert.equal(both.feeds.length,4);assert.equal(both.series.length,15)
+  assert.equal(both.feeds.length,5);assert.equal(both.series.length,18)
   assert.ok(both.feeds[1].error)
 })
 test('Countries is retired and saved links resolve to Data',()=>{
   assert.equal(nativePages.has('countries'),false)
   assert.deepEqual(selectionFromHash('#terminal/countries'),{area:'terminal',page:'data'})
+})
+
+test('memory quotes include every DRAM category without NAND, invented ranges or previous dates',()=>{
+  const data=parseMemoryMarket(memory+quoteBox('channel-ssd','Channel SSD 1TB',200),now)
+  assert.equal(data.series.length,5)
+  assert.deepEqual(data.series.map(s=>s.group),['dram-quote','rdimm-quote','udimm-quote','sodimm-quote','lpddr-quote'])
+  for(const row of data.series){
+    assert.equal(row.value,42);assert.equal(row.previous,45);assert.equal(row.change,-3);assert.equal(row.changePercent,-6.67)
+    assert.equal(row.asOf,'2026-11-03T03:00:00Z');assert.equal(row.points.length,1)
+    assert.equal(row.high,undefined);assert.equal(row.low,undefined);assert.equal(row.unit,'USD/개')
+  }
+  assert.equal(new Set(data.series.map(s=>s.id)).size,5)
+})
+test('memory quotes reject masked prices, changed units/columns, invalid dates and missing categories',()=>{
+  for(const bad of [memory.replace('42.00','—'),memory.replace('USD','CNY'),memory.replace('Latest','Average'),
+    memory.replace('2026-11-03','2026-02-30'),memory.replace('product-price-box lpddr','missing lpddr'),memory.replace('Last update:','Missing:')])
+    assert.throws(()=>parseMemoryMarket(bad,now))
+  const zero=parseMemoryMarket(memory.replaceAll('42.00','0.00').replaceAll('45.00','0.00').replaceAll('-3.00','0.00').replaceAll('-6.67','0.00'),now).series[0]
+  assert.equal(zero.value,0);assert.equal(zero.previous,0);assert.equal(zero.change,0)
+  assert.ok(agePrices(parseMemoryMarket(memory,now),now+30*86400000).series.every(s=>s.status==='stale'))
+})
+test('supplemental memory failure cannot remove existing DRAM or oil quotes',async()=>{
+  const service=createIndustryPriceService({cache:async(key,ttl,load)=>load(),fetcher:async url=>{
+    if(url.includes('memorymarket'))throw new Error('offline')
+    if(url.includes('HomePrice'))return JSON.stringify(contract)
+    return url.includes('opinet')?oil(url.includes('glopopd')?'products':'crude'):dram
+  }})
+  const data=await service()
+  assert.equal(data.feeds.find(f=>f.id==='dram-memory').status,'unavailable')
+  assert.equal(data.series.length,14)
+  assert.ok(data.series.some(s=>s.group==='dram-contract'))
 })

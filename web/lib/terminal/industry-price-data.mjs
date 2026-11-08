@@ -4,6 +4,7 @@ import {economyNumber, economySeries, observationDate} from './economy-market-da
 export const PRICE_SOURCES = {
   dram: {name:'DRAMeXchange',url:'https://www.dramexchange.com/'},
   contract: {name:'DRAMeXchange',url:'https://www.dramexchange.com/Price/NationalContractDramDetail'},
+  memory: {name:'MemoryMarket',url:'https://www.memorymarket.com/'},
   crude: {name:'오피넷 · 한국석유공사',url:'https://www.opinet.co.kr/glopcoilSelect.do'},
   products: {name:'오피넷 · 한국석유공사',url:'https://www.opinet.co.kr/glopopdSelect.do'},
 }
@@ -45,14 +46,6 @@ export function parseDramPublic(html, now=Date.now()) {
         periodHigh,periodLow,high,low,changePercent:number(clean(td[6])),access:'public'}))
     }
   }
-  for(const [path,group,prefix,frequency] of [
-    ['LPDDR_Spot','lpddr-spot',/^LPDDR\s*\d/,'weekly'],
-    ['MobileDramDetail','mobile-contract',/^LPDDR\d/,'quarterly'],
-  ]) {
-    const names=[...new Set([...document.querySelectorAll(`tbody a[href="/Price/${path}"]`)].map(clean).filter(name=>prefix.test(name)))]
-    for(const name of names) series.push(priceRow({id:`DX:${group}:${slug(name)}`,name,group,frequency,source:PRICE_SOURCES.dram,
-      asOf:null,value:null,now,access:'member_required',note:'회원 전용 가격'}))
-  }
   return {series,fetchedAt:new Date(now).toISOString()}
 }
 
@@ -67,6 +60,39 @@ export function parseDramContract(data, now=Date.now()) {
       asOf,value,high,low,now,changePercent:number(item.show_avg_change),lowChangePercent:number(item.show_lo_change),access:'public',
       period:`${asOf.slice(0,7)} ${Number(item.show_duration)===1?'상반월':'하반월'}`})
   })
+  return {series,fetchedAt:new Date(now).toISOString()}
+}
+
+// Keep these market quotes separate from spot-session averages and OEM contracts.
+export function parseMemoryMarket(html, now=Date.now()) {
+  const {document}=parseHTML(html),series=[],seen=new Set()
+  for(const [category,group,prefix] of [
+    ['ddr','dram-quote',/^DDR[45]\s/],['rdimm','rdimm-quote',/^DDR[45]\sRDIMM\s/],
+    ['udimm','udimm-quote',/^DDR[45]\sUDIMM\s/],['sodimm','sodimm-quote',/^DDR[45]\sSODIMM\s/],
+    ['lpddr','lpddr-quote',/^LPDDR[45]X?\s/],
+  ]) {
+    const box=document.querySelector(`.product-price-box.${category}`),table=box?.querySelector('table')
+    const headers=[...(table?.querySelectorAll('thead th')||[])].map(clean)
+    if(headers.join('|')!=='Product Item|Latest|Previous|Change|Currency|Trend')throw new Error('메모리 가격 열 변경')
+    const match=/Last update:\s*(\d{4}-\d{2}-\d{2})\s+(\d{2}:\d{2})\s*\(UTC\+0\)/.exec(clean(box))
+    const asOf=match&&observationDate(`${match[1]}T${match[2]}:00Z`)
+    if(!asOf)throw new Error('메모리 가격 기준시각 누락')
+    const rows=[...table.querySelectorAll('tbody tr')]
+    if(!rows.length)throw new Error('메모리 가격 품목 누락')
+    for(const row of rows) {
+      const td=cells(row),link=td[0]?.querySelector('a'),name=clean(link)
+      const code=new RegExp(`^/price/${category==='rdimm'?'ems':'ews'}/(\\d+)$`).exec(link?.getAttribute('href')||'')?.[1]
+      const value=number(clean(td[1])),previous=number(clean(td[2]))
+      const movement=/^([+-]?[\d,.]+)\s*\(\s*([+-]?[\d,.]+)%\s*\)$/.exec(clean(td[3]))
+      if(td.length!==6||!code||seen.has(code)||!prefix.test(name)||clean(td[4])!=='USD'
+        ||value===null||value<0||previous===null||previous<0||!movement)throw new Error('메모리 가격 형식 변경')
+      const change=number(movement[1]),changePercent=number(movement[2])
+      if(change===null||changePercent===null)throw new Error('메모리 가격 변동 오류')
+      seen.add(code)
+      series.push(priceRow({id:`MM:${category}:${code}`,name,group,frequency:'weekly',source:PRICE_SOURCES.memory,
+        asOf,value,now,previous,change,changePercent,access:'public'}))
+    }
+  }
   return {series,fetchedAt:new Date(now).toISOString()}
 }
 
@@ -104,7 +130,7 @@ export function parseOpinet(html, kind, now=Date.now()) {
 }
 
 export function agePrices(data, now=Date.now()) {
-  return {...data,series:data.series.map(row=>{
+  return {...data,series:data.series.filter(row=>row.access!=='member_required').map(row=>{
     const maxDays=row.frequency==='daily'?7:row.frequency==='weekly'?21:row.frequency==='monthly'?45:200
     return row.value!==null && row.asOf && now-Date.parse(row.asOf)>maxDays*86400000 ? {...row,status:'stale'}:row
   })}

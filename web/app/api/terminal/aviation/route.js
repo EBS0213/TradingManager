@@ -3,19 +3,19 @@ import {getSql} from '@/lib/db';
 import {readBody} from '@/lib/terminal/http';
 export const runtime='nodejs';export const dynamic='force-dynamic';export const maxDuration=30;
 const source={name:'adsb.fi',url:'https://adsb.fi/',license:'개인·비상업적 이용'};
-const json=(x,status=200,cache=false)=>Response.json(x,{status,headers:{'Cache-Control':cache?'public, s-maxage=30, stale-while-revalidate=30':'no-store'}});
+const json=(x,status=200)=>Response.json(x,{status,headers:{'Cache-Control':'no-store, max-age=0','Pragma':'no-cache'}});
 let ready;
 async function database(){const sql=await getSql();if(!ready)ready=sql`CREATE TABLE IF NOT EXISTS tm_aviation_snapshot (area_key TEXT PRIMARY KEY,lat DOUBLE PRECISION NOT NULL,lon DOUBLE PRECISION NOT NULL,requested_at TIMESTAMPTZ NOT NULL DEFAULT now(),payload JSONB,updated_at TIMESTAMPTZ)`.catch(e=>{ready=null;throw e});await ready;return sql}
 function keyFor(lat,lon){return `${Math.round(lat)},${Math.round(lon)}`}
 function authorized(req){return !!process.env.SCREENER_KEY&&req.headers.get('x-screener-key')===process.env.SCREENER_KEY}
 export async function GET(request){
  const q=new URL(request.url).searchParams;let loc;try{loc=area(q)}catch{return json({ok:false,error:'지도 중심 좌표를 확인하세요.'},400)}
- if(q.get('view')==='sources'){try{const sql=await database();const rows=await sql`SELECT max(updated_at) AS updated_at FROM tm_aviation_snapshot`;const t=rows[0]?.updated_at;return json({ok:true,status:t?(Date.now()-new Date(t).getTime()<120000?'observed':'stale'):'pending',updatedAt:t||null,source},200,true)}catch{return json({ok:true,status:'unavailable',source})}}
+ if(q.get('view')==='sources'){try{const sql=await database();const rows=await sql`SELECT max(updated_at) AS updated_at FROM tm_aviation_snapshot`;const t=rows[0]?.updated_at;return json({ok:true,status:t?(Date.now()-new Date(t).getTime()<120000?'observed':'stale'):'pending',updatedAt:t||null,source},200)}catch{return json({ok:true,status:'unavailable',source})}}
  try{const sql=await database(),lat=Math.round(loc.lat),lon=Math.round(loc.lon),key=keyFor(lat,lon);
  const rows=await sql`INSERT INTO tm_aviation_snapshot(area_key,lat,lon,requested_at) VALUES(${key},${lat},${lon},now()) ON CONFLICT(area_key) DO UPDATE SET requested_at=now() RETURNING payload,updated_at`;
- const row=rows[0];if(!row.payload)return json({ok:true,status:'pending',aircraft:[],area:loc,source},200,true);
+ const row=rows[0];if(!row.payload)return json({ok:true,status:'pending',aircraft:[],area:loc,source},200);
  const age=Date.now()-new Date(row.updated_at).getTime(),payload=row.payload;
- return json({...payload,source,area:loc,status:age>120000?'stale':payload.status,aircraft:(payload.aircraft||[]).map(a=>({...a,stale:Date.now()-Date.parse(a.asOf)>60000})),updatedAt:row.updated_at},200,true);
+ return json({...payload,source,area:loc,status:age>120000?'stale':payload.status,aircraft:(payload.aircraft||[]).map(a=>({...a,stale:Date.now()-Date.parse(a.asOf)>60000})),updatedAt:row.updated_at},200);
  }catch(e){console.error('aviation_storage',e?.name);return json({ok:true,status:'unavailable',aircraft:[],area:loc,source,error:'저장된 항공 자료를 불러오지 못했습니다.'})}
 }
 export async function POST(request){
