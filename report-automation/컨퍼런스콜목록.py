@@ -8,6 +8,7 @@
 없습니다. 반대로 `브리핑/*/컨퍼런스콜_*.json` 에만 있고 사이트에 없는 것은 「안 올라간 것」
 으로 따로 적어 둡니다. 그것이 2026-09-15 에 열 건이 조용히 빠져 있던 자리입니다.
 """
+from 로컬설정 import 사이트주소
 import json
 import os
 import pathlib
@@ -15,7 +16,7 @@ import sys
 import urllib.request
 
 뿌리 = pathlib.Path(__file__).resolve().parent
-사이트 = os.environ.get("TM26_URL", "http://127.0.0.1:8766").rstrip("/")
+사이트 = 사이트주소()
 목록파일 = 뿌리 / "브리핑" / "컨퍼런스콜_목록.md"
 
 

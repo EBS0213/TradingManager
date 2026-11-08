@@ -7,6 +7,7 @@
 파일 모양은 지시문/컨퍼런스콜.md 를 보십시오. {"items": [ {...}, ... ]}
 같은 종목·같은 분기가 이미 있으면 사이트가 갈아 끼웁니다 — 두 번 돌려도 늘지 않습니다.
 """
+from 로컬설정 import 사이트주소
 import json
 import os
 import pathlib
@@ -16,7 +17,7 @@ import urllib.parse
 import urllib.request
 
 뿌리 = pathlib.Path(__file__).resolve().parent
-사이트 = os.environ.get("TM26_URL", "http://127.0.0.1:8766").rstrip("/")
+사이트 = 사이트주소()
 칸 = ("code", "name", "market", "quarter", "date", "sector",
      "headline", "summary", "call", "industry", "outlook", "numbers", "sources")
 

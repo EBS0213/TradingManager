@@ -1,15 +1,20 @@
 // Daily, personal-use observations. No paid API keys or cloud database.
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import {randomUUID} from 'node:crypto'
 
 export const dataRoot = () => process.env.TM26_LOCAL_DATA || path.resolve(process.cwd(), '../data')
 const validSymbol = /^[A-Z][A-Z0-9.\-]{0,14}$/
 const pending = new Map()
 export async function saveJson(file, value) {
   await fs.mkdir(path.dirname(file), {recursive:true})
-  const temporary = `${file}.${process.pid}.${Date.now()}.tmp`
-  await fs.writeFile(temporary, JSON.stringify(value), {mode:0o600})
-  await fs.rename(temporary, file)
+  const temporary = `${file}.${process.pid}.${randomUUID()}.tmp`
+  try {
+    await fs.writeFile(temporary, JSON.stringify(value), {mode:0o600, flag:'wx'})
+    await fs.rename(temporary, file)
+  } finally {
+    await fs.unlink(temporary).catch(error => { if (error.code !== 'ENOENT') throw error })
+  }
 }
 export async function readJson(file) { try { return JSON.parse(await fs.readFile(file,'utf8')) } catch { return null } }
 export function closedUsDate(now = new Date()) {
@@ -51,6 +56,8 @@ export async function dailyBars(symbol, count=520, {force=false}={}) {
 export async function catalog({refresh=false}={}) {
   const file=path.join(dataRoot(),'us-catalog.json'),saved=await readJson(file)
   if(!refresh&&saved?.items?.length&&Date.now()-Date.parse(saved.fetchedAt)<86400000)return saved.items
+  if(pending.has('catalog'))return pending.get('catalog')
+  const task=(async()=>{
   try {
     const r=await fetch('https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqtraded.txt',{signal:AbortSignal.timeout(30000)})
     if(!r.ok)throw new Error(`Nasdaq HTTP ${r.status}`)
@@ -61,6 +68,9 @@ export async function catalog({refresh=false}={}) {
     if(items.length<1000)throw new Error('미국 종목 목록이 불완전합니다')
     await saveJson(file,{fetchedAt:new Date().toISOString(),source:'Nasdaq Trader',items});return items
   } catch(error) { if(saved?.items?.length)return saved.items;throw error }
+  })().finally(()=>pending.delete('catalog'))
+  pending.set('catalog',task)
+  return task
 }
 export async function marketDay(day=closedUsDate()) {
   const payload=await readJson(path.join(dataRoot(),'us-market.json'))

@@ -1,10 +1,10 @@
 // The parent workspace is the sole owner of browser history.
 export const resourcePages = ['research','board','us']
 export const tradingPages = new Set(['dash','training','log','setup','watch','ryan'])
-export const nativePages = new Set(['overview','aviation','maritime','admin','research','portfolio','equities','etfs','sectors','news','watchlist','data','countries','sources','calls','board',...tradingPages])
-export const isNativePage = value => nativePages.has(value) || /^(?:research|board)\/[1-9]\d*$/.test(String(value))
+export const nativePages = new Set(['overview','aviation','maritime','admin','research','portfolio','equities','etfs','sectors','news','watchlist','data','countries','sources','calls',...tradingPages])
+export const isNativePage = value => nativePages.has(retiredPages[value] || value) || /^(?:research|board)\/[1-9]\d*$/.test(String(value))
 export const legacyPages = new Set(['dash','training','log','setup','watch','ryan','home','find','index','macro','calendar','admin','us',...resourcePages])
-const retiredPages = {account:'admin',market:'overview',crypto:'overview',fx:'overview',commodities:'overview',rates:'overview',analytics:'overview',find:'equities',index:'overview',macro:'data',calendar:'calls'}
+const retiredPages = {board:'research',account:'admin',market:'overview',crypto:'overview',fx:'overview',commodities:'overview',rates:'overview',analytics:'overview',find:'equities',index:'overview',macro:'data',calendar:'calls'}
 export function legacyPage(value) {
   if (typeof value !== 'string') return null
   const [page,id,...rest] = value.split('/')
@@ -14,6 +14,7 @@ export function legacyPage(value) {
   return `${page}/${id}`
 }
 export function selectionForPage(value) {
+  if (typeof value === 'string' && /^board\/[1-9]\d*$/.test(value)) value = value.replace(/^board\//, 'research/')
   if (Object.hasOwn(retiredPages,value)) value = retiredPages[value]
   if (tradingPages.has(value)) return {area:'trading',page:value}
   if (nativePages.has(value)) return {area:'terminal',page:value}

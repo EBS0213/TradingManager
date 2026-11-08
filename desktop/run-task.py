@@ -1,6 +1,7 @@
 """Run an allowlisted local task with private configuration and a per-task lock."""
 import json,os,pathlib,subprocess,sys
 import file_lock as fcntl
+from local_config import base_url
 ROOT=pathlib.Path(__file__).resolve().parent.parent
 PY=str(ROOT/('.venv/Scripts/python.exe' if os.name == 'nt' else '.venv/bin/python'))
 TASKS={
@@ -23,7 +24,7 @@ def main():
  if len(sys.argv)!=2 or sys.argv[1] not in TASKS:raise SystemExit('Unknown local task')
  task=sys.argv[1]
  config={k:json.loads(v) for line in (ROOT/'web/.env.local').read_text().splitlines() if '=' in line for k,v in [line.split('=',1)]}
- env={**os.environ,**config,'TM26_URL':'http://127.0.0.1:8766','SITE_URL':'http://127.0.0.1:8766','RUN_HOURS':'16','US_LIVE':'0','PYTHONUNBUFFERED':'1'}
+ env={**os.environ,**config,'TM26_URL':base_url(config),'SITE_URL':base_url(config),'RUN_HOURS':'16','US_LIVE':'0','PYTHONUNBUFFERED':'1'}
  lockname='us' if task in ['us','us-cached','us-details'] else task
  lockpath=ROOT/'data'/('task-'+lockname+'.lock')
  with lockpath.open('a+b') as lock:

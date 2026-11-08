@@ -4,6 +4,7 @@
 --목록: 읽기 점검. --한번: 한 건 검토. --최대 N: 최대 N건 처리.
 검토 에이전트는 읽기 전용이며, 이 실행기가 판본·판정·첨부를 확인한 뒤 게시한다.
 """
+from 로컬설정 import 사이트주소
 import argparse
 import 요청추적
 import 컨퍼런스콜게시
@@ -27,7 +28,7 @@ import urllib.request
 ROOT = Path(__file__).resolve().parent
 QUEUE = ROOT / '협업/검토대기'
 CACHE = ROOT / '캐시/자동검토'
-ORIGIN = 'http://127.0.0.1:8766'
+ORIGIN = 사이트주소()
 STATES = ('게시대기', '검토대기', '재검토대기', '승인')
 STABLE_SECONDS = 2
 

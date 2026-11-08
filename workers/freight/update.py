@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "desktop"))
+from local_config import base_url
 """Fetch the public WCI announcement; keep verified prior values and other indices."""
 import datetime as dt,html,json,re,urllib.request
 from pathlib import Path
 URL='https://www.drewry.co.uk/maritime-research-opinion-browser/world-container-index-assessed-by-drewry'
-BASE='http://127.0.0.1:8766/api/terminal/maritime'
+BASE=base_url()+'/api/terminal/maritime'
 UA='TM26-Research/1.0'
 def parse_wci(markup):
  text=html.unescape(re.sub('<[^>]+>',' ',markup));text=re.sub(r'\s+',' ',text)

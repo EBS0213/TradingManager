@@ -8,14 +8,14 @@ test('areas stay separated and existing/deep links keep their destination',()=>{
   assert.deepEqual(selectionFromHash(''),{area:'terminal',page:'overview'})
   for (const page of nativePages) assert.deepEqual(selectionFromHash('#terminal/'+page),{area:tradingPages.has(page)?'trading':'terminal',page})
   assert.deepEqual(selectionFromHash('#terminal/log'),{area:'trading',page:'log'})
-  assert.deepEqual(selectionFromHash('#trading/market'),{area:'terminal',page:'market'})
+  assert.deepEqual(selectionFromHash('#trading/market'),{area:'terminal',page:'overview'})
   assert.deepEqual(selectionFromHash('#terminal/data'),{area:'terminal',page:'data'})
   assert.deepEqual(selectionFromHash('#terminal/find'),{area:'terminal',page:'equities'})
   assert.deepEqual(selectionFromHash('#terminal/index'),{area:'terminal',page:'overview'})
   assert.deepEqual(selectionFromHash('#terminal/macro'),{area:'terminal',page:'data'})
   assert.deepEqual(selectionFromHash('#terminal/calendar'),{area:'terminal',page:'calls'})
   assert.deepEqual(selectionFromHash('#research/123'),{area:'terminal',page:'research/123'})
-  assert.deepEqual(selectionFromHash('#terminal/board/12'),{area:'terminal',page:'board/12'})
+  assert.deepEqual(selectionFromHash('#terminal/board/12'),{area:'terminal',page:'research/12'})
   assert.deepEqual(selectionFromHash('',{area:'trading',page:'training'}),{area:'trading',page:'training'})
   for(const value of ['research/12/evil','board/0','board/9007199254740992','log/13','//evil','research/<script>'])assert.equal(selectionForPage(value),null)
 })
@@ -89,11 +89,17 @@ test('watchlist waits for auth; a later tool switch cancels its login redirect',
 })
 
 
-test('account and administration deep links use the native terminal workspace',()=>{
+test('retired account links resolve to local administration in the native workspace',()=>{
   for(const page of ['account','admin']){
-    assert.deepEqual(selectionForPage(page),{area:'terminal',page});
-    assert.deepEqual(selectionFromHash('#'+page),{area:'terminal',page});
-    assert.deepEqual(selectionFromHash('#trading/'+page),{area:'terminal',page});
-    assert(nativePages.has(page));
+    assert.deepEqual(selectionForPage(page),{area:'terminal',page:'admin'});
+    assert.deepEqual(selectionFromHash('#'+page),{area:'terminal',page:'admin'});
+    assert.deepEqual(selectionFromHash('#trading/'+page),{area:'terminal',page:'admin'});
+    assert(nativePages.has(selectionForPage(page).page));
   }
+});
+
+test('retired general board links open the research workspace without deleting stored posts',()=>{
+  assert.deepEqual(selectionForPage('board'),{area:'terminal',page:'research'});
+  assert.deepEqual(selectionFromHash('#board/42'),{area:'terminal',page:'research/42'});
+  assert.equal(nativePages.has('board'),false);
 });

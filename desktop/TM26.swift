@@ -6,6 +6,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
     var web: WKWebView!
     var root = ""
     var token = ""
+    var baseURL = "http://127.0.0.1:8766"
     var started = false
     var attempts = 0
     // Bootstrap must not inherit an old tm_session from URLSession.shared.
@@ -26,6 +27,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
         window.contentView=web;window.makeKeyAndOrderFront(nil);NSApp.activate(ignoringOtherApps:true)
         guard let path=Bundle.main.path(forResource:"LocalConfig",ofType:"json"),let data=try? Data(contentsOf:URL(fileURLWithPath:path)),let config=(try? JSONSerialization.jsonObject(with:data)) as? [String:String],let project=config["root"] else {fail("프로그램 설치 경로를 확인할 수 없습니다.");return}
         root=project
+        if let configured=config["url"], let url=URL(string:configured), url.scheme=="http", url.host=="127.0.0.1", url.port != nil {baseURL=configured}
         guard let source=try? String(contentsOfFile:root+"/web/.env.local",encoding:.utf8) else {fail("설정 파일이 없습니다. 설치 프로그램을 먼저 실행해 주세요.");return}
         for line in source.components(separatedBy:.newlines) where line.hasPrefix("TM26_LOCAL_TOKEN=") {
             let value=String(line.dropFirst("TM26_LOCAL_TOKEN=".count))
@@ -44,10 +46,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
     }
     func poll(){
         attempts+=1
-        launcherSession.dataTask(with:URL(string:"http://127.0.0.1:8766/api/local/status")!){data,response,error in
+        launcherSession.dataTask(with:URL(string:self.baseURL+"/api/local/status")!){data,response,error in
             DispatchQueue.main.async {
                 if let response=response as? HTTPURLResponse,response.statusCode==200 {
-                    var request=URLRequest(url:URL(string:"http://127.0.0.1:8766/api/local/session")!)
+                    var request=URLRequest(url:URL(string:self.baseURL+"/api/local/session")!)
                     request.httpMethod="POST";request.setValue(self.token,forHTTPHeaderField:"x-local-launch-token")
                     request.httpShouldHandleCookies=false
                     self.launcherSession.dataTask(with:request){data,response,error in
@@ -59,7 +61,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
                         DispatchQueue.main.async{
                             let group=DispatchGroup()
                             for cookie in cookies{group.enter();self.web.configuration.websiteDataStore.httpCookieStore.setCookie(cookie){group.leave()}}
-                            group.notify(queue:.main){self.started=true;self.web.load(URLRequest(url:URL(string:"http://127.0.0.1:8766/#terminal/overview")!))}
+                            group.notify(queue:.main){self.started=true;self.web.load(URLRequest(url:URL(string:self.baseURL+"/#terminal/overview")!))}
                         }
                     }.resume()
                 }else if self.attempts<90{DispatchQueue.main.asyncAfter(deadline:.now()+1){self.poll()}}
@@ -68,11 +70,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
         }.resume()
     }
     func webView(_ webView:WKWebView,didFinish navigation:WKNavigation!){
-        if webView.url?.path=="/api/local/session" && !started {started=true;webView.load(URLRequest(url:URL(string:"http://127.0.0.1:8766/#terminal/overview")!))}
+        if webView.url?.path=="/api/local/session" && !started {started=true;webView.load(URLRequest(url:URL(string:self.baseURL+"/#terminal/overview")!))}
     }
     func webView(_ webView:WKWebView,decidePolicyFor navigationAction:WKNavigationAction,decisionHandler:@escaping(WKNavigationActionPolicy)->Void){
         guard let url=navigationAction.request.url else{decisionHandler(.cancel);return}
-        if ["about","data","blob"].contains(url.scheme ?? "") || (url.host=="127.0.0.1" && url.port==8766){decisionHandler(.allow);return}
+        if ["about","data","blob"].contains(url.scheme ?? "") || (url.host=="127.0.0.1" && url.port==URL(string:baseURL)?.port){decisionHandler(.allow);return}
         if navigationAction.navigationType == .linkActivated && ["https","http","mailto"].contains(url.scheme ?? ""){NSWorkspace.shared.open(url)}
         decisionHandler(.cancel)
     }

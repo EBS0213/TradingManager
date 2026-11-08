@@ -25,5 +25,5 @@ test('Telegram company messages escape HTML and remain within message length',()
   const text=formatCallAlert({code:'WDC',name:'A&B <company>',quarter:'2027 회계연도 1분기',date:'2026-10-22',
     headline:'성장',summary:'요약'.repeat(3000),numbers:[{k:'매출',v:'4.4십억 달러',note:'55% 증가'}]})
   assert.match(text,/A&amp;B &lt;company&gt;/);assert(text.length<3500)
-  assert.match(text,/https:\/\/www.tradingmanagerkr.com\/#terminal\/calls/)
+  assert.match(text,/로컬 프로그램에서 확인/);assert.doesNotMatch(text,/tradingmanagerkr\.com/)
 })

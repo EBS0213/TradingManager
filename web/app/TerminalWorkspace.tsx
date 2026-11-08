@@ -14,7 +14,6 @@ const EconomyHub = dynamic(() => import("@/components/economy/EconomyHub"), {loa
 const EquityResearch = dynamic(() => import("@/components/fincept/EquityResearch"), {loading: loadingPanel});
 const PortfolioDesk = dynamic(() => import("@/components/fincept/PortfolioDesk"), {loading: loadingPanel});
 const ResearchWorkspace = dynamic(() => import("@/components/fincept/ResearchWorkspace"), {loading: loadingPanel});
-const BoardWorkspace = dynamic(() => import("@/components/fincept/BoardWorkspace"), {loading: loadingPanel});
 const TradingWorkspace = dynamic(() => import("@/components/fincept/trading/TradingWorkspace"), {loading: loadingPanel});
 const ConferenceWorkspace = dynamic(() => import("@/components/fincept/ConferenceWorkspace"), {loading: loadingPanel});
 const AviationDesk = dynamic(() => import("@/components/fincept/AviationDesk"), {loading: loadingPanel});
@@ -34,7 +33,7 @@ const resources = [
   ["countries", "국가 비교", "COUNTRIES"], ["research", "리서치", "RESEARCH"],
   ["calls", "컨퍼런스콜", "EARNINGS"], ["maritime", "해상·운임", "MARITIME"], ["aviation", "항공", "AVIATION"],
   ["watchlist", "관심 자산", "WATCHLIST"],
-  ["sources", "데이터 소스", "SOURCES"], ["board", "게시판", "FORUM"],
+  ["sources", "데이터 소스", "SOURCES"],
 ] as const;
 const resourceLabels: Record<string,string> = {overview:"Dashboard",market:"Global Markets",equities:"Equities",portfolio:"Portfolio",etfs:"ETF Monitor",sectors:"Sector ETFs",crypto:"Crypto",fx:"FX",commodities:"Commodities",rates:"Treasury",data:"Economics",countries:"Countries",analytics:"Analytics",sources:"Data Sources",watchlist:"Watchlist",aviation:"항공",maritime:"해상·운임"};
 const resourceGroups = [
@@ -44,7 +43,6 @@ const resourceGroups = [
   ["news", "뉴스", "news", ["news"]],
   ["research", "리서치", "research", ["research"]],
   ["conference", "컨퍼런스", "calls", ["calls"]],
-  ["forum", "게시판", "board", ["board"]],
   ["portfolio", "포트폴리오", "portfolio", ["portfolio", "watchlist"]],
 ] as const;
 type Selection = { area: "terminal" | "trading"; page: string };
@@ -125,7 +123,7 @@ export default function TerminalWorkspace({ initialArea = "terminal", initialPag
   const sectionPages = selectedGroup[3] as readonly string[];
   const sectionResources = resources.filter(([id]) => sectionPages.includes(id)).sort(([a], [b]) => sectionPages.indexOf(a) - sectionPages.indexOf(b));
   return <Provider><QueryClientProvider>
-    <div className={`tm-workspace fc-workspace${selection.page === 'calls' ? ' fc-conference-workspace' : selection.page.split('/')[0] === 'board' ? ' fc-reader-workspace' : ''}`}>
+    <div className={`tm-workspace fc-workspace${selection.page === 'calls' ? ' fc-conference-workspace' : ''}`}>
       <header className="tm-workspace-header">
         <a className="tm-workspace-brand" href="/#terminal/overview" onClick={e => { e.preventDefault(); navigate("overview"); }} aria-label="TradingManager 홈"><strong>Trading<span>Manager</span></strong></a>
         <form className="fc-command" onSubmit={submitCommand}><Search size={13}/><input aria-label="종목 또는 기능 검색" placeholder="종목 / 기능 검색…" value={command} onChange={event => setCommand(event.target.value)}/><kbd>↵</kbd></form>
@@ -146,7 +144,7 @@ export default function TerminalWorkspace({ initialArea = "terminal", initialPag
         {trading.map(([id, number, label]) => <button key={id} aria-pressed={selection.page === id} className={selection.page === id ? "active" : ""} onClick={() => choose({ area: "trading", page: id })}><span>{number}</span> {label}</button>)}
       </nav>}
       {native && <main className="tm-terminal-content fc-content" aria-label="금융 리서치 터미널">
-        {selection.page === 'admin' ? <AdminDesk onNavigate={navigate}/> : selection.area === 'trading' ? <TradingWorkspace key={selection.page} page={selection.page} onStock={symbol=>{setDataSearch(old=>({...old,equities:symbol}));choose({area:'terminal',page:'equities'});}}/> : selection.page.split('/')[0] === 'board' ? <BoardWorkspace postId={Number(selection.page.split('/')[1]) || undefined} onNavigate={navigate}/> : selection.page.split('/')[0] === 'research' ? <ResearchWorkspace key={selection.page} postId={Number(selection.page.split('/')[1]) || undefined} onNavigate={navigate}/> : selection.page === 'calls' ? <ConferenceWorkspace onNavigate={navigate}/> : ['equities','etfs','sectors'].includes(selection.page) ? <EquityResearch key={`${selection.page}:${dataSearch[selection.page] || ''}`} assetClass={selection.page === 'equities' ? 'all' : 'etf'} sectorMode={selection.page === 'sectors'} initialSearch={dataSearch[selection.page] || ''} onNavigate={navigate}/> : selection.page === 'portfolio' ? <PortfolioDesk onNavigate={navigate}/> : selection.page === 'aviation' ? <AviationDesk/> : selection.page === 'maritime' ? <MaritimeDesk/> : selection.page === 'sources' ? <DataSourcesDesk/> : ['data','countries'].includes(selection.page) ? <EconomyHub key={selection.page} initialTab={selection.page === 'countries' ? 'country' : 'overview'}/> : <TerminalDesk key={`${selection.page}:${dataSearch[selection.page] || ''}`} page={selection.page} initialSearch={dataSearch[selection.page] || ''} onNavigate={navigate}/>}
+        {selection.page === 'admin' ? <AdminDesk onNavigate={navigate}/> : selection.area === 'trading' ? <TradingWorkspace key={selection.page} page={selection.page} onStock={symbol=>{setDataSearch(old=>({...old,equities:symbol}));choose({area:'terminal',page:'equities'});}}/> : selection.page.split('/')[0] === 'research' ? <ResearchWorkspace key={selection.page} postId={Number(selection.page.split('/')[1]) || undefined} onNavigate={navigate}/> : selection.page === 'calls' ? <ConferenceWorkspace onNavigate={navigate}/> : ['equities','etfs','sectors'].includes(selection.page) ? <EquityResearch key={`${selection.page}:${dataSearch[selection.page] || ''}`} assetClass={selection.page === 'equities' ? 'all' : 'etf'} sectorMode={selection.page === 'sectors'} initialSearch={dataSearch[selection.page] || ''} onNavigate={navigate}/> : selection.page === 'portfolio' ? <PortfolioDesk onNavigate={navigate}/> : selection.page === 'aviation' ? <AviationDesk/> : selection.page === 'maritime' ? <MaritimeDesk/> : selection.page === 'sources' ? <DataSourcesDesk/> : ['data','countries'].includes(selection.page) ? <EconomyHub key={selection.page} initialTab={selection.page === 'countries' ? 'country' : 'overview'}/> : <TerminalDesk key={`${selection.page}:${dataSearch[selection.page] || ''}`} page={selection.page} initialSearch={dataSearch[selection.page] || ''} onNavigate={navigate}/>}
       </main>}
       {frameStarted && <div className="tm-legacy-content" hidden={native}><iframe ref={frame} src={`/screener/view?workspace=1#${initialFramePage}`} title="TradingManager 트레이딩 및 리서치" onLoad={syncFrame} /></div>}
       <footer className="fc-statusbar"><span><i/> TradingManager</span><span>EQ · FX · FI · CM · CR</span><WorkspaceClock/></footer>

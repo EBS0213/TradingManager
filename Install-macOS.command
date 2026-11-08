@@ -1,4 +1,4 @@
 #!/bin/bash
 set -euo pipefail
-cd "$(dirname "$0")"
-exec python3 desktop/setup.py
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+exec /bin/bash "$ROOT/desktop/bootstrap-macos.sh" "$@"

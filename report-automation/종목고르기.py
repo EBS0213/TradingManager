@@ -7,6 +7,7 @@
 
 끝낼 때 종료코드 0 = 만들 것이 있음 / 9 = 없음 / 1 = 취소
 """
+from 로컬설정 import 사이트주소
 import csv, datetime as dt, json, os, pathlib, re, sys, time, unicodedata as u
 import urllib.request
 from 보고서기록 import 보고서코드, 보고서날짜
@@ -107,8 +108,8 @@ def 대기표_맞추기(대상):
     except Exception:
         pass
     return 표
-스카우트주소 = "http://127.0.0.1:8766/api/screener/latest"
-셋업주소 = "http://127.0.0.1:8766/api/setup"
+스카우트주소 = 사이트주소() + '/api/screener/latest'
+셋업주소 = 사이트주소() + '/api/setup'
 제외파일 = ROOT / "제작제외.txt"
 
 
@@ -184,7 +185,7 @@ def 셋업있는것():
     return 뽑음, 때
 
 
-요청주소 = "http://127.0.0.1:8766/api/research/request"
+요청주소 = 사이트주소() + '/api/research/request'
 
 
 def _키():

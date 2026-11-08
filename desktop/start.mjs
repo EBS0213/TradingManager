@@ -1,8 +1,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import os from 'node:os'
+import {fileURLToPath} from 'node:url'
 import {spawnSync} from 'node:child_process'
-const root=path.resolve(new URL('..',import.meta.url).pathname)
+const root=fileURLToPath(new URL('..',import.meta.url))
 const domain=`gui/${process.getuid()}`
 for(const name of ['com.tm26.local.postgres','com.tm26.local.web','com.tm26.local.screener','com.tm26.local.chat','com.tm26.aviation.collector','com.tm26.maritime.collector']){
  const file=path.join(os.homedir(),'Library/LaunchAgents',name+'.plist')

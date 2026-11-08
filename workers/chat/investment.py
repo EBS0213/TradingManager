@@ -20,13 +20,13 @@ import subprocess
 import time
 import unicodedata
 from urllib.parse import urlencode
-from app import remote, ollama, metrics, number
+from app import remote, ollama, metrics, number, BASE
 
 ROOT=Path(__file__).resolve().parents[2]
 DATA=ROOT/'data/intelligence'
 DB=DATA/'knowledge.sqlite3'
 LEGACY=Path.home()/'dev/tm26-chat-worker/knowledge/library.sqlite3'
-BASE='http://127.0.0.1:8766'
+
 
 
 def terms(text):

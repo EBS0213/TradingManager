@@ -15,6 +15,7 @@
 
 키는 이 순서로 찾습니다 — 환경변수 SCREENER_KEY → 이 폴더의 .env → ~/.tm26_key
 """
+from 로컬설정 import 사이트주소
 import argparse
 import html
 import json
@@ -30,7 +31,7 @@ import uuid
 
 # 맨주소(tradingmanagerkr.com)는 www 로 308 로 넘깁니다. 넘어가도 따라가게 해 뒀지만
 #  (아래 _리다이렉트), 처음부터 www 로 두는 편이 한 번 덜 오갑니다.
-사이트 = os.environ.get("TM26_URL", "http://127.0.0.1:8766").rstrip("/")
+사이트 = 사이트주소()
 뿌리 = pathlib.Path(__file__).resolve().parent
 첨부한도 = 4 * 1024 * 1024
 본문한도 = 400000

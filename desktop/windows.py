@@ -16,9 +16,9 @@ import webbrowser
 
 from file_lock import flock, LOCK_EX, LOCK_NB
 from setup import fresh_config
+from local_config import base_url, available_port
 
 ROOT = Path(__file__).resolve().parent.parent
-URL = 'http://127.0.0.1:8766'
 
 
 def read_config(root=ROOT):
@@ -109,7 +109,7 @@ def init_cluster(pg, config):
     finally:
         Path(name).unlink(missing_ok=True)
     with (cluster / 'postgresql.conf').open('a', encoding='utf-8') as stream:
-        stream.write("\nport=55426\nlisten_addresses='127.0.0.1'\n")
+        stream.write(f"\nport={urlparse(config['DATABASE_URL']).port}\nlisten_addresses='127.0.0.1'\n")
 
 
 def shortcut():
@@ -124,8 +124,6 @@ def install(check_only=False, no_shortcut=False):
         print('Ready: Python / Node.js / PostgreSQL')
         return
     # Never alter a running database, including a different checkout using these ports.
-    check_port(55426)
-    check_port(8766)
     for folder in ['data', 'logs', 'migration']:
         (ROOT / folder).mkdir(exist_ok=True)
     envfile = ROOT / 'web/.env.local'
@@ -135,9 +133,11 @@ def install(check_only=False, no_shortcut=False):
     if not marker.exists():
         write_private(marker, json.dumps({'postgresBin': str(pg)}, indent=2))
     if not envfile.exists():
-        config = fresh_config(ROOT)
+        config = fresh_config(ROOT, available_port(8766), available_port(55426))
         write_private(envfile, ''.join(f'{key}={json.dumps(value)}\n' for key, value in config.items()))
     config = read_config()
+    check_port(urlparse(config['DATABASE_URL']).port)
+    check_port(urlparse(base_url(config)).port)
     report_env = ROOT / 'report-automation/.env'
     if not report_env.exists():
         write_private(report_env, ''.join(f'{key}={json.dumps(config[key])}\n' for key in ['SCREENER_KEY', 'TM26_URL', 'SITE_URL']))
@@ -151,10 +151,11 @@ def install(check_only=False, no_shortcut=False):
         pgctl(pg, '-l', str(ROOT / 'logs/postgres.log'), '-w', 'start')
         started = True
         env = pg_env(config)
-        exists = subprocess.check_output([str(pg / 'psql.exe'), '-h', '127.0.0.1', '-p', '55426', '-U', 'tm26', '-d', 'postgres', '-tAc', "SELECT 1 FROM pg_database WHERE datname='tm26'"], env=env, text=True).strip()
+        exists = subprocess.check_output([str(pg / 'psql.exe'), '-h', '127.0.0.1', '-p', str(urlparse(config['DATABASE_URL']).port), '-U', 'tm26', '-d', 'postgres', '-tAc', "SELECT 1 FROM pg_database WHERE datname='tm26'"], env=env, text=True).strip()
         if exists != '1':
-            subprocess.run([str(pg / 'createdb.exe'), '-h', '127.0.0.1', '-p', '55426', '-U', 'tm26', 'tm26'], env=env, check=True)
+            subprocess.run([str(pg / 'createdb.exe'), '-h', '127.0.0.1', '-p', str(urlparse(config['DATABASE_URL']).port), '-U', 'tm26', 'tm26'], env=env, check=True)
         subprocess.run([node, str(npm), 'ci'], cwd=ROOT / 'web', check=True)
+        subprocess.run([node, str(npm), 'ci', '--ignore-scripts'], cwd=ROOT / 'workers', check=True)
         subprocess.run([node, '--env-file=.env.local', 'scripts/init-db.mjs'], cwd=ROOT / 'web', check=True)
         subprocess.run([node, str(npm), 'run', 'build'], cwd=ROOT / 'web', check=True)
         if not no_shortcut:
@@ -165,12 +166,12 @@ def install(check_only=False, no_shortcut=False):
             pgctl(pg, '-m', 'fast', '-w', 'stop', check=False)
 
 
-def wait_web(process):
+def wait_web(process, url):
     for _ in range(120):
         if process.poll() is not None:
             raise RuntimeError('Web server stopped; see logs/web.log.')
         try:
-            with urlopen(URL + '/api/auth/me', timeout=2) as response:
+            with urlopen(url + '/api/auth/me', timeout=2) as response:
                 if json.load(response).get('local') is True:
                     return
         except (OSError, ValueError):
@@ -183,23 +184,26 @@ def run(no_browser=False, smoke=False):
     node, _, pg = prerequisites()
     if not (ROOT / 'web/.next/BUILD_ID').exists():
         raise RuntimeError('Run Install-Windows.cmd first.')
+    config = read_config()
+    url = base_url(config)
+    port = str(urlparse(url).port)
     lock = (ROOT / 'data/windows-launch.lock').open('a+b')
     try:
         flock(lock, LOCK_EX | LOCK_NB)
     except BlockingIOError:
         lock.close()
         if not no_browser:
-            webbrowser.open(URL)
+            webbrowser.open(url)
         print('TradingManager is already running.')
         return
     processes, streams = [], []
     started = False
     try:
-        check_port(8766)
-        check_port(55426)
+        check_port(int(port))
+        check_port(urlparse(config['DATABASE_URL']).port)
         pgctl(pg, '-l', str(ROOT / 'logs/postgres.log'), '-w', 'start')
         started = True
-        env = {**os.environ, 'PYTHONUTF8': '1', 'NODE_ENV': 'production'}
+        env = {**os.environ, 'PYTHONUTF8': '1', 'NODE_ENV': 'production', 'TM26_URL':url, 'SITE_URL':url}
         def spawn(name, args, cwd):
             log = (ROOT / 'logs' / (name + '.log')).open('ab')
             streams.append(log)
@@ -207,20 +211,20 @@ def run(no_browser=False, smoke=False):
                                      creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
             processes.append(child)
             return child
-        web = spawn('web', [node, '--env-file=.env.local', 'node_modules/next/dist/bin/next', 'start', '--hostname', '127.0.0.1', '--port', '8766'], ROOT / 'web')
-        wait_web(web)
+        web = spawn('web', [node, '--env-file=.env.local', 'node_modules/next/dist/bin/next', 'start', '--hostname', '127.0.0.1', '--port', port], ROOT / 'web')
+        wait_web(web, url)
         python = ROOT / '.venv/Scripts/python.exe'
         for task in ['screener', 'chat']:
             spawn(task, [str(python), str(ROOT / 'desktop/run-task.py'), task], ROOT)
         if smoke:
-            subprocess.run([node, '--env-file=.env.local', 'tests/local-records-smoke.cjs'], cwd=ROOT / 'web', check=True)
+            subprocess.run([node, '--env-file=.env.local', 'tests/local-records-smoke.cjs'], cwd=ROOT / 'web', env=env, check=True)
             time.sleep(3)
             if any(p.poll() is not None for p in processes):
                 raise RuntimeError('A local worker exited. See logs.')
             print('Windows installation + browser + workers smoke test passed.')
             return
         if not no_browser:
-            webbrowser.open(URL)
+            webbrowser.open(url)
         print('TradingManager is running. Keep this window open. Press Ctrl+C to stop.')
         while all(p.poll() is None for p in processes):
             time.sleep(1)

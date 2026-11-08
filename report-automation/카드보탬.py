@@ -9,6 +9,7 @@
 """
 from __future__ import annotations
 
+from 로컬설정 import 사이트주소
 import base64
 import datetime as dt
 import hashlib
@@ -24,7 +25,7 @@ from 코덱스실행 import run as codex_run
 뿌리 = Path(__file__).resolve().parent
 캐시 = 뿌리 / "캐시" / "카드뉴스"
 UA = {"user-agent": "Mozilla/5.0"}
-SITE = "http://127.0.0.1:8766"
+SITE = 사이트주소()
 
 # 웹페이지 상태 박스 색 (public/screener/app.html .stage.*) — 배경, 글자, 테두리
 상태색 = {

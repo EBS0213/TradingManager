@@ -1,0 +1,8 @@
+{
+  "name": "tradingmanager-workers",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "ws": "^8.18.3"
+  }
+}

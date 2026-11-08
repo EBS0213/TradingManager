@@ -13,8 +13,8 @@
 #   때문입니다. 이 스크립트는 **사람이 읽을 완성된 글**만 보냅니다. 둘을 섞지 마십시오.
 set -u
 
-SITE="http://127.0.0.1:8766"   # www 를 빼면 308 로 넘기며 헤더가 사라집니다
-KEYFILE="$HOME/.tm26_key"
+REPORT_ROOT="$(cd "$(dirname "$0")" && pwd)"
+SITE="$(python3 "$REPORT_ROOT/로컬설정.py")" || exit 1
 LIMIT=3900                                  # 텔레그램 한 통 4096자. 여유를 둡니다.
 
 TITLE="${1:-}"
@@ -111,5 +111,5 @@ if [ "$CODE" = "200" ]; then
   exit 0
 fi
 # 열쇠가 섞일 수 있으므로 curl 의 말은 그대로 내보내지 않습니다
-echo "✗ 발송 실패 (HTTP $CODE) — ~/.tm26_key 와 연결을 확인하십시오" >&2
+echo "✗ 발송 실패 (HTTP $CODE) — report-automation/.env 와 로컬 서버 연결을 확인하십시오" >&2
 exit 1

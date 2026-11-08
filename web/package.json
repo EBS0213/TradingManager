@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "db:init": "node scripts/init-db.mjs"
+    "db:init": "node scripts/init-db.mjs",
+    "test": "node scripts/test.mjs"
   },
   "dependencies": {
     "@mozilla/readability": "^0.6.0",

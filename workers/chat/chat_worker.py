@@ -2,6 +2,7 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "desktop"))
 import file_lock as fcntl
+from local_config import base_url
 """Outbound-only TM26 public chat worker. No tools/files exposed to visitors."""
 import json, re, time, threading, subprocess, os, signal
 from urllib.request import urlopen
@@ -14,7 +15,7 @@ STOP=threading.Event(); ACTIVE={'lease':None}; LOCK=threading.Lock()
 def relay(payload):
     from urllib.request import Request
     cfg=dict((k,json.loads(v)) for line in CONFIG.read_text().splitlines() if '=' in line for k,v in [line.split('=',1)])
-    req=Request('http://127.0.0.1:8766/api/chat/worker',data=json.dumps(payload).encode(),headers={'Content-Type':'application/json','Authorization':'Bearer '+cfg['TM26_CHAT_WORKER_TOKEN']})
+    req=Request(base_url(cfg)+'/api/chat/worker',data=json.dumps(payload).encode(),headers={'Content-Type':'application/json','Authorization':'Bearer '+cfg['TM26_CHAT_WORKER_TOKEN']})
     with urlopen(req,timeout=40) as response:return json.load(response)
 def model_available():
     try:

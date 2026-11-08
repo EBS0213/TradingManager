@@ -13,6 +13,7 @@
   전략은 `투자작업.sh` 가 시황전략을 다 쓴 뒤 부릅니다.
 · 같은 글은 한 번만 보냅니다 — 캐시/글카드뉴스/ 에 보낸 표시를 남깁니다.
 """
+from 로컬설정 import 사이트주소
 import argparse, html, json, os, re, urllib.request
 from pathlib import Path
 import datetime as dt, time
@@ -113,7 +114,7 @@ def 오늘브리핑(slot, 날=None):
     아직 없으면 1분 간격으로 최대 10분 기다립니다."""
     날 = 날 or dt.datetime.now(dt.timezone(dt.timedelta(hours=9))).strftime("%Y-%m-%d")
     for _ in range(11):
-        with urllib.request.urlopen(f"http://127.0.0.1:8766/api/brief?_={int(time.time())}", timeout=30) as r:
+        with urllib.request.urlopen(f"{사이트주소()}/api/brief?_={int(time.time())}", timeout=30) as r:
             for it in json.loads(r.read())["items"]:
                 if it["slot"] == slot and it["day"] == 날:
                     return it

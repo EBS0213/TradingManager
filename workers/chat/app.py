@@ -1,3 +1,7 @@
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "desktop"))
+from local_config import base_url
 """Public chat dependencies only; no local research server."""
 
 import json, math, subprocess
@@ -6,7 +10,7 @@ from datetime import date
 
 from urllib.request import Request, urlopen
 
-BASE='http://127.0.0.1:8766'
+BASE=base_url()
 
 def ollama(route, payload):
     req=Request('http://127.0.0.1:11434/api/'+route,json.dumps(payload).encode(),{'Content-Type':'application/json'})

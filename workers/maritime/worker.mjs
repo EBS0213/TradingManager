@@ -1,3 +1,4 @@
+import {localUrl} from '../../desktop/local-url.mjs';
 import WebSocket from 'ws';
 import {aisKey} from './credentials.mjs';
 import {mkdir,readFile,writeFile,rename,rm} from 'node:fs/promises';
@@ -9,8 +10,7 @@ const config=join(homedir(),'.config/tm26-maritime');
 process.loadEnvFile(new URL('../../web/.env.local',import.meta.url));
 const key=aisKey(),uploadKey=process.env.SCREENER_KEY;
 if(!key||!uploadKey){console.error('AIS 설정 필요: KEY SECURE의 해상·운임에서 AISstream API 키를 저장하고 서버 업로드 키 설정을 확인하세요.');process.exit(78)}
-const base=new URL(process.env.TM26_URL||'http://127.0.0.1:8766');
-if(base.protocol!=='http:'||base.hostname!=='127.0.0.1'||base.port!=='8766')throw Error('Local destination required');
+const base=localUrl();
 const request=subscription(key,process.env.AIS_BOUNDING_BOXES);
 await mkdir(config,{recursive:true,mode:0o700});
 const lock=join(config,'collector.lock');

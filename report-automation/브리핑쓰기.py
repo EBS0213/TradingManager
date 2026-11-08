@@ -10,6 +10,7 @@
   ③ 사이트에 저장만 시킵니다 (POST /api/brief?run=X&save=1)
 지시문·재료·휴장일 처리는 사이트(lib/newsbrief.js) 것을 그대로 씁니다 — 규칙을 바꿀 때도 거기만 고칩니다.
 """
+from 로컬설정 import 사이트주소
 import json
 import os
 import re
@@ -18,7 +19,7 @@ import sys
 import urllib.request
 from pathlib import Path
 
-SITE = "http://127.0.0.1:8766"
+SITE = 사이트주소()
 from 코덱스실행 import run as codex_run
 MODEL = os.environ.get("CODEX_BRIEF_MODEL", "gpt-6.1-sol")     # 2026-10-05 사용자 지시 — Opus 5.5 로 씁니다
 

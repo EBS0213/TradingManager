@@ -2,6 +2,8 @@ name: Desktop installers
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
@@ -27,6 +29,9 @@ jobs:
           python -m unittest discover -s workers/chat -p "test_*.py"
       - name: Fresh installation (real PostgreSQL, npm, build)
         run: python desktop/windows.py install --no-shortcut
+      - name: Full web regression suite
+        run: npm test
+        working-directory: web
       - name: Desktop shortcut
         shell: powershell
         run: |
@@ -59,6 +64,11 @@ jobs:
       - run: python3 -m unittest discover -s workers/chat -p 'test_*.py'
       - run: npm ci
         working-directory: web
+      - run: npm test
+        working-directory: web
+      - run: npm ci --ignore-scripts
+        working-directory: workers
+      - run: node --test workers/maritime/*.test.mjs desktop/test-local-url.mjs
       - run: npm run build
         working-directory: web
       - run: python3 desktop/build_app.py

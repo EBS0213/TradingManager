@@ -41,3 +41,7 @@ distribution/
 !web/public/training/data/**
 *.bak*
 *.zip
+
+# Local installer exit marker
+install-local.exit
+docs/code-inventory.json

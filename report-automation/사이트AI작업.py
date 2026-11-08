@@ -1,4 +1,5 @@
 """사이트 전용 AI 대기열을 구독 Codex로 처리. launchd가 60초마다 호출한다."""
+from 로컬설정 import 사이트주소
 import datetime as dt
 import fcntl
 import json
@@ -14,7 +15,7 @@ from 올리기 import 키찾기
 
 ROOT = Path(__file__).resolve().parent
 STATE = ROOT / '캐시/사이트AI'
-SITE = 'http://127.0.0.1:8766'
+SITE = 사이트주소()
 
 
 def api(body=None, query=''):

@@ -17,13 +17,14 @@
 
 키는 파일에만 두고 이 스크립트에는 적지 않는다. 화면에도 찍지 않는다.
 """
+from 로컬설정 import 사이트주소
 import sys, os, json, datetime, pathlib, re, uuid, html
 import unicodedata as u
 import urllib.request, urllib.error, urllib.parse
 
 # 맨주소(tradingmanagerkr.com)는 www 로 308 로 넘깁니다. 넘어가도 따라가게 해 뒀지만
 #  (아래 _리다이렉트), 처음부터 www 로 두는 편이 한 번 덜 오갑니다. (2026-09-05)
-사이트 = os.environ.get("TM26_URL", "http://127.0.0.1:8766").rstrip("/")
+사이트 = 사이트주소()
 뿌리 = pathlib.Path(__file__).resolve().parent
 
 # 첨부 한 개 한도. 사이트가 4MB 에서 막습니다(Vercel 이 한 번에 받는 본문이 4.5MB).

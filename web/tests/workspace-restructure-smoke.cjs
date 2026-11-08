@@ -21,7 +21,7 @@ fs.mkdirSync(output, { recursive: true });
     await page.goto(`${base}/#terminal/overview`, { waitUntil: 'domcontentloaded', timeout: 65000 });
     const primary = page.getByRole('navigation', { name: '터미널 주요 메뉴' });
     await primary.getByRole('button', { name: '지수', exact: true }).waitFor();
-    check('primary menu groups are ordered', JSON.stringify(await primary.locator('button').allTextContents()) === JSON.stringify(['지수', '주식', '뉴스', '리서치', '컨퍼런스', '게시판', '포트폴리오']));
+    check('primary menu groups are ordered', JSON.stringify(await primary.locator('button').allTextContents()) === JSON.stringify(['지수', '주식', '데이터', '뉴스', '리서치', '컨퍼런스', '포트폴리오']));
     check('duplicate breadcrumb is removed', await page.locator('.fc-panel-tab').count() === 0);
     await page.getByRole('region', { name: '시장 브리핑' }).getByRole('combobox', { name: '브리핑 선택' }).waitFor();
     check('dashboard owns the briefing', await page.getByRole('region', { name: '시장 브리핑' }).isVisible());

@@ -15,6 +15,7 @@
 한국 종목과 미국 종목은 **코드 모양**으로 가릅니다 — 여섯 자리 숫자면 한국,
 알파벳이 섞여 있으면 미국. 보유 목록의 market('국내'/'해외') 도 함께 봅니다.
 """
+from 로컬설정 import 사이트주소
 import datetime as dt
 import json
 import os
@@ -25,7 +26,7 @@ import urllib.error
 import urllib.request
 
 뿌리 = pathlib.Path(__file__).resolve().parent
-사이트 = os.environ.get("TM26_URL", "http://127.0.0.1:8766").rstrip("/")
+사이트 = 사이트주소()
 
 # 홈페이지 「내 기록 → 전략·심리」 탭의 네 물음. 화면(app.html 의 MIND_Q)과 같은 이름을 씁니다.
 #  화면에서 물음을 더하거나 고치면 여기도 함께 고쳐야 요약에 제대로 나옵니다.

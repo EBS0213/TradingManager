@@ -1,3 +1,4 @@
+import {localUrl} from '../../desktop/local-url.mjs';
 import {readFile,writeFile,rename} from 'node:fs/promises';
 import {homedir} from 'node:os';
 import {join} from 'node:path';
@@ -5,7 +6,7 @@ import {normalizeAircraft} from './data.mjs';
 const config=join(homedir(),'.config/tm26-maritime');
 process.loadEnvFile(new URL('../../web/.env.local',import.meta.url));
 const key=process.env.SCREENER_KEY;if(!key)throw Error('서버 업로드 설정이 필요합니다');
-const base=new URL(process.env.TM26_URL||'http://127.0.0.1:8766');if(base.origin!=='http://127.0.0.1:8766')throw Error('Local destination required');
+const base=localUrl();
 const budgetPath=process.env.TM26_AVIATION_BUDGET_FILE||join(homedir(),'.config/tm26-maritime/aviation-budget.json');
 const providerBase=new URL(process.env.TM26_AVIATION_PROVIDER||'https://opendata.adsb.fi');if(providerBase.origin!=='https://opendata.adsb.fi'&&!['localhost','127.0.0.1'].includes(providerBase.hostname))throw Error('항공 데이터 주소 오류');
 const pause=ms=>new Promise(r=>setTimeout(r,ms));
