@@ -5,10 +5,9 @@ import {Readability} from '@mozilla/readability'
 import {parseHTML} from 'linkedom'
 import {findTerminalNewsItem} from './news'
 import {TG_CHANNELS} from '@/lib/tgfeed'
+import {publisherUrl,googleNewsUrl,googleReaderUrl,resolveGoogleNewsUrl} from './news-publishers.mjs'
 
 const MAX_BYTES=2*1024*1024
-const PUBLISHERS=['cnbc.com','federalreserve.gov','bbc.com','bbc.co.uk','theguardian.com','ft.com','marketwatch.com',
-  'yna.co.kr','mk.co.kr','newsis.com','news1.kr','hankyung.com','edaily.co.kr','n.news.naver.com']
 const text=(value,max=1000)=>String(value||'').replace(/\s+/g,' ').trim().slice(0,max)
 
 export function articleUrl(raw,{telegram=true}={}) {
@@ -20,7 +19,7 @@ export function articleUrl(raw,{telegram=true}={}) {
       const match=url.pathname.match(/^\/([A-Za-z0-9_]+)\/([1-9]\d*)$/)
       return match&&TG_CHANNELS.some(channel=>channel.id.toLowerCase()===match[1].toLowerCase())&&!url.search?url:null
     }
-    return PUBLISHERS.some(host=>url.hostname===host||url.hostname.endsWith(`.${host}`))?url:null
+    return publisherUrl(raw)||(telegram?googleNewsUrl(raw):null)
   }catch{return null}
 }
 
@@ -55,19 +54,20 @@ async function resolvePublic(host,signal,lookup) {
   } finally {if(onAbort)signal.removeEventListener('abort',onAbort)}
 }
 
-function readResponse(url,address,signal,request,userAgent) {
+function readResponse(url,address,signal,request,userAgent,{method='GET',body,contentTypes=/^text\/html|^application\/xhtml\+xml/i}={}) {
   return new Promise((resolve,reject)=>{
     // Pin the validated DNS result to the socket. Checking DNS then using fetch
     // would resolve again and leave a DNS-rebinding gap.
-    const req=request(url,{method:'GET',agent:false,signal,
+    const req=request(url,{method,agent:false,signal,
       lookup:(_host,options,callback)=>options?.all?callback(null,[address]):callback(null,address.address,address.family),
-      headers:{'User-Agent':userAgent,Accept:'text/html,application/xhtml+xml','Accept-Encoding':'identity'}},res=>{
+      headers:{'User-Agent':userAgent,Accept:'text/html,application/xhtml+xml','Accept-Encoding':'identity',
+        ...(body?{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8','Content-Length':Buffer.byteLength(body)}:{})}},res=>{
       const status=res.statusCode||0
       if(status>=300&&status<400){res.destroy();resolve({status,location:res.headers.location});return}
       if([401,402,403,429,451].includes(status)){res.destroy();resolve({status,restricted:true});return}
       if(status!==200){res.destroy();reject(new Error('원문 응답을 받지 못했습니다'));return}
       const contentType=String(res.headers['content-type']||'')
-      if(!/^text\/html|^application\/xhtml\+xml/i.test(contentType)||
+      if(!contentTypes.test(contentType)||
         (res.headers['content-encoding']&&res.headers['content-encoding']!=='identity')||
         Number(res.headers['content-length'])>MAX_BYTES){res.destroy();reject(new Error('지원하지 않는 원문 형식'));return}
       let size=0
@@ -89,16 +89,16 @@ function readResponse(url,address,signal,request,userAgent) {
       })
     })
     req.on('error',reject)
-    req.end()
+    req.end(body)
   })
 }
 
 export async function readPublisherPage(raw,{lookup=lookupHost,request=httpsRequest,signal=AbortSignal.timeout(12_000),
-  validateUrl=value=>articleUrl(value,{telegram:false}),userAgent='TM26PublicReader/1.0'}={}) {
+  validateUrl=value=>articleUrl(value,{telegram:false}),userAgent='Mozilla/5.0 (compatible; TM26PublicReader/1.0)',...requestOptions}={}) {
   let url=validateUrl(raw)
   for(let redirects=0;url&&redirects<=3;redirects++){
     const address=await resolvePublic(url.hostname,signal,lookup)
-    const response=await readResponse(url,address,signal,request,userAgent)
+    const response=await readResponse(url,address,signal,request,userAgent,requestOptions)
     if(response.status>=300&&response.status<400){
       if(!response.location)throw new Error('원문 이동 주소 없음')
       url=validateUrl(new URL(response.location,url).href)
@@ -133,6 +133,12 @@ export function extractArticle(html,url,{maxCharacters=80_000,maxParagraphs=160}
   if(restrictedDocument(document))return {status:'restricted'}
   for(const node of document.querySelectorAll('script,style,iframe,object,embed,form,template,noscript,svg,[hidden],[aria-hidden="true"]'))node.remove()
   for(const node of document.querySelectorAll('[style]'))if(/display\s*:\s*none|visibility\s*:\s*hidden/i.test(node.getAttribute('style')||''))node.remove()
+  // Some industry publishers put their article and the entire market sidebar
+  // inside one large container. Prefer the explicitly marked article body.
+  const markedBody=document.querySelector('[itemprop="articleBody"]')
+  if(markedBody&&text(markedBody.textContent).length>=80){
+    const wrapper=document.createElement('article');wrapper.append(markedBody.cloneNode(true));document.body.replaceChildren(wrapper)
+  }
   const base=document.createElement('base');base.href=url;document.head.prepend(base)
   const article=new Readability(document,{maxElemsToParse:20000,charThreshold:200,serializer:element=>element}).parse()
   if(!article?.content)return {status:'unavailable'}
@@ -147,7 +153,9 @@ export function extractArticle(html,url,{maxCharacters=80_000,maxParagraphs=160}
     ...(paragraphs.length<originalCount?{note:'본문이 길어 일부 문단만 표시합니다. 전체 문서는 원문 링크에서 확인할 수 있습니다.'}:{})}
 }
 
-export function createArticleReader({findItem=findTerminalNewsItem,readPage=readPublisherPage,now=()=>Date.now()}={}) {
+export function createArticleReader({findItem=findTerminalNewsItem,readPage=readPublisherPage,
+  resolveUrl=raw=>resolveGoogleNewsUrl(raw,(url,options)=>readPublisherPage(url,{...options,validateUrl:googleReaderUrl,
+    contentTypes:/^text\/(?:html|plain)|^application\/(?:xhtml\+xml|json)/i,signal:AbortSignal.timeout(8000)})),now=()=>Date.now()}={}) {
   const cache=new Map(),pending=new Map()
   const fallback=(item,status,note)=>({status,title:text(item?.title,500),byline:'',paragraphs:item?.summary?[text(item.summary,800)]:[],
     url:item?.url||'',source:item?.source||'',note})
@@ -160,18 +168,22 @@ export function createArticleReader({findItem=findTerminalNewsItem,readPage=read
     if(item.category==='telegram'&&url.hostname==='t.me')return {...fallback(item,'available','텔레그램 공식 공개 게시물 보기입니다.'),mode:'embed',embedUrl:`${url.origin}${url.pathname}?embed=1`}
     if(url.hostname==='t.me')return fallback(item,'unavailable','공개 채널 게시물을 확인할 수 없습니다.')
     const saved=cache.get(url.href)
-    if(saved&&now()-saved.at<600_000)return saved.value
+    if(saved&&now()-saved.at<(saved.value.status==='available'?600_000:60_000))return saved.value
     if(pending.has(url.href))return pending.get(url.href)
     if(pending.size>=4)return fallback(item,'unavailable','다른 원문을 읽는 중입니다. 잠시 후 다시 시도해 주세요.')
     const task=(async()=>{
-      let value
+      let value,resolved=url.href
       try {
-        const page=await readPage(url.href)
+        resolved=googleNewsUrl(url.href)?await resolveUrl(url.href):url.href
+        if(!publisherUrl(resolved))throw new Error('발행처 원문 주소를 확인하지 못했습니다')
+        const page=await readPage(resolved)
         const parsed=page.restricted?{status:'restricted'}:extractArticle(page.html,page.url)
         value=parsed.status==='available'?{...fallback(item,'available','발행처 공개 HTML에서 본문을 추출했습니다. 원문 구성과 다를 수 있습니다.'),...parsed,url:page.url}:
-          fallback(item,parsed.status,parsed.status==='restricted'?'발행처가 구독·로그인 또는 접근 확인을 요구합니다. 공개 요약과 원문 링크를 표시합니다.':'공개 본문을 확인하지 못했습니다. 제공된 요약과 원문 링크를 표시합니다.')
-      }catch{value=fallback(item,'unavailable','공개 본문을 불러오지 못했습니다. 제공된 요약과 원문 링크를 표시합니다.')}
-      cache.delete(url.href);cache.set(url.href,{at:now(),value})
+          {...fallback(item,parsed.status,parsed.status==='restricted'?'발행처가 구독·로그인 또는 접근 확인을 요구합니다. 원문 열기에서 확인해 주세요.':'공개 본문을 확인하지 못했습니다. 원문 열기에서 확인해 주세요.'),url:page.url||resolved}
+      }catch{value={...fallback(item,'unavailable','공개 본문을 불러오지 못했습니다. 원문 열기에서 확인하거나 다시 불러와 주세요.'),
+        url:publisherUrl(resolved)?.href||item.url}}
+      cache.delete(url.href)
+      if(value.status!=='unavailable')cache.set(url.href,{at:now(),value})
       while(cache.size>100)cache.delete(cache.keys().next().value)
       return value
     })().finally(()=>pending.delete(url.href))

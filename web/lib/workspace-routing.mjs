@@ -1,10 +1,10 @@
 // The parent workspace is the sole owner of browser history.
 export const resourcePages = ['research','board','us']
 export const tradingPages = new Set(['dash','training','log','setup','watch','ryan'])
-export const nativePages = new Set(['overview','aviation','maritime','admin','research','portfolio','equities','etfs','sectors','news','watchlist','data','countries','sources','calls',...tradingPages])
+export const nativePages = new Set(['overview','aviation','maritime','admin','research','portfolio','equities','etfs','sectors','news','watchlist','data','sources','calls',...tradingPages])
 export const isNativePage = value => nativePages.has(retiredPages[value] || value) || /^(?:research|board)\/[1-9]\d*$/.test(String(value))
 export const legacyPages = new Set(['dash','training','log','setup','watch','ryan','home','find','index','macro','calendar','admin','us',...resourcePages])
-const retiredPages = {board:'research',account:'admin',market:'overview',crypto:'overview',fx:'overview',commodities:'overview',rates:'overview',analytics:'overview',find:'equities',index:'overview',macro:'data',calendar:'calls'}
+const retiredPages = {countries:'data',board:'research',account:'admin',market:'overview',crypto:'overview',fx:'overview',commodities:'overview',rates:'overview',analytics:'overview',find:'equities',index:'overview',macro:'data',calendar:'calls'}
 export function legacyPage(value) {
   if (typeof value !== 'string') return null
   const [page,id,...rest] = value.split('/')
