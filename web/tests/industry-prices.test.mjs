@@ -17,13 +17,14 @@ const oil=(kind='crude',last='11.25')=>{
 
 test('DRAM duplicate table ids cannot mix GDDR, module, chip or NAND wafer prices',()=>{
   const data=parseDramPublic(dram,now)
-  assert.equal(data.series.length,5)
+  assert.equal(data.series.length,3)
   assert.deepEqual(data.series.slice(0,3).map(r=>r.group),['dram-spot','module-spot','gddr-spot'])
   assert.ok(data.series.every(r=>!r.name.includes('TLC')))
   assert.equal(data.series[0].value,10.125)
   assert.equal(data.series[0].changePercent,-1.25)
   assert.equal(data.series[0].asOf,'2026-11-06T18:10:00+08:00')
-  assert.ok(data.series.slice(3).every(r=>r.value===null&&r.access==='member_required'))
+  assert.ok(data.series.every(r=>r.access==='public'))
+  assert.ok(data.series.every(r=>!['lpddr-spot','mobile-contract'].includes(r.group)))
 })
 test('DRAM malformed, missing and login pages fail instead of producing zeros or partial replacements',()=>{
   for(const input of ['<h1>Login</h1>',dram.replace('10.125','—'),dram.replace('Nov.6 2026 18:10','missing date'),dram.replace('/Price/GDDR_Spot','/unknown')])
@@ -54,9 +55,11 @@ test('missing newest oil price does not resurrect an older price; all-missing re
   assert.throws(()=>parseOpinet('<h1>maintenance</h1>','crude',now))
 })
 test('cached observations age using source date and never promote member-only data',()=>{
-  const result=agePrices(parseDramPublic(dram,now),now+30*86400000)
+  const parsed=parseDramPublic(dram,now)
+  const result=agePrices({...parsed,series:[...parsed.series,{id:'old-member-cache',value:null,asOf:null,access:'member_required',status:'unavailable'}]},now+30*86400000)
   assert.ok(result.series.slice(0,3).every(r=>r.status==='stale'))
-  assert.ok(result.series.slice(3).every(r=>r.status==='unavailable'))
+  assert.equal(result.series.length,3)
+  assert.ok(result.series.every(r=>r.access==='public'))
   assert.equal(result.series[0].value,10.125)
 })
 
@@ -76,9 +79,9 @@ test('provider failures stay isolated, view filters avoid unrelated network call
   }})
   const prices=await service('dram')
   assert.equal(seen.length,3);assert.ok(seen.every(url=>url.includes('dramexchange')||url.includes('memorymarket')))
-  assert.equal(prices.feeds[0].series.length,5);assert.equal(prices.feeds[1].status,'unavailable')
+  assert.equal(prices.feeds[0].series.length,3);assert.equal(prices.feeds[1].status,'unavailable')
   const both=await service('all')
-  assert.equal(both.feeds.length,5);assert.equal(both.series.length,20)
+  assert.equal(both.feeds.length,5);assert.equal(both.series.length,18)
   assert.ok(both.feeds[1].error)
 })
 test('Countries is retired and saved links resolve to Data',()=>{
@@ -113,6 +116,6 @@ test('supplemental memory failure cannot remove existing DRAM or oil quotes',asy
   }})
   const data=await service()
   assert.equal(data.feeds.find(f=>f.id==='dram-memory').status,'unavailable')
-  assert.equal(data.series.length,16)
+  assert.equal(data.series.length,14)
   assert.ok(data.series.some(s=>s.group==='dram-contract'))
 })

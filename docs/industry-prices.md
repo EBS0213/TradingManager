@@ -21,7 +21,7 @@ The chart library loads only when detail is opened.
 ## DRAM and oil
 
 DRAM displays all public chip, module and GDDR spot rows plus the public homepage
-contract JSON feed. Member-only LPDDR/mobile names remain visible with null prices.
+contract JSON feed. Member-only LPDDR/mobile placeholders are excluded, including from older cached snapshots. Only public price categories are shown; genuine missing public observations still retain their unavailable state.
 MemoryMarket public tables supplement these with 36 chip/module/LPDDR quotes:
 8 DDR chips, 6 RDIMM, 9 UDIMM, 4 SODIMM and 9 LPDDR4X/LPDDR5X items. They use
 latest/previous/change columns, not inferred spot-session ranges or OEM contracts.

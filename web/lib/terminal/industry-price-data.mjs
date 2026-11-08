@@ -46,14 +46,6 @@ export function parseDramPublic(html, now=Date.now()) {
         periodHigh,periodLow,high,low,changePercent:number(clean(td[6])),access:'public'}))
     }
   }
-  for(const [path,group,prefix,frequency] of [
-    ['LPDDR_Spot','lpddr-spot',/^LPDDR\s*\d/,'weekly'],
-    ['MobileDramDetail','mobile-contract',/^LPDDR\d/,'quarterly'],
-  ]) {
-    const names=[...new Set([...document.querySelectorAll(`tbody a[href="/Price/${path}"]`)].map(clean).filter(name=>prefix.test(name)))]
-    for(const name of names) series.push(priceRow({id:`DX:${group}:${slug(name)}`,name,group,frequency,source:PRICE_SOURCES.dram,
-      asOf:null,value:null,now,access:'member_required',note:'회원 전용 가격'}))
-  }
   return {series,fetchedAt:new Date(now).toISOString()}
 }
 
@@ -138,7 +130,7 @@ export function parseOpinet(html, kind, now=Date.now()) {
 }
 
 export function agePrices(data, now=Date.now()) {
-  return {...data,series:data.series.map(row=>{
+  return {...data,series:data.series.filter(row=>row.access!=='member_required').map(row=>{
     const maxDays=row.frequency==='daily'?7:row.frequency==='weekly'?21:row.frequency==='monthly'?45:200
     return row.value!==null && row.asOf && now-Date.parse(row.asOf)>maxDays*86400000 ? {...row,status:'stale'}:row
   })}

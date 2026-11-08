@@ -14,7 +14,7 @@ const feeds=[
  ['항공','/api/terminal/aviation?view=sources'],['해상·운임','/api/terminal/maritime?view=sources'],['뉴스','/api/terminal/news'],['컨퍼런스콜','/api/calls'],
 ] as const;
 const configured=[
- ['DRAMeXchange','https://www.dramexchange.com/','데이터 › DRAM · 공개 칩·모듈·GDDR·계약가격 전 항목, LPDDR·모바일 회원 전용 표시 · 자동 확인 15분 · 현물 1시간·계약 12시간 캐시'],
+ ['DRAMeXchange','https://www.dramexchange.com/','데이터 › DRAM · 공개 칩·모듈·GDDR·계약가격 전 항목 · 자동 확인 15분 · 현물 1시간·계약 12시간 캐시'],
  ['오피넷 · 한국석유공사','https://www.opinet.co.kr/glopcoilSelect.do','데이터 › 국제 원유·석유제품 · Dubai 현물, Brent·WTI 선물 · 국제 석유제품 7종 · USD/배럴 · 최신 1시간·장기 6시간 캐시 · 2008년 이후 일별 CSV 자동 수집'],
  ['Esri Light Gray','https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer','해상 지도 · Esri/HERE/Garmin/OSM'],
  ['AISstream','https://aisstream.io/documentation/','수신 AIS 위치·정적 정보 · 위성 전역 커버리지 미확보'],
