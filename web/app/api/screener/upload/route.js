@@ -5,6 +5,7 @@
 import { NextResponse } from 'next/server'
 import zlib from 'node:zlib'
 import { getSql } from '@/lib/db'
+import { mergeSectorHistory } from '@/lib/sector-history.mjs'
 import { ensureSettings, ensureMarketColumn } from '@/lib/settings'
 
 export const runtime = 'nodejs'
@@ -114,12 +115,9 @@ export async function POST(request) {
     const hist = Array.isArray(got[0]?.value?.list) ? got[0].value.list : []
     // 같은 stamp 로 다시 올라오면 덮어씁니다 (재실행 시 줄이 겹치지 않도록)
     //  30일보다 오래된 줄은 버립니다 (stamp 는 'YYYY-MM-DD HH:MM' 꼴이라 앞 10자만 봅니다)
-    const cut = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10)
-    const kept = hist.filter((x) => x && x.stamp !== stamp
-                                 && String(x.stamp).slice(0, 10) >= cut)
-    kept.push({ stamp, cnt, basis: 'main' })
-    //  하루 네 번 × 30일 = 120줄. 넉넉히 200줄까지만 (자료가 어긋나도 안 불어나게)
-    const v = JSON.stringify({ list: kept.slice(-200) })
+    const kept = mergeSectorHistory(hist, [{ stamp, cnt, basis: 'main' }])
+    // 하루 마지막 집계만 보존해 재실행 횟수와 관계없이 최근 30일을 유지합니다.
+    const v = JSON.stringify({ list: kept })
     await sql`
       INSERT INTO screener_settings (key, value, updated_at)
       VALUES (${key}, ${v}::jsonb, now())

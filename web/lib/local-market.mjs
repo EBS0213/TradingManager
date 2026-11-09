@@ -6,12 +6,30 @@ import {randomUUID} from 'node:crypto'
 export const dataRoot = () => process.env.TM26_LOCAL_DATA || path.resolve(process.cwd(), '../data')
 const validSymbol = /^[A-Z][A-Z0-9.\-]{0,14}$/
 const pending = new Map()
-export async function saveJson(file, value) {
+const writes = new Map()
+export function saveJson(file, value) {
+  file = path.resolve(file)
+  const previous = writes.get(file) || Promise.resolve()
+  const operation = previous.catch(() => {}).then(() => writeJson(file, value))
+  writes.set(file, operation)
+  const release = () => { if (writes.get(file) === operation) writes.delete(file) }
+  operation.then(release, release)
+  return operation
+}
+async function writeJson(file, value) {
   await fs.mkdir(path.dirname(file), {recursive:true})
   const temporary = `${file}.${process.pid}.${randomUUID()}.tmp`
   try {
     await fs.writeFile(temporary, JSON.stringify(value), {mode:0o600, flag:'wx'})
-    await fs.rename(temporary, file)
+    // Windows can briefly lock the destination during reads or antivirus scans.
+    // Keep the old complete file until replacement succeeds; never unlink it.
+    for (let attempt = 0; ; attempt++) {
+      try { await fs.rename(temporary, file); break }
+      catch (error) {
+        if (!['EPERM','EACCES','EBUSY'].includes(error.code) || attempt >= 6) throw error
+        await new Promise(resolve => setTimeout(resolve, 25 * 2 ** attempt))
+      }
+    }
   } finally {
     await fs.unlink(temporary).catch(error => { if (error.code !== 'ENOENT') throw error })
   }

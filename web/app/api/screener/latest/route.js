@@ -143,20 +143,24 @@ export async function GET(request) {
     {
       const have = await sql`SELECT stamp FROM screener_snapshot WHERE market = ${market}`
       const fix = have.map((x) => x.stamp)
-        .filter((st) => list.some((e) => e && e.stamp === st && e.basis !== 'main'))
+        .filter((st) => !list.some((e) => e && e.stamp?.slice(0,10) === st.slice(0,10) && e.stamp >= st && e.basis === 'main'))
       if (fix.length) {
         const got = await sql`SELECT stamp, payload FROM screener_snapshot
                               WHERE market = ${market} AND stamp = ANY(${fix})`
         for (const g of got) {
-          const e = list.find((x) => x && x.stamp === g.stamp)
-          try { e.cnt = mainCnt(JSON.parse(g.payload)); e.basis = 'main' } catch { /* 그대로 둡니다 */ }
+          try {
+            const cnt = mainCnt(JSON.parse(g.payload))
+            list = [...list.filter(x => x && x.stamp !== g.stamp), {stamp:g.stamp,cnt,basis:'main'}]
+          } catch { /* 그대로 둡니다 */ }
         }
         try {
           const v = JSON.stringify({ list })
-          await sql`UPDATE screener_settings SET value = ${v}::jsonb, updated_at = now() WHERE key = ${HKEY}`
+          await sql`INSERT INTO screener_settings (key,value,updated_at) VALUES (${HKEY},${v}::jsonb,now())
+            ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = now()`
         } catch { /* 못 적어도 이번 응답은 나갑니다 */ }
       }
     }
+    list.sort((a,b) => String(a?.stamp).localeCompare(String(b?.stamp)))
     let before = list.filter((x) => x && x.stamp && x.stamp < snap[0].stamp)
 
     /* 아직 옛 기록이 없으면 **한 번만** 직전 결과를 열어 세어 둡니다 (2026-08-23).
@@ -233,7 +237,7 @@ export async function GET(request) {
   summary.sectorHistBasis = histBasis
   /* 업종별 통과 종목 **추이 선그림**에 쓸 옛 기록 (2026-08-29, Jun 요청).
      위에서 이미 읽어 둔 같은 표입니다 — Neon 을 한 번 더 오가지 않습니다.
-     보관은 스크리너 10회분뿐입니다(용량 사고 이후로 짧게 둡니다). */
+     최근 30일의 일별 집계를 제공합니다. */
   summary.sectorHist = sectorHist
 
   const base = {
