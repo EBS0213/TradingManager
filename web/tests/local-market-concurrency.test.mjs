@@ -42,3 +42,36 @@ test('concurrent cold catalog requests share one provider download', async () =>
     await fs.rm(folder,{recursive:true,force:true})
   }
 })
+
+test('transient Windows replacement locks retry without removing the old cache', async () => {
+  const folder = await fs.mkdtemp(path.join(os.tmpdir(),'tm-lock-'))
+  const file = path.join(folder,'quotes.json'), rename = fs.rename
+  try {
+    await saveJson(file,{id:'old'})
+    let calls=0
+    fs.rename=async(...args)=>{
+      assert.deepEqual(await readJson(file),{id:'old'})
+      if(++calls<=2)throw Object.assign(new Error('locked'),{code:'EPERM'})
+      return rename(...args)
+    }
+    await saveJson(file,{id:'new'})
+    assert.equal(calls,3)
+    assert.deepEqual(await readJson(file),{id:'new'})
+    assert.deepEqual(await fs.readdir(folder),['quotes.json'])
+  }finally{fs.rename=rename;await fs.rm(folder,{recursive:true,force:true})}
+})
+
+test('failed replacement preserves old data, cleans temp files and releases the queue', async () => {
+  const folder = await fs.mkdtemp(path.join(os.tmpdir(),'tm-failed-write-'))
+  const file = path.join(folder,'quotes.json'), rename = fs.rename
+  try {
+    await saveJson(file,{id:'old'})
+    fs.rename=async()=>{throw Object.assign(new Error('read only'),{code:'EROFS'})}
+    await assert.rejects(saveJson(file,{id:'failed'}),{code:'EROFS'})
+    assert.deepEqual(await readJson(file),{id:'old'})
+    assert.deepEqual(await fs.readdir(folder),['quotes.json'])
+    fs.rename=rename
+    await saveJson(file,{id:'recovered'})
+    assert.deepEqual(await readJson(file),{id:'recovered'})
+  }finally{fs.rename=rename;await fs.rm(folder,{recursive:true,force:true})}
+})
