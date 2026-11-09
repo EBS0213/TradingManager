@@ -165,8 +165,25 @@ def render(snap, folder):
         path = ROOT / value
         target = folder / f'pdf_{index}'
         target.mkdir(parents=True, exist_ok=True)
-        subprocess.run(['/opt/homebrew/bin/pdftotext', '-layout', str(path), str(target / 'text.txt')], check=True, timeout=90)
-        subprocess.run(['/opt/homebrew/bin/pdftoppm', '-scale-to', '1500', '-png', str(path), str(target / 'page')], check=True, timeout=240, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        import shutil
+        if shutil.which('pdftotext') and shutil.which('pdftoppm'):
+            subprocess.run([shutil.which('pdftotext'), '-layout', str(path), str(target / 'text.txt')], check=True, timeout=90)
+            subprocess.run([shutil.which('pdftoppm'), '-scale-to', '1500', '-png', str(path), str(target / 'page')], check=True, timeout=240, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        else:
+            import pypdfium2 as pdfium
+            document = pdfium.PdfDocument(str(path))
+            texts = []
+            try:
+                for number in range(len(document)):
+                    page = document[number]
+                    textpage = page.get_textpage()
+                    texts.append(textpage.get_text_range())
+                    textpage.close()
+                    bitmap = page.render(scale=1500 / max(page.get_size()))
+                    bitmap.to_pil().save(target / f'page-{number+1:04}.png')
+                    bitmap.close(); page.close()
+                (target/'text.txt').write_text('\n\n'.join(texts),encoding='utf-8')
+            finally: document.close()
         pages = sorted(target.glob('page-*.png'))
         if not pages:
             raise ValueError('PDF 렌더링 결과가 없습니다')
@@ -531,6 +548,8 @@ def 카드뉴스발송(p, receipt, receipt_file):
     · 실패해도 게시는 이미 끝났으므로 게시완료를 뒤집지 않는다. receipt 에 사유만 남긴다.
     · cardnews_at 이 있으면 다시 보내지 않는다 — 감시 루프가 같은 건을 또 돌아도 한 번만 나간다.
     """
+    if os.environ.get('TM26_AUTOMATION_LOCAL_ONLY') == '1':
+        return
     if p['category'] != 'report' or not receipt.get('new_post') or receipt.get('cardnews_at') \
             or receipt.get('cardnews_queued'):
         return

@@ -35,7 +35,10 @@ def load_config() -> dict:
     f = ROOT / "config.yaml"
     if not f.exists():
         raise SystemExit("config.yaml 이 없습니다. 같은 폴더에 두고 다시 실행하세요.")
-    return yaml.safe_load(f.read_text(encoding="utf-8")) or {}
+    config = yaml.safe_load(f.read_text(encoding="utf-8")) or {}
+    import os
+    if os.environ.get('SEC_USER_AGENT'): config['sec_user_agent'] = os.environ['SEC_USER_AGENT']
+    return config
 
 
 # watchlist.csv 의 열 이름은 사람마다 다르게 적는다. 아래 이름이면 모두 알아본다.

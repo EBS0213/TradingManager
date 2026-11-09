@@ -5,6 +5,7 @@ import {callCatalog} from '../lib/terminal/call-catalog.mjs';
 test('index contains only metadata and stable ETag, including conditional 304',async()=>{
   const sql=async(strings)=>{
     assert.match(strings.join(''),/ORDER BY code,quarter/);
+    assert.match(strings.join(''),/local-transcript-v1/);
     return [{code:'AA',quarter:'Q3',call_date:'2026-10-31',version:'v1',made_at:'m1',payload:{call:'large'}}];
   };
   const req=new Request('https://example.com/api/calls?view=index');
@@ -18,6 +19,7 @@ test('index contains only metadata and stable ETag, including conditional 304',a
 test('detail selects exact quarter and omits transcript documents',async()=>{
   const sql=async(strings,...values)=>{
     assert.deepEqual(values,['AA','Q3']);assert.match(strings.join(''),/payload-'documents'/);
+    assert.match(strings.join(''),/local-transcript-v1/);
     return [{item:{code:'AA',quarter:'Q3',call:'full explanation'},version:'v1'}];
   };
   const response=await callCatalog(new Request('https://example.com/api/calls?view=detail&code=AA&quarter=Q3'),sql);

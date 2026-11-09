@@ -15,6 +15,9 @@ esac
 [ -n "$SUON" ] && export SUON=1     # 앱이 환경변수로 줘도 인정한다
 [ -z "$JOB" ] && { echo "무엇을 할지 알려 주세요: 시황전략 / 장전브리핑 / 미국종목종합 / 한국종목종합 / 매매평가 / 주간피드백 / 컨퍼런스콜"; exit 2; }
 MD="지시문/${JOB}.md"
+if [ "${TM26_AUTOMATION_LOCAL_ONLY:-0}" = 1 ] && [ "$JOB" = "컨퍼런스콜" ]; then
+  MD="지시문/로컬컨퍼런스콜.md"
+fi
 [ -f "$MD" ] || { echo "지시문을 찾지 못했습니다: $MD"; exit 2; }
 # 모든 작업에 같은 문체기준을 붙인다 (2026-09-07).
 #  지시문 일곱 개를 따로 고치지 않아도 되고, 새 지시문을 만들어도 자동으로 붙는다.
@@ -22,11 +25,14 @@ MD="지시문/${JOB}.md"
 STYLE="지시문/_공통_문체기준.md"
 mkdir -p 로그 브리핑 매매로그
 
-for rc in "$HOME/.zprofile" "$HOME/.zshrc" "$HOME/.bash_profile" "$HOME/.profile"; do
-  [ -r "$rc" ] && . "$rc" >/dev/null 2>&1
-done
+if [ "${TM26_AUTOMATION_LOCAL_ONLY:-0}" != 1 ]; then
+  for rc in "$HOME/.zprofile" "$HOME/.zshrc" "$HOME/.bash_profile" "$HOME/.profile"; do
+    [ -r "$rc" ] && . "$rc" >/dev/null 2>&1
+  done
+fi
 export PATH="$PATH:/usr/local/bin:/opt/homebrew/bin:$HOME/.local/bin:$HOME/.claude/local:$HOME/.npm-global/bin:$HOME/bin"
-[ -x "$HOME/.local/bin/codex" ] || command -v codex >/dev/null 2>&1 || { echo "Codex CLI 없음"; exit 1; }
+AI_CLI="${TM26_REPORT_PROVIDER:-codex}"
+[ -x "$HOME/.local/bin/$AI_CLI" ] || command -v "$AI_CLI" >/dev/null 2>&1 || { echo "$AI_CLI 실행 도구 없음"; exit 1; }
 
 LOCK="투자작업_${JOB}.lock"
 if [ -f "$LOCK" ] && kill -0 "$(cat "$LOCK" 2>/dev/null)" 2>/dev/null; then
@@ -139,7 +145,7 @@ fi
 #  보고서를 다 쓴 **뒤에** 보냅니다. 휴장일이라 안 만들어졌으면 파일이 없으니 그냥 넘어갑니다.
 #  게시판 게재와는 별개입니다 — 이건 사람이 읽을 요약을 채널에 흘려 주는 것입니다.
 #  보낼 것을 늘리려면 아래 case 에 한 줄 더하면 됩니다.
-if [ "$RC" -eq 0 ] && [ -x ./채널발송.sh ]; then
+if [ "$RC" -eq 0 ] && [ "${TM26_AUTOMATION_LOCAL_ONLY:-0}" != 1 ] && [ -x ./채널발송.sh ]; then
   TODAY="$(TZ=Asia/Seoul date '+%Y-%m-%d')"
   SUMMARY=""; SUBJECT=""
   case "$JOB" in

@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  distDir: process.env.TM26_BUILD_DIR || '.next',
   poweredByHeader: false,   // 어떤 기술로 만들었는지 굳이 알리지 않습니다
 
   // 화면 파일(app.html)을 서버에서 읽어 내려주므로, 배포 꾸러미에 반드시 포함시킵니다.

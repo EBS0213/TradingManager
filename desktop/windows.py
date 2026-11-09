@@ -145,6 +145,11 @@ def install(check_only=False, no_shortcut=False):
     if not python.exists():
         subprocess.run([sys.executable, '-m', 'venv', str(ROOT / '.venv')], check=True)
     subprocess.run([str(python), '-m', 'pip', 'install', '-r', str(ROOT / 'screener/requirements.txt')], check=True)
+    report_python = ROOT/'report-automation/.venv/Scripts/python.exe'
+    if not report_python.exists():
+        subprocess.run([sys.executable, '-m', 'venv', str(ROOT/'report-automation/.venv')], check=True)
+    subprocess.run([str(report_python), '-m', 'pip', 'install', '-r', str(ROOT/'report-automation/requirements.txt')], check=True)
+    subprocess.run([str(report_python), '-m', 'playwright', 'install', 'chromium'], check=True)
     init_cluster(pg, config)
     started = False
     try:
@@ -216,7 +221,14 @@ def run(no_browser=False, smoke=False):
         python = ROOT / '.venv/Scripts/python.exe'
         for task in ['screener', 'chat']:
             spawn(task, [str(python), str(ROOT / 'desktop/run-task.py'), task], ROOT)
+        spawn('briefs', [str(python), str(ROOT/'desktop/brief_automation.py')], ROOT)
+        spawn('reports', [str(python), str(ROOT/'desktop/report_automation.py'), 'worker'], ROOT)
         if smoke:
+            # install() stops its private cluster on exit. Run database-backed
+            # seed checks here while the launcher owns a running PostgreSQL.
+            subprocess.run([node, '--env-file=.env.local', '--test',
+                            'tests/content-seed.test.mjs', 'tests/screener-seed.test.mjs'],
+                           cwd=ROOT / 'web', env=env, check=True)
             subprocess.run([node, '--env-file=.env.local', 'tests/local-records-smoke.cjs'], cwd=ROOT / 'web', env=env, check=True)
             time.sleep(3)
             if any(p.poll() is not None for p in processes):

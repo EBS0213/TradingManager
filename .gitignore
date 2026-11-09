@@ -22,6 +22,7 @@ distribution/
 !**/.env.example
 **/node_modules/
 **/.next/
+**/.next-*/
 **/.venv/
 **/.build/
 **/.cache/

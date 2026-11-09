@@ -41,6 +41,8 @@ sys.path.insert(0, str(뿌리))
 
 
 def _사용자표시() -> str:
+    import os
+    if os.environ.get('SEC_USER_AGENT'): return os.environ['SEC_USER_AGENT']
     """SEC 는 연락처가 든 User-Agent 를 요구한다. 없으면 거절당한다."""
     본문 = (뿌리 / "config.yaml").read_text(encoding="utf-8", errors="ignore")
     m = re.search(r"sec_user_agent:\s*[\"']?([^\"'\n]+)", 본문)

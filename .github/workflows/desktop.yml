@@ -22,18 +22,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Unit tests
-        run: |
-          node --test web/tests/dashboard-quotes.test.mjs web/tests/terminal-data.test.mjs web/tests/equities-review.test.mjs web/tests/local-owner.test.mjs web/tests/local-origin.test.mjs
-          python -m unittest discover -s desktop -p "test_*.py"
-          python -m unittest discover -s workers/chat -p "test_*.py"
+      - name: Web unit tests
+        run: node --test web/tests/dashboard-quotes.test.mjs web/tests/terminal-data.test.mjs web/tests/equities-review.test.mjs web/tests/local-owner.test.mjs web/tests/local-origin.test.mjs
+      - name: Desktop unit tests
+        run: python -m unittest discover -s desktop -p "test_*.py"
+      - name: Chat worker unit tests
+        run: python -m unittest discover -s workers/chat -p "test_*.py"
       - name: Fresh installation (real PostgreSQL, npm, build)
         run: python desktop/windows.py install --no-shortcut
       - name: Full web regression suite
         run: npm test
-        working-directory: web
-      - name: Seed database preservation tests
-        run: node --env-file=.env.local --test tests/content-seed.test.mjs tests/screener-seed.test.mjs
         working-directory: web
       - name: Desktop shortcut
         shell: powershell
@@ -41,7 +39,7 @@ jobs:
           & ./desktop/windows-shortcut.ps1 -Root (Get-Location).Path
           $path = Join-Path ([Environment]::GetFolderPath('Desktop')) 'TradingManager.lnk'
           if (!(Test-Path $path)) { throw 'Shortcut missing' }
-      - name: Browser persistence, chart game, chat queue and native workers
+      - name: Seed preservation, browser persistence, chart game, chat queue and native workers
         run: python desktop/windows.py start --no-browser --smoke
       - name: Restart and recheck
         run: python desktop/windows.py start --no-browser --smoke
