@@ -14,5 +14,5 @@ export function sectorCountSeries(rows:Row[],stamp:string,history:SectorCountPoi
  const points=[...byDay.values()];for(const p of points)for(const name of Object.keys(p.cnt))names.add(name);
  const colors=[...names].sort().map((name,i)=>({name,color:colorFor(i),dash:i%3===0?undefined:i%3===1?'7 3':'2 3'}));
  const series=colors.map(s=>({...s,count:cnt[s.name]||0,values:points.map(p=>{const n=p.cnt[s.name];return {stamp:p.stamp,value:n===undefined?0:Number.isFinite(n)&&n>=0?n:null};})})).sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,'ko'));
- return {points,series,start:points.length>1?day(points[0].stamp):end-86400000,end};
+ return {points,series,start,end};
 }

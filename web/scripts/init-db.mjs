@@ -2,6 +2,7 @@ import { seedContent } from './seed-content.mjs'
 // 표를 만듭니다.  실행:  npm run db:init
 import { getSql } from '../lib/db.js'
 import { seedScreener } from './seed-screener.mjs'
+import { seedSectorHistory } from './seed-sector-history.mjs'
 const sql = await getSql()
 
 await sql`
@@ -39,6 +40,8 @@ await sql`ALTER TABLE screener_snapshot ADD COLUMN IF NOT EXISTS market TEXT NOT
 await sql`ALTER TABLE screener_job ADD COLUMN IF NOT EXISTS market TEXT NOT NULL DEFAULT 'KR'`
 await sql`CREATE INDEX IF NOT EXISTS screener_snapshot_market ON screener_snapshot (market, created_at DESC)`
 await seedScreener(sql)
+await sql`CREATE TABLE IF NOT EXISTS screener_settings (key TEXT PRIMARY KEY, value JSONB NOT NULL, updated_at TIMESTAMPTZ NOT NULL DEFAULT now())`
+await seedSectorHistory(sql)
 await seedContent()
 console.log('✓ 표 및 초기 스크리닝 결과 준비 완료')
 process.exit(0)
