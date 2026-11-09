@@ -16,3 +16,23 @@ test('new observations restore marker; old cached snapshots cannot move it backw
  result=mergeObservations(result,[old],now+10000);assert.equal(result[0].lon,129);assert.equal(result[0].asOf,fresh.asOf);
  assert.deepEqual(mergeObservations([], [plane('abc120',now-POSITION_TTL),{...fresh,asOf:'bad'}],now),[]);
 });
+
+test('panning through pending, empty and revisited areas retains all recent observations',()=>{
+ const korea=plane('abc120',now,129),japan=plane('abc121',now,135);
+ let retained=mergeObservations([], [korea], now);
+ // The rounded query key changes here; these are responses from other areas.
+ retained=mergeObservations(retained, [], now+1000);
+ assert.deepEqual(retained.map(a=>a.id),[korea.id]);
+ retained=mergeObservations(retained, [japan], now+2000);
+ assert.equal(retained.length,2);
+ retained=mergeObservations(retained, [], now+3000);
+ assert.equal(retained.length,2);
+ const latest={...korea,lon:129.1,asOf:new Date(now+4000).toISOString()};
+ retained=mergeObservations(retained, [latest], now+4000);
+ retained=mergeObservations(retained, [korea], now+5000);
+ assert.equal(retained.find(a=>a.id===korea.id).lon,129.1);
+ assert.equal(retained.find(a=>a.id===japan.id).asOf,japan.asOf);
+ retained=mergeObservations(retained, [], now+POSITION_TTL);
+ assert.deepEqual(retained.map(a=>a.id),[korea.id]);
+ assert.deepEqual(mergeObservations(retained, [], now+POSITION_TTL+4000),[]);
+});

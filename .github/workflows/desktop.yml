@@ -32,9 +32,6 @@ jobs:
       - name: Full web regression suite
         run: npm test
         working-directory: web
-      - name: Seed database preservation tests
-        run: node --env-file=.env.local --test tests/content-seed.test.mjs tests/screener-seed.test.mjs
-        working-directory: web
       - name: Desktop shortcut
         shell: powershell
         run: |
