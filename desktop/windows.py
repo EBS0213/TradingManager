@@ -217,6 +217,9 @@ def run(no_browser=False, smoke=False):
         for task in ['screener', 'chat']:
             spawn(task, [str(python), str(ROOT / 'desktop/run-task.py'), task], ROOT)
         if smoke:
+            seed_tests = [f'tests/{name}.test.mjs' for name in ['content-seed', 'screener-seed', 'sector-history']
+                          if (ROOT / 'web/tests' / f'{name}.test.mjs').exists()]
+            subprocess.run([node, '--env-file=.env.local', '--test', *seed_tests], cwd=ROOT / 'web', env=env, check=True)
             subprocess.run([node, '--env-file=.env.local', 'tests/local-records-smoke.cjs'], cwd=ROOT / 'web', env=env, check=True)
             time.sleep(3)
             if any(p.poll() is not None for p in processes):
