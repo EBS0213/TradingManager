@@ -221,6 +221,7 @@ def run(no_browser=False, smoke=False):
         python = ROOT / '.venv/Scripts/python.exe'
         for task in ['screener', 'chat']:
             spawn(task, [str(python), str(ROOT / 'desktop/run-task.py'), task], ROOT)
+        spawn('briefs', [str(python), str(ROOT/'desktop/brief_automation.py')], ROOT)
         spawn('reports', [str(python), str(ROOT/'desktop/report_automation.py'), 'worker'], ROOT)
         if smoke:
             # install() stops its private cluster on exit. Run database-backed

@@ -47,6 +47,7 @@ def install_services(root=ROOT):
     if python.exists():
         for task in ['screener', 'chat']:
             jobs['com.tm26.local.'+task] = [str(python), str(root/'desktop/run-task.py'), task]
+        jobs['com.tm26.local.briefs'] = [str(python), str(root/'desktop/brief_automation.py')]
         jobs['com.tm26.local.reports'] = [str(python), str(root/'desktop/report_automation.py'), 'worker']
     for label, args in jobs.items():
         file = agents/(label+'.plist')

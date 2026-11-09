@@ -12,6 +12,8 @@
 """
 from 로컬설정 import 사이트주소
 import json
+import datetime as dt
+from zoneinfo import ZoneInfo
 import os
 import re
 import subprocess
@@ -55,16 +57,29 @@ def main():
     슬롯 = sys.argv[1] if len(sys.argv) > 1 else ""
     if 슬롯 not in ("am", "mid", "close", "pm"):
         raise SystemExit("사용법: 브리핑쓰기.py am|mid|close|pm")
+    오늘 = dt.datetime.now(ZoneInfo('Asia/Seoul')).date().isoformat()
+    기존 = 부르기('/api/brief')
+    if any(x.get('day') == 오늘 and x.get('slot') == 슬롯 and x.get('writer') == 'ai'
+           for x in 기존.get('items', [])):
+        print(f'{오늘} {슬롯}: 이미 저장되어 있습니다')
+        return
     준비 = 부르기(f"/api/brief?run={슬롯}&prepare=1")
     if not 준비.get("ok"):
         raise SystemExit(f"재료를 받지 못했습니다: {준비.get('error')}")
-    지시 = (준비["system"] + "\n\n" + 준비["prompt"]
+    수집시각 = dt.datetime.now(ZoneInfo('Asia/Seoul')).strftime('%Y-%m-%d %H:%M KST')
+    시점주의 = (f'\n실제 자료 수집 시각은 {수집시각}입니다. 예약 회차명은 관측시각이 아닙니다. '
+                '지연 작성 시 현재 수치를 정오·예약시각의 수치라고 쓰지 마십시오. '
+                '본문 첫머리에 실제 자료 수집 시각을 밝히십시오.\n')
+    지시 = (시점주의 + 준비["system"] + "\n\n" + 준비["prompt"]
             + "\n\n---\n출력 규칙: 브리핑 본문만 출력하십시오. 머리말·설명·코드블록 없이 "
               "<b>소제목</b> 으로 시작하는 본문만 씁니다. 도구는 쓰지 마십시오.")
     r = codex_run(지시, role="analysis", model=MODEL, timeout=900)
     if r.returncode == 75:
         print("Codex 사용량 한도 — 제작과 발송을 멈춥니다")
         sys.exit(75)
+    if r.returncode == 78:
+        print("선택한 AI의 본인 계정 로그인이 필요합니다")
+        sys.exit(78)
     if r.returncode:
         raise SystemExit(f"Codex 작성 실패({r.returncode}): {r.stderr[-300:]}")
 
@@ -81,8 +96,10 @@ def main():
     글 = 다듬기(r.stdout)
     if len(글) < 400:
         raise SystemExit(f"글이 비었거나 너무 짧습니다 ({len(글)}자): {r.stderr[-300:]}")
+    if dt.datetime.now(ZoneInfo('Asia/Seoul')).date().isoformat() != 준비['day']:
+        raise SystemExit('작성 중 날짜가 바뀌어 저장하지 않습니다')
     결과 = 부르기(f"/api/brief?run={슬롯}&save=1", {"text": 글})
-    if not 결과.get("ok"):
+    if not 결과.get("ok") or 결과.get("saved") is not True:
         raise SystemExit(f"저장하지 못했습니다: {결과.get('error')}")
     print(f"{준비['day']} {슬롯} 브리핑을 이 맥에서 썼습니다 ({len(글)}자, {MODEL})")
 
