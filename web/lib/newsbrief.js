@@ -235,7 +235,10 @@ export async function gatherFacts(origin, slot) {
     // 업종별 RS 중앙값 상위 — 국내 업종만 봅니다
     const by = new Map()
     for (const r of rows) {
-      const sec = String(r['업종'] ?? ''); const rs = num(r['RS'])
+      const sec = String(r['업종'] ?? '')
+      const rawRs = r['RS']
+      if (String(rawRs ?? '').replace(/,/g, '').trim() === '') continue
+      const rs = num(rawRs)
       if (!sec || sec === '-' || rs == null) continue
       if (!by.has(sec)) by.set(sec, [])
       by.get(sec).push(rs)
