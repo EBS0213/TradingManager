@@ -2,18 +2,42 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import {randomUUID} from 'node:crypto'
+import {setTimeout as delay} from 'node:timers/promises'
 
 export const dataRoot = () => process.env.TM26_LOCAL_DATA || path.resolve(process.cwd(), '../data')
 const validSymbol = /^[A-Z][A-Z0-9.\-]{0,14}$/
 const pending = new Map()
+const writes = new Map()
 export async function saveJson(file, value) {
-  await fs.mkdir(path.dirname(file), {recursive:true})
-  const temporary = `${file}.${process.pid}.${randomUUID()}.tmp`
+  file = path.resolve(file)
+  const key = process.platform === 'win32' ? file.toLowerCase() : file
+  // Windows cannot always replace a destination while another replacement is
+  // pending. Queue writers for this file; unrelated files remain independent.
+  const previous = writes.get(key) || Promise.resolve()
+  const work = previous.catch(() => {}).then(async () => {
+    await fs.mkdir(path.dirname(file), {recursive:true})
+    const temporary = `${file}.${process.pid}.${randomUUID()}.tmp`
+    try {
+      await fs.writeFile(temporary, JSON.stringify(value), {mode:0o600, flag:'wx'})
+      for (let attempt = 0; ; attempt++) {
+        try { await fs.rename(temporary, file); break }
+        catch (error) {
+          // Readers in another process or antivirus can briefly hold the file.
+          // Keep the old cache intact and stop retrying persistent failures.
+          if (process.platform !== 'win32' || attempt >= 7 ||
+              !['EPERM', 'EACCES', 'EBUSY'].includes(error.code)) throw error
+          await delay(Math.min(10 * 2 ** attempt, 200))
+        }
+      }
+    } finally {
+      await fs.unlink(temporary).catch(error => { if (error.code !== 'ENOENT') throw error })
+    }
+  })
+  writes.set(key, work)
   try {
-    await fs.writeFile(temporary, JSON.stringify(value), {mode:0o600, flag:'wx'})
-    await fs.rename(temporary, file)
+    await work
   } finally {
-    await fs.unlink(temporary).catch(error => { if (error.code !== 'ENOENT') throw error })
+    if (writes.get(key) === work) writes.delete(key)
   }
 }
 export async function readJson(file) { try { return JSON.parse(await fs.readFile(file,'utf8')) } catch { return null } }
