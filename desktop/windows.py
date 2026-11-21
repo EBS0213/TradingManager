@@ -217,6 +217,13 @@ def run(no_browser=False, smoke=False):
         for task in ['screener', 'chat']:
             spawn(task, [str(python), str(ROOT / 'desktop/run-task.py'), task], ROOT)
         if smoke:
+            # The installer stops its cluster. CI runs seed checks only while
+            # this launcher owns PostgreSQL, using this installation's URL.
+            if os.environ.get('TM26_SMOKE_SEEDS') == '1':
+                seed_env = {**env, 'DATABASE_URL': config['DATABASE_URL']}
+                subprocess.run([node, '--env-file=.env.local', '--test',
+                                'tests/content-seed.test.mjs', 'tests/screener-seed.test.mjs'],
+                               cwd=ROOT / 'web', env=seed_env, check=True)
             subprocess.run([node, '--env-file=.env.local', 'tests/local-records-smoke.cjs'], cwd=ROOT / 'web', env=env, check=True)
             time.sleep(3)
             if any(p.poll() is not None for p in processes):
